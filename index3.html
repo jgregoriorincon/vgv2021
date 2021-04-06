@@ -1,0 +1,181 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+
+  <!--
+  ArcGIS API for JavaScript, https://js.arcgis.com
+  For more information about the visualization-sm-sublayer sample, read the original sample description at developers.arcgis.com.
+  https://developers.arcgis.com/javascript/latest/sample-code/visualization-sm-sublayer/index.html
+  -->
+  <title>MapImageLayer - Explore data from a dynamic workspace - 4.15</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css" />
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>
+
+  <script src="https://js.arcgis.com/4.15/"></script>
+
+  <script>
+    var map;
+
+    // Años a procesar
+    var vgv_lstAnios = [];
+    for (let numAnio = 1985; numAnio <= 2020; numAnio++) {
+      vgv_lstAnios.push(numAnio);
+    }
+
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/MapImageLayer",
+      "esri/renderers/smartMapping/creators/color",
+      "esri/widgets/LayerList",
+      "esri/core/watchUtils"
+    ], function (
+      Map,
+      MapView,
+      MapImageLayer,
+      colorRendererCreator,
+      LayerList,
+      watchUtils
+    ) {
+
+      map = new Map({
+        basemap: "gray-vector"
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        zoom: 5,
+        center: [-74.088, 4.969]
+      });
+
+      vgv_lstAnios.forEach(Anio => {
+
+        var queryString = "select D.*, S.EVENTOS from CONSULTA.DEPARTAMENTOS D " +
+          "left join ( SELECT DPTO_NCDGO, SUM(RUV_NEVENTOS) AS EVENTOS FROM CONSULTA.RUV WHERE RUV_CVIGENCIA = '" +
+          Anio + "' GROUP BY DPTO_NCDGO HAVING SUM(RUV_NEVENTOS) > 0 ) S " +
+          "on D.DPTO_NCDGO = S.DPTO_NCDGO";
+
+        const visorLayer = new MapImageLayer({
+          url: "https://vgv.unidadvictimas.gov.co/server/rest/services/RUV/Visor/MapServer",
+          title: "Eventos en el RUV para el año " + Anio,
+          id: "RUV_Eventos_" + Anio,
+          visible: false,
+          listMode: "hide",
+          sublayers: [{
+            title: "Eventos en el RUV para el año " + Anio,
+            id: 0,
+            opacity: 0.8,
+            source: {
+              type: "data-layer",
+              dataSource: {
+                type: "query-table",
+                workspaceId: "DataRUV",
+                query: queryString,
+                geometryType: "polygon",
+                oidFields: "objectid"
+              }
+            }
+          }]
+        });
+
+        const eventosSublayer = visorLayer.sublayers.find(function (sublayer) {
+          return sublayer.title === "Eventos en el RUV para el año " + Anio;
+        });
+
+        watchUtils.whenFalseOnce(view, "updating", function () {
+          eventosSublayer
+            .createFeatureLayer()
+            .then(function (eventosFeatureLayer) {
+              return eventosFeatureLayer.load();
+            })
+            .then(createRenderer);
+        });
+
+        function createRenderer(featureLayer) {
+
+          const params = {
+            layer: featureLayer,
+            field: "EVENTOS",
+            view: view,
+            classificationMethod: "quantile"
+          };
+
+          colorRendererCreator
+            .createClassBreaksRenderer(params)
+            .then(function (response) {
+              eventosSublayer.renderer = response.renderer;
+
+              if (!map.layers.includes(visorLayer)) {
+                map.add(visorLayer);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      });
+
+      const layerList = new LayerList({
+        view: view,
+        listItemCreatedFunction: function (event) {
+          const item = event.item;
+          item.panel = {
+            content: [document.getElementById("infoDiv"), "legend"],
+            open: true
+          };
+        }
+      });
+      view.ui.add(layerList, "top-right");
+    });
+
+
+    function playAllLayers() {
+      vgv_lstAnios.forEach(Anio => {
+        setTimeout(() => {
+          playLayers(2021);
+          setTimeout(() => {
+            playLayers(Anio);
+          }, 10);
+        }, (Anio - 1984) * 1000);
+      });
+    }
+
+    function playLayers(Anio) {
+
+      for (let idxAnio = 0; idxAnio < map.allLayers.items.length; idxAnio++) {
+        if (map.allLayers.items[idxAnio].type == "vector-tile") {
+          //
+        } else if (map.allLayers.items[idxAnio].id == "RUV_Eventos_" + Anio) {
+          map.allLayers.items[idxAnio].listMode = "show";
+          map.allLayers.items[idxAnio].visible = true;
+        } else {
+          map.allLayers.items[idxAnio].listMode = "hide";
+          map.allLayers.items[idxAnio].visible = false;
+        }
+      }
+
+    }
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+  <div id="infoDiv"></div>
+</body>
+
+</html>
