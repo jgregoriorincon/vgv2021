@@ -1036,8 +1036,7 @@ function addWidgets() {
     view: view,
     container: "printDiv",
     // specify your own print service
-    printServiceUrl:
-      "https://vgv.unidadvictimas.gov.co/server/rest/services/GP_UARIV/Imprimir/GPServer/Export%20Web%20Map"
+    printServiceUrl: "https://vgv.unidadvictimas.gov.co/server/rest/services/GP_UARIV/Imprimir/GPServer/Export%20Web%20Map"
   });
 
   // Time
@@ -1277,7 +1276,7 @@ function defineActions(event) {
     id: "delete-layer",
   }, ];
 
-  let itemConfigLayers = config_layers.filter(function(element){
+  let itemConfigLayers = config_layers.filter(function (element) {
     return element.ID_SERVICIO == item.layer.id.toString();
   });
 
@@ -1443,7 +1442,7 @@ function cambioFiltroGeografico() {
 
 function loadServicesUARIV() {
   loadConfigLayers();
-  // loadListasServices();
+  loadListasServices();
   loadFechaCorte();
 }
 
@@ -1650,9 +1649,9 @@ function loadFechaCorte() {
   var query = new _Query();
   query.returnGeometry = false;
   query.outFields = ["*"];
-  query.where = "1=1"; 
+  query.where = "1=1";
 
-  queryTask.execute(query).then(function(results){
+  queryTask.execute(query).then(function (results) {
     let infoVGV = results.features[0].attributes
     FechaCorte = infoVGV.FECHA_CORTE_STR;
     $("#FechaCorteVGV").html("FECHA DE CORTE: " + infoVGV.RUV_CFECHA);
@@ -1667,7 +1666,7 @@ function loadFechaCorte() {
     $("#DefinitionPersonasVGV").html(infoVGV.RUV_CPERSONAS);
     $("#DefinitionSujetosVGV").html(infoVGV.RUV_CSUJETOS);
     $("#DefinitionEventosVGV").html(infoVGV.RUV_CEVENTOS);
-  }, function(error){
+  }, function (error) {
     console.log('Error FechaCorte: ', error);
   });
 }
@@ -3128,7 +3127,7 @@ function generateTable(tLayer) {
 
     for (let idxField = 0; idxField < TableFields.length; idxField++) {
       if (TableFields[idxField].field == "VGV_NVALOR") {
-        TableFields[idxField].topCalc = function (values,data,calcParams) {
+        TableFields[idxField].topCalc = function (values, data, calcParams) {
           if (values && values.length) {
             var total = values.reduce((sum, x) => sum + (parseInt(x) || 0));
             return "Total: " + formatNumber(total);
