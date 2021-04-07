@@ -9,9 +9,9 @@
   For more information about the visualization-sm-sublayer sample, read the original sample description at developers.arcgis.com.
   https://developers.arcgis.com/javascript/latest/sample-code/visualization-sm-sublayer/index.html
   -->
-  <title>MapImageLayer - Explore data from a dynamic workspace - 4.15</title>
+  <title>MapImageLayer - Explore data from a dynamic workspace - 4.18</title>
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
 
   <style>
     html,
@@ -25,32 +25,38 @@
     }
   </style>
 
-  <script src="https://js.arcgis.com/4.15/"></script>
+  <script src="https://js.arcgis.com/4.18/"></script>
 
   <script>
     var map;
 
     // Años a procesar
     var vgv_lstAnios = [];
-    for (let numAnio = 1985; numAnio <= 2020; numAnio++) {
+    for (let numAnio = 1985; numAnio <= 2021; numAnio++) {
       vgv_lstAnios.push(numAnio);
     }
 
     require([
+      "esri/config",
       "esri/Map",
       "esri/views/MapView",
       "esri/layers/MapImageLayer",
-      "esri/renderers/smartMapping/creators/color",
+      "esri/smartMapping/renderers/color",
+      "esri/smartMapping/symbology/color",
       "esri/widgets/LayerList",
       "esri/core/watchUtils"
     ], function (
+      esriConfig,
       Map,
       MapView,
       MapImageLayer,
       colorRendererCreator,
+      colorSchemes,
       LayerList,
       watchUtils
     ) {
+
+      esriConfig.apiKey = "AAPK16dc245e51af4cd58792f446f40c58edICSmkURdJi5igB7OXHABEip3-nJYIwlv1PBR87gdjey1CAdMES1tgYBrPqjDZhFo";
 
       map = new Map({
         basemap: "gray-vector"
@@ -65,13 +71,13 @@
 
       vgv_lstAnios.forEach(Anio => {
 
-        var queryString = "select D.*, S.EVENTOS from CONSULTA.DEPARTAMENTOS D " +
-          "left join ( SELECT DPTO_NCDGO, SUM(RUV_NEVENTOS) AS EVENTOS FROM CONSULTA.RUV WHERE RUV_CVIGENCIA = '" +
-          Anio + "' GROUP BY DPTO_NCDGO HAVING SUM(RUV_NEVENTOS) > 0 ) S " +
+        let queryString = "select D.*, S.EVENTOS from GIS2.PUBLICACION.DEPARTAMENTOS D " +
+          "left join ( SELECT DPTO_NCDGO, SUM(RUV_NEVENTOS) AS EVENTOS FROM GIS2.RUV.RUV_DATOS WHERE RUV_CVIGENCIA = '" +
+          Anio + "' GROUP BY DPTO_NCDGO ) S " +
           "on D.DPTO_NCDGO = S.DPTO_NCDGO";
-
+        
         const visorLayer = new MapImageLayer({
-          url: "https://vgv.unidadvictimas.gov.co/server/rest/services/RUV/Visor/MapServer",
+          url: "https://vgv.unidadvictimas.gov.co/server/rest/services/RUV/RUV/MapServer",
           title: "Eventos en el RUV para el año " + Anio,
           id: "RUV_Eventos_" + Anio,
           visible: false,
@@ -84,9 +90,12 @@
               type: "data-layer",
               dataSource: {
                 type: "query-table",
-                workspaceId: "DataRUV",
+                workspaceId: "CONSULTA_RUV",
                 query: queryString,
                 geometryType: "polygon",
+                spatialReference: {
+                  "wkid": 4326
+                },
                 oidFields: "objectid"
               }
             }
@@ -94,40 +103,47 @@
         });
 
         const eventosSublayer = visorLayer.sublayers.find(function (sublayer) {
-          return sublayer.title === "Eventos en el RUV para el año " + Anio;
+          return sublayer.id === 0;
         });
 
-        watchUtils.whenFalseOnce(view, "updating", function () {
-          eventosSublayer
-            .createFeatureLayer()
-            .then(function (eventosFeatureLayer) {
-              return eventosFeatureLayer.load();
-            })
-            .then(createRenderer);
-        });
+        eventosSublayer.createFeatureLayer()
+          .then(function (eventosFeatureLayer) {
+            return eventosFeatureLayer.load();
+          })
+          .then(function (featureLayer) {
+            createRenderer(featureLayer, eventosSublayer)
+          });
 
-        function createRenderer(featureLayer) {
+        map.add(visorLayer);
+
+        function createRenderer(featureLayer, subLayer) {
+          const schemes = colorSchemes.getSchemeByName({
+            name: 'Red 5',
+            geometryType: featureLayer.geometryType,
+            theme: "high-to-low"
+          });
 
           const params = {
             layer: featureLayer,
             field: "EVENTOS",
             view: view,
-            classificationMethod: "quantile"
+            classificationMethod: "natural-breaks",
+            numClasses: 5,
+            colorScheme: schemes
           };
 
           colorRendererCreator
             .createClassBreaksRenderer(params)
-            .then(function (response) {
-              eventosSublayer.renderer = response.renderer;
+            .then(function (rendererResponse) {
+              rendererResponse.renderer.defaultLabel = "Sin Datos";
+              rendererResponse.renderer.defaultSymbol.color.a = 0.7;
+              subLayer.renderer = rendererResponse.renderer;
 
-              if (!map.layers.includes(visorLayer)) {
-                map.add(visorLayer);
-              }
             })
             .catch(function (error) {
               console.log(error);
             });
-        }
+        }        
       });
 
       const layerList = new LayerList({

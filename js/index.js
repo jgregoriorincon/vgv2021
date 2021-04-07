@@ -160,6 +160,7 @@ function updateSize() {
 function initMap() {
   require([
     // ArcGIS
+    "esri/config",
     "esri/Map",
     "esri/Basemap",
     "esri/views/MapView",
@@ -169,7 +170,6 @@ function initMap() {
     "esri/core/Collection",
     "esri/core/watchUtils",
     "esri/core/lang",
-    "esri/config",
     "esri/request",
 
     // Layers
@@ -190,6 +190,9 @@ function initMap() {
     "esri/widgets/smartMapping/ClassedColorSlider",
     "esri/renderers/smartMapping/symbology/color",
     "esri/renderers/smartMapping/creators/type",
+
+    "esri/smartMapping/renderers/color",
+    "esri/smartMapping/symbology/color",
 
     // Popup
     "esri/PopupTemplate",
@@ -245,6 +248,7 @@ function initMap() {
     "dojo/aspect",
     "dojo/domReady!",
   ], function (
+    __esriConfig,
     __Map,
     __Basemap,
     __MapView,
@@ -252,7 +256,6 @@ function initMap() {
     __Collection,
     __watchUtils,
     __esriLang,
-    __esriConfig,
     __esriRequest,
     __Layer,
     __FeatureLayer,
@@ -267,6 +270,10 @@ function initMap() {
     __ClassedColorSlider,
     __colorSchemes,
     __typeRendererCreator,
+
+    __colorRendererCreator2,
+    __colorSchemes2,
+
     __PopupTemplate,
     __webMercatorUtils,
     __SpatialReference,
@@ -308,6 +315,7 @@ function initMap() {
     __aspect
   ) {
     try {
+      _esriConfig = __esriConfig;
       _Map = __Map;
       _Basemap = __Basemap;
       _MapView = __MapView;
@@ -316,7 +324,6 @@ function initMap() {
       _Collection = __Collection;
       _watchUtils = __watchUtils;
       _esriLang = __esriLang;
-      _esriConfig = __esriConfig;
       _esriRequest = __esriRequest;
 
       _Layer = __Layer;
@@ -334,6 +341,9 @@ function initMap() {
       _ClassedColorSlider = __ClassedColorSlider;
       _colorSchemes = __colorSchemes;
       _typeRendererCreator = __typeRendererCreator;
+
+      _colorRendererCreator2 = __colorRendererCreator2;
+      _colorSchemes2 = __colorSchemes2;
 
       _PopupTemplate = __PopupTemplate;
       _webMercatorUtils = __webMercatorUtils;
@@ -395,6 +405,7 @@ function initMap() {
 
 function InitMap2() {
   // Config
+  _esriConfig.apiKey = "AAPK16dc245e51af4cd58792f446f40c58edICSmkURdJi5igB7OXHABEip3-nJYIwlv1PBR87gdjey1CAdMES1tgYBrPqjDZhFo";
   _esriConfig.request.proxyUrl = URL_proxy;
   _esriConfig.timeout = 600000;
   _esriConfig.request.interceptors.push({
@@ -495,7 +506,7 @@ function InitMap2() {
     _CalciteMapArcGISSupport.setPopupPanelSync(view);
 
     // Carga selects
-    loadSelectMultiple();
+    loadDomainsVGV();
 
     // Oculta loading
     $("#initVGV").hide();
@@ -1321,48 +1332,49 @@ function collapseExpand(widgetExpand) {
 
 function loadSelectMultiple() {
   // Carga los Select Fijos
-  buildSelectImpresion("plantillaImpresion", vgv_lstImpresion);
   buildSelectSingle("selectFiltro_Anio", vgv_lstAnios);
   $("#selectFiltro_Anio").val($("#selectFiltro_Anio option:eq(1)").val());
-  buildSelectSingle("selectFiltro_Variable", vgv_lstVariable.reverse());
+
+  buildSelectImpresion("selectFiltro_Variable", vgv_lstVariable);
+  buildSelectImpresion("plantillaImpresion", vgv_lstImpresion);
 
   buildSelectMultiple(
     "selectFiltro_Hecho",
     vgv_lstHechos,
-    "COD_HECHO",
-    "HECHO",
+    "code",
+    "name",
     "Todos los Hechos",
     null
   );
   buildSelectMultiple(
     "selectFiltro_Genero",
     vgv_lstSexo,
-    "",
-    "",
+    "code",
+    "name",
     "Todos los Generos",
     null
   );
   buildSelectMultiple(
     "selectFiltro_Etnia",
     vgv_lstEtnia,
-    "",
-    "",
+    "code",
+    "name",
     "Todas las Etnias",
     null
   );
   buildSelectMultiple(
     "selectFiltro_CicloVital",
     vgv_lstCicloVital,
-    "",
-    "",
+    "code",
+    "name",
     "Todos los Ciclos",
     null
   );
   buildSelectMultiple(
       "selectFiltro_Discapacidad",
       vgv_lstDiscapacidad,
-      "",
-      "",
+      "code",
+      "name",
       "Todas los Discapa",
       null
     ),
@@ -1671,6 +1683,38 @@ function loadFechaCorte() {
   });
 }
 
+function loadDomainsVGV() {
+  const table = new _FeatureLayer({
+    url: URL_RUV_DATOS
+  });
+  table.load().then(function () {
+    const fields = table.sourceJSON.fields;
+    fields.forEach(field => {
+      switch (field.name) {
+        case "RUV_NHECHO":
+          vgv_lstHechos = field.domain.codedValues;
+          break;
+        case "RUV_NSEXO":
+          vgv_lstSexo = field.domain.codedValues;
+          break;
+        case "RUV_NETNIA":
+          vgv_lstEtnia = field.domain.codedValues;
+          break;
+        case "RUV_NDISCAPACIDAD":
+          vgv_lstDiscapacidad = field.domain.codedValues;
+          break;
+        case "RUV_NCICLOVITAL":
+          vgv_lstCicloVital = field.domain.codedValues;
+          break;
+
+        default:
+          break;
+      }
+    });
+    loadSelectMultiple();
+  });
+}
+
 function loadDataVGV() {
   for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
     let numAnio = vgv_lstAnios[idxAnio].toString();
@@ -1786,6 +1830,24 @@ function loadGeoMpios() {
 
 // Buscar los datos en la base de datos
 
+function getSqlParameter(domFilter, nombreCampo) {
+  let parameterSelected = $("#" + domFilter + " option:selected");
+  let parameterOptions = $("#" + domFilter + " option");
+
+  if (parameterSelected.length < parameterOptions.length) {
+    let parametrosSeleccionados = parameterSelected.map(function (a, item) {
+      return parseInt(item.value);
+    });
+
+    let strSQL = nombreCampo + ' IN (';
+    strSQL += parametrosSeleccionados.toArray().toString();
+    strSQL += ") AND ";
+    return strSQL;
+  } else {
+    return '';
+  }
+}
+
 function aplicarParametrosVGV() {
   let filtroGeografico = $("#selectFiltro_Geografico").val();
 
@@ -1819,6 +1881,102 @@ function aplicarParametrosVGV() {
     },
   });
 
+
+  let tableRUV;
+  let idLayerRUV;
+  let titleRUV = $("#selectFiltro_Variable option:selected").text();
+  let Anio = $("#selectFiltro_Anio").val();
+
+  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VALOR FROM GIS2.RUV.RUV_DATOS ';
+  let strWhere = "WHERE RUV_CVIGENCIA = '" + Anio + "' AND ";
+  strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
+  strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
+  strWhere += getSqlParameter('selectFiltro_Etnia', 'RUV_NETNIA');
+  strWhere += getSqlParameter('selectFiltro_Discapacidad', 'RUV_NDISCAPACIDAD');
+  strWhere += getSqlParameter('selectFiltro_CicloVital', 'RUV_NCICLOVITAL');
+
+  if (filtroGeografico == "filtroDepartamento") {
+    strFrom = strSQL_Dptos + ' FROM GIS2.Publicacion.DEPARTAMENTOS G LEFT JOIN (SELECT DPTO_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_Departamento', 'DPTO_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
+
+    tableRUV = 'Departamento';
+    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
+    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+  } else if (filtroGeografico == "filtroMunicipal") {
+    strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
+
+    tableRUV = 'Municipio';
+    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
+    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+  } else if (filtroGeografico == "filtroDT") {
+    strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_DT', 'DT_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
+
+    tableRUV = 'DT';
+    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
+    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+  } else if (filtroGeografico == "filtroPDET") {
+    strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_PDET', 'PDET_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
+
+    tableRUV = 'PDET';
+    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
+    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+  }
+  
+  if (map.findLayerById(idLayerRUV)) {
+    map.remove(map.findLayerById(idLayerRUV));
+  }
+
+  const layerRUV = new _MapImageLayer({
+    url: URL_RUV,
+    title: titleRUV,
+    id: idLayerRUV,
+    visible: true,
+    sublayers: [{
+      title: titleRUV,
+      id: 0,
+      opacity: 0.8,
+      listMode: "hide",
+      source: {
+        type: "data-layer",
+        dataSource: {
+          type: "query-table",
+          workspaceId: "CONSULTA_RUV",
+          query: strFrom + strWhere,
+          geometryType: "polygon",
+          spatialReference: {
+            "wkid": 4326
+          },
+          oidFields: "objectid"
+        }
+      }
+    }]
+  });
+
+  const subLayerRUV = layerRUV.sublayers.find(function (sublayer) {
+    return sublayer.id === 0;
+  });
+
+  subLayerRUV.createFeatureLayer()
+    .then(function (eventosFeatureLayer) {
+      return eventosFeatureLayer.load();
+    })
+    .then(function (featureLayer) {
+      createRenderer(featureLayer, subLayerRUV)
+    });
+
+  map.add(layerRUV);
+
+  closeParametrosVGV();
+
+
+  /*
   vgv_group_Hechos = [];
 
   // Recupera los datos, si ya existen datos para el año no va al servidor
@@ -1826,13 +1984,80 @@ function aplicarParametrosVGV() {
   varAnio = varAnio != null ? varAnio : vgv_finAnio.toString();
   loadHechosVictimas(varAnio, true);
 
-  closeParametrosVGV();
 
   setTimeout(function () {
     displayHechosVictimas();
-  }, 500);
+  }, 500);*/
 }
 
+function createRenderer(featureLayer, subLayer) {
+  const schemes = _colorSchemes2.getSchemeByName({
+    name: 'Red 5',
+    geometryType: featureLayer.geometryType,
+    theme: "high-to-low"
+  });
+
+  const params = {
+    layer: featureLayer,
+    field: "VALOR",
+    view: view,
+    classificationMethod: "natural-breaks",
+    numClasses: 5,
+    colorScheme: schemes
+  };
+
+  _colorRendererCreator2
+    .createClassBreaksRenderer(params)
+    .then(function (rendererResponse) {
+      rendererResponse.renderer.defaultLabel = "Sin Datos";
+      rendererResponse.renderer.defaultSymbol.color.a = 0.7;
+      subLayer.renderer = rendererResponse.renderer;
+
+      const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+      map.reorder(tLayerLabels, map.layers.items.length);
+      tLayerLabels.visible = true;
+
+      if (loading.isOpen()) {
+        loading.close();
+      }
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+function limpiarParametrosVGV() {
+  let listSelect = [
+    "selectFiltro_Hecho",
+    "selectFiltro_Genero",
+    "selectFiltro_Etnia",
+    "selectFiltro_CicloVital",
+    "selectFiltro_Discapacidad",
+    "selectFiltro_Departamento",
+    "selectFiltro_Municipios",
+    "selectFiltro_DT",
+    "selectFiltro_PDET",
+  ];
+
+  for (let idxList = 0; idxList < listSelect.length; idxList++) {
+    $("#" + listSelect[idxList]).multiselect("selectAll", false);
+    $("#" + listSelect[idxList]).multiselect("updateButtonText");
+  }
+
+  $("#selectFiltro_Anio").prop("selectedIndex", 0);
+  $("#selectFiltro_Variable").prop("selectedIndex", 0);
+  $("#selectFiltro_Geografico").prop("selectedIndex", 0);
+  $("#selectFiltro_Geografico").trigger("change");
+}
+
+function closeParametrosVGV() {
+  $("#collapseFilterVGV").removeClass("in");
+  $("#panelFilterVGV_close").addClass("visible-mobile-only");
+  $("#panelFilterVGV_title").addClass("visible-mobile-only");
+}
+
+/*
 function loadHechosVictimas(varAnio, offLoading) {
   let datosCompressAnio = vgv_compress_Hechos.filter(function (item) {
     return item.Anio == varAnio;
@@ -2317,36 +2542,7 @@ function asignarValorGeografico(lstResultadosGroup, lstParametros) {
     reporteUso("consultaTematica", "Sin resultados", "error");
   }
 }
-
-function limpiarParametrosVGV() {
-  let listSelect = [
-    "selectFiltro_Hecho",
-    "selectFiltro_Genero",
-    "selectFiltro_Etnia",
-    "selectFiltro_CicloVital",
-    "selectFiltro_Discapacidad",
-    "selectFiltro_Departamento",
-    "selectFiltro_Municipios",
-    "selectFiltro_DT",
-    "selectFiltro_PDET",
-  ];
-
-  for (let idxList = 0; idxList < listSelect.length; idxList++) {
-    $("#" + listSelect[idxList]).multiselect("selectAll", false);
-    $("#" + listSelect[idxList]).multiselect("updateButtonText");
-  }
-
-  $("#selectFiltro_Anio").prop("selectedIndex", 0);
-  $("#selectFiltro_Variable").prop("selectedIndex", 0);
-  $("#selectFiltro_Geografico").prop("selectedIndex", 0);
-  $("#selectFiltro_Geografico").trigger("change");
-}
-
-function closeParametrosVGV() {
-  $("#collapseFilterVGV").removeClass("in");
-  $("#panelFilterVGV_close").addClass("visible-mobile-only");
-  $("#panelFilterVGV_title").addClass("visible-mobile-only");
-}
+*/
 
 // Tiempo
 
@@ -4098,7 +4294,49 @@ function showLayerId(i) {
     });
     map.add(tLayer);
     current_layers.push(tLayer.id);
+  } else if (config_layers[i].TIPO == "MapServer") {
+    let tLayer;
+    if (config_layers[i].SUBLAYER) {
+      tLayer = new _MapImageLayer({
+        url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",
+        sublayers: [{
+          id: config_layers[i].SUBLAYER,
+          visible: true
+        }],
+        title: config_layers[i].NOMBRE,
+        id: config_layers[i].ID_SERVICIO
+      });
+    } else {
+      tLayer = new _MapImageLayer({
+        url: config_layers[i].URL,
+        title: config_layers[i].NOMBRE,
+        id: config_layers[i].ID_SERVICIO,
+      });
+    }
+
+    tLayer.when(function () {
+      reportLoad(this.id);
+      $("#panelLoadLayers").removeClass("in");
+
+      // addOptionSwipe(tLayer);
+
+      let ext = tLayer.fullExtent;
+      let cloneExt = ext.clone();
+      view
+        .goTo({
+          target: tLayer.fullExtent,
+          extent: cloneExt.expand(1.25),
+        })
+        .then(function () {
+          if (!LegendExpand.expanded) {
+            LegendExpand.expand();
+          }
+        });
+    });
+    map.add(tLayer);
+    current_layers.push(tLayer.id);
   }
+
 }
 
 function showDetail(id) {

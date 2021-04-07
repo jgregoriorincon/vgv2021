@@ -76,7 +76,8 @@ var vgv_lstImpresion = [{
 
 // Servicios RUV
 var URL_RUV = URL_server + "/RUV/RUV/MapServer";
-var URL_RUV_FECHACORTE = URL_server + "/RUV/RUV/MapServer/3";
+var URL_RUV_DATOS = URL_RUV + "/3";
+var URL_RUV_FECHACORTE = URL_RUV + "/4";
 
 // Datos a procesar
 var URL_DT_Services = "./files/data/data_DTC.json";
@@ -107,102 +108,23 @@ var vgv_lstPDET = [];
 var vgv_lstAnios = [];
 
 // Listados base
-var vgv_lstHechos = [{
-    COD_HECHO: "1",
-    HECHO: "Acto terrorista / Atentados / Combates / Enfrentamientos / Hostigamientos",
-  },
-  {
-    COD_HECHO: "2",
-    HECHO: "Amenaza",
-  },
-  {
-    COD_HECHO: "3",
-    HECHO: "Delitos contra la libertad y la integridad sexual en desarrollo del conflicto armado",
-  },
-  {
-    COD_HECHO: "4",
-    HECHO: "Desaparición forzada",
-  },
-  {
-    COD_HECHO: "5",
-    HECHO: "Desplazamiento forzado",
-  },
-  {
-    COD_HECHO: "6",
-    HECHO: "Homicidio",
-  },
-  {
-    COD_HECHO: "7",
-    HECHO: "Minas Antipersonal, Munición sin Explotar y Artefacto Explosivo improvisado",
-  },
-  {
-    COD_HECHO: "8",
-    HECHO: "Secuestro",
-  },
-  {
-    COD_HECHO: "9",
-    HECHO: "Tortura",
-  },
-  {
-    COD_HECHO: "10",
-    HECHO: "Vinculación de Niños Niñas y Adolescentes a Actividades Relacionadas con grupos armados",
-  },
-  {
-    COD_HECHO: "11",
-    HECHO: "Abandono o Despojo Forzado de Tierras",
-  },
-  {
-    COD_HECHO: "12",
-    HECHO: "Perdida de Bienes Muebles o Inmuebles",
-  },
-  {
-    COD_HECHO: "13",
-    HECHO: "Lesiones Personales Físicas",
-  },
-  {
-    COD_HECHO: "14",
-    HECHO: "Lesiones Personales Psicológicas",
-  },
-  {
-    COD_HECHO: "15",
-    HECHO: "Confinamiento",
-  },
-  {
-    COD_HECHO: "20",
-    HECHO: "Sin información",
-  },
-];
-
 var vgv_lstEnfoque = ["SEXO", "DISCAPACIDAD", "ETNIA", "CICLO_VITAL"];
+var vgv_lstVariable = [{
+  nombre: "EVENTOS",
+  titulo: "Eventos"
+}, {
+  nombre: "DECLARACION",
+  titulo: "Víctimas Declaración"
+}, {
+  nombre: "OCURRENCIA",
+  titulo: "Víctimas Ocurrencia"
+}];
 
-var vgv_lstVariable = [
-  "Eventos",
-  "Víctimas Declaración",
-  "Víctimas Ocurrencia",
-];
-
-var vgv_lstSexo = ["Hombre", "Mujer", "Intersexual", "LGBTI", "No Informa"];
-
-var vgv_lstEtnia = [
-  "Ninguna",
-  "Gitano(a) ROM",
-  "Indigena",
-  "Negro(a) o Afrocolombiano(a)",
-  "Palenquero",
-  "Raizal del Archipielago de San Andres y Providencia",
-];
-
-var vgv_lstDiscapacidad = ["SI", "NO"];
-
-var vgv_lstCicloVital = [
-  "entre 0 y 5",
-  "entre 6 y 11",
-  "entre 12 y 17",
-  "entre 18 y 28",
-  "entre 29 y 60",
-  "entre 61 y 100",
-  "ND",
-];
+var vgv_lstHechos;
+var vgv_lstSexo;
+var vgv_lstEtnia;
+var vgv_lstDiscapacidad;
+var vgv_lstCicloVital;
 
 // Años a procesar
 var vgv_inicioAnio = 1985;
@@ -216,6 +138,7 @@ var numberSearchPattern = /-?\d+[\.]?\d*/;
 var tableFilterData;
 
 // Tabla Municipios
+var strSQL_Mpios = 'SELECT G.OBJECTID,G.DPTO_CCDGO,G.DPTO_CNMBR,G.DT_CCDGO,G.DT_CNMBR,G.PDET_CCDGO,G.PDET_CNMBR,G.MPIO_CCDGO,G.MPIO_CNMBR, D.VALOR, G.SHAPE ';
 var tableDef_Mpios = [{
     field: "DPTO_CCDGO",
     title: "Código DANE",
@@ -303,6 +226,7 @@ var tableDef_Mpios = [{
 ];
 
 // Tabla Departamentos
+var strSQL_Dptos = 'SELECT G.OBJECTID,G.DPTO_CCDGO,G.DPTO_NCDGO,G.DPTO_CNMBR, D.VALOR, G.SHAPE ';
 var tableDef_Dptos = [{
     field: "OBJECTID",
     visible: false,
@@ -332,6 +256,7 @@ var tableDef_Dptos = [{
 ];
 
 // Tabla DT
+var strSQL_DT = 'SELECT G.OBJECTID,G.DT_CCDGO,G.DT_NCDGO,G.DT_CNMBR, D.VALOR, G.SHAPE ';
 var tableDef_DT = [{
     field: "OBJECTID",
     visible: false,
@@ -361,6 +286,7 @@ var tableDef_DT = [{
 ];
 
 // Tabla PDET
+var strSQL_PDET = 'SELECT G.OBJECTID,G.PDET_CCDGO,G.PDET_NCDGO,G.PDET_CNMBR, D.VALOR, G.SHAPE ';
 var tableDef_PDET = [{
     field: "OBJECTID",
     visible: false,

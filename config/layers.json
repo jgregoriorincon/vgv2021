@@ -1,6 +1,5 @@
 {
-  "servicios": [
-    {
+  "servicios": [{
       "ID_CATEGORIA": "0",
       "CATEGORIA": "Base",
       "ID_SERVICIO": "001",
@@ -68,7 +67,7 @@
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
       "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Divipola/UARIV/MapServer/1"
-    },    
+    },
     {
       "ID_CATEGORIA": "2",
       "CATEGORIA": "Unidad para las Víctimas",
@@ -82,7 +81,7 @@
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
       "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Divipola/UARIV/MapServer/0"
-    },  
+    },
     {
       "ID_CATEGORIA": "2",
       "CATEGORIA": "Unidad para las Víctimas",
@@ -95,7 +94,7 @@
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/visor2/parametros/MapServer/14"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/sujetos/Colectivos/MapServer/0"
     },
     {
       "ID_CATEGORIA": "3",
@@ -105,11 +104,11 @@
       "NOMBRE": "IRV 2010",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2010",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/0"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/0"
     },
     {
       "ID_CATEGORIA": "3",
@@ -119,11 +118,11 @@
       "NOMBRE": "IRV 2011",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2011",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/1"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/1"
     },
     {
       "ID_CATEGORIA": "3",
@@ -133,11 +132,11 @@
       "NOMBRE": "IRV 2012",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2012",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/2"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/2"
     },
     {
       "ID_CATEGORIA": "3",
@@ -147,11 +146,11 @@
       "NOMBRE": "IRV 2013",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2013",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/3"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/3"
     },
     {
       "ID_CATEGORIA": "3",
@@ -161,11 +160,11 @@
       "NOMBRE": "IRV 2014",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2014",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/4"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/4"
     },
     {
       "ID_CATEGORIA": "3",
@@ -175,11 +174,11 @@
       "NOMBRE": "IRV 2015",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2015",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/5"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/5"
     },
     {
       "ID_CATEGORIA": "3",
@@ -189,11 +188,11 @@
       "NOMBRE": "IRV 2016",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2016",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-06-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/6"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/6"
     },
     {
       "ID_CATEGORIA": "3",
@@ -203,11 +202,11 @@
       "NOMBRE": "IRV 2017",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2017",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-06-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/7"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/7"
     },
     {
       "ID_CATEGORIA": "3",
@@ -217,11 +216,11 @@
       "NOMBRE": "IRV 2018",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2018",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/8"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/8"
     },
     {
       "ID_CATEGORIA": "3",
@@ -231,11 +230,25 @@
       "NOMBRE": "IRV 2019",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2019",
-      "FECHA": "2020-08-31",
+      "FECHA": "2020-12-01",
       "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": true,
-      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Pruebas/IRV/MapServer/9"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/9"
+    },
+    {
+      "ID_CATEGORIA": "3",
+      "CATEGORIA": "IRV",
+      "ID_SERVICIO": "311",
+      "TIPO": "FeatureLayer",
+      "NOMBRE": "IRV 2020",
+      "MODE": "MODE_ONDEMAND",
+      "KEYWORDS": "Colombia, Unidad para las Víctimas, IRV, 2020",
+      "FECHA": "2020-12-01",
+      "ENTIDAD": "La Unidad para la Atención y Reparación Integral a las Víctimas - UARIV",
+      "ES_SERVICIO_PUBLICO": true,
+      "ES_SERVICIO_COMPARAR": true,
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/IRV/IRV/MapServer/10"
     },
     {
       "ID_CATEGORIA": "4",
@@ -246,11 +259,11 @@
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Capas Externas, Resguardo Indígena",
       "RESUMEN": "Se entienden los Resguardos Indígenas como una institución legal sociopolítica de origen colonial, conformada por un territorio reconocido de una comunidad de ascendencia amerindia, con título de propiedad inalienable, colectiva o comunitaria, regido por un estatuto especial autónomo, con pautas y tradiciones culturales propias.",
-      "FECHA": "2017-06-01",
+      "FECHA": "2021-03-01",
       "ENTIDAD": "Agencia Nacional de Tierras - ANT",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://services6.arcgis.com/CagbVUK5R9TktP2I/ArcGIS/rest/services/ResguardosIndigenas/FeatureServer/0",
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Externas/ANT/MapServer/1",
       "URL2": "https://data-agenciadetierras.opendata.arcgis.com/datasets/resguardos-ind%C3%ADgenas"
     },
     {
@@ -258,15 +271,15 @@
       "CATEGORIA": "Capas Externas",
       "ID_SERVICIO": "402",
       "TIPO": "FeatureLayer",
-      "NOMBRE": "Consejos Comunitarios Negros",
+      "NOMBRE": "Consejos Comunitarios",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Capas Externas, Consejos Comunitarios Negros",
       "RESUMEN": "Se entienden los Consejos Comunitarios Negros como el conjunto de familias de ascendencia afrocolombiana que poseen una cultura propia, comparten una historia y tienen sus propias tradiciones y costumbres dentro de la relación compo-poblado, que revelan y conservan la conciencia de identidad que las distinguen de otros grupos étnicos.",
-      "FECHA": "2020-04-13",
+      "FECHA": "2021-03-01",
       "ENTIDAD": "Agencia Nacional de Tierras - ANT",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://geoportal.agenciadetierras.gov.co/sit_sig/rest/services/SIT_SIG_ANT/ASUNTO_ETNICO/MapServer/4",
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Externas/ANT/MapServer/0",
       "URL2": "https://data-agenciadetierras.opendata.arcgis.com/datasets/consejos-comunitarios-negros"
     },
     {
@@ -278,11 +291,11 @@
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Capas Externas, Zonas de Reserva Campesina",
       "RESUMEN": "Se entienden a las Zonas de Reserva Campesina como un movimiento socio-territorial, las cuales tienen en cuenta una apropiación material y simbólica del espacio geográfico, que pueden o no, coincidir con las formas estatales actuales.",
-      "FECHA": "2019-03-14",
+      "FECHA": "2021-03-01",
       "ENTIDAD": "Agencia Nacional de Tierras - ANT",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://geoportal.agenciadetierras.gov.co/servidor/rest/services/SIT_SIG_ANT/ZONA_RESERVAS_CAMPESINAS/FeatureServer/0",
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Externas/ANT/MapServer/2",
       "URL2": "https://data-agenciadetierras.opendata.arcgis.com/datasets/zonas-de-reserva-campesina"
     },
     {
@@ -294,26 +307,27 @@
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Capas Externas, Parques Nacionales Naturales",
       "RESUMEN": "Esta es la capa con todas las áreas protegidas registradas en el registro único de áreas protegidas",
-      "FECHA": "2019-06-01",
+      "FECHA": "2021-03-01",
       "ENTIDAD": "Parques Nacionales Naturales",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://mapas.parquesnacionales.gov.co/arcgis/rest/services/pnn/runap/FeatureServer/0"
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Externas/PNN/MapServer/0"
     },
     {
       "ID_CATEGORIA": "4",
       "CATEGORIA": "Capas Externas",
       "ID_SERVICIO": "405",
       "TIPO": "FeatureLayer",
+      "SUBLAYER": 0,
       "NOMBRE": "Reserva Forestal Ley 2da 1959",
       "MODE": "MODE_ONDEMAND",
       "KEYWORDS": "Colombia, Capas Externas, Reserva Forestal",
-      "FECHA": "2017-06-01",
+      "FECHA": "2021-03-01",
       "ENTIDAD": "Ministerio de Ambiente y Desarrollo Sostenible",
       "ES_SERVICIO_PUBLICO": true,
       "ES_SERVICIO_COMPARAR": false,
-      "URL": "https://geoservicios.upra.gov.co/arcgis/rest/services/restricciones_condicionantes/restricciones_condicionantes/MapServer/5"
-    }, 
+      "URL": "https://vgv.unidadvictimas.gov.co/server/rest/services/Externas/MinAmbiente/MapServer"
+    },
     {
       "ID_CATEGORIA": 7,
       "CATEGORIA": "Ley 1448",
