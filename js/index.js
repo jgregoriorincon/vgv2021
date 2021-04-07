@@ -643,19 +643,23 @@ function addWidgets() {
   // MapasBase
   const localBaseMapSource = new _LocalBasemapsSource({
     basemaps: [
-      _Basemap.fromId("streets-navigation-vector"),
-      _Basemap.fromId("streets-vector"),
-      _Basemap.fromId("oceans"),
+      _Basemap.fromId("arcgis-navigation"),
+      _Basemap.fromId("arcgis-streets"),
+      _Basemap.fromId("arcgis-oceans"),
+      _Basemap.fromId("arcgis-light-gray"),
+      _Basemap.fromId("arcgis-topographic"),
+      // _Basemap.fromId("arcgis-terrain"),
+      // _Basemap.fromId("arcgis-community"),
+      _Basemap.fromId("arcgis-imagery"),
       _Basemap.fromId("osm"),
-      _Basemap.fromId("hybrid"),
-      _Basemap.fromId("topo-vector"),
-      _Basemap.fromId("gray-vector"),
-      _Basemap.fromId("dark-gray-vector"),
-      _Basemap.fromId("streets-night-vector"),
+      // _Basemap.fromId("arcgis-nova"),
+      _Basemap.fromId("arcgis-dark-gray"),
+      _Basemap.fromId("arcgis-streets-night"),
+      // _Basemap.fromId("arcgis-navigation-night"),
     ],
   });
 
-  const basemapDefault = _Basemap.fromId("streets-navigation-vector");
+  const basemapDefault = _Basemap.fromId("arcgis-navigation");
   const basemapGallery = new _BasemapGallery({
     container: document.createElement("div"),
     view: view,
@@ -674,16 +678,16 @@ function addWidgets() {
   var handle = basemapGallery.watch("activeBasemap", function (basemap) {
     current_reportes = arrayRemove(current_reportes, "mapa base");
     reporteUso("mapa base", basemap.title, "load");
-    generateColors();
-    for (let index = 0; index < map.layers.items.length; index++) {
-      const tLayer = map.layers.items[index];
-      if (
-        tLayer.id.startsWith("Results_Base_") ||
-        tLayer.id.startsWith("Time_")
-      ) {
-        generateSimbology(tLayer);
-      }
-    }
+    // generateColors();
+    // for (let index = 0; index < map.layers.items.length; index++) {
+    //   const tLayer = map.layers.items[index];
+    //   if (
+    //     tLayer.id.startsWith("Results_Base_") ||
+    //     tLayer.id.startsWith("Time_")
+    //   ) {
+    //     generateSimbology(tLayer);
+    //   }
+    // }
   });
 
   // Dibujar
