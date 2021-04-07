@@ -1690,7 +1690,7 @@ function loadFechaCorte() {
 
   queryTask.execute(query).then(function (results) {
     let infoVGV = results.features[0].attributes
-    FechaCorte = infoVGV.FECHA_CORTE_STR;
+    FechaCorte = infoVGV.RUV_CFECHA;
     $("#FechaCorteVGV").html("FECHA DE CORTE: " + infoVGV.RUV_CFECHA);
     $("#CountPersonasVGV").html(
       "VÍCTIMAS CONFLICTO ARMADO: " + formatNumber(infoVGV.RUV_NPERSONAS)
