@@ -138,7 +138,7 @@ var numberSearchPattern = /-?\d+[\.]?\d*/;
 var tableFilterData;
 
 // Tabla Municipios
-var strSQL_Mpios = 'SELECT G.OBJECTID,G.DPTO_CCDGO,G.DPTO_CNMBR,G.DT_CCDGO,G.DT_CNMBR,G.PDET_CCDGO,G.PDET_CNMBR,G.MPIO_CCDGO,G.MPIO_CNMBR, D.VALOR, G.SHAPE ';
+var strSQL_Mpios = 'SELECT G.OBJECTID,G.MPIO_CCDGO AS RUV_CCDGO,CONCAT(G.MPIO_CNMBR, \', \', G.DPTO_CNMBR) AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
 var tableDef_Mpios = [{
     field: "DPTO_CCDGO",
     title: "Código DANE",
@@ -226,7 +226,7 @@ var tableDef_Mpios = [{
 ];
 
 // Tabla Departamentos
-var strSQL_Dptos = 'SELECT G.OBJECTID,G.DPTO_CCDGO,G.DPTO_NCDGO,G.DPTO_CNMBR, D.VALOR, G.SHAPE ';
+var strSQL_Dptos = 'SELECT G.OBJECTID,G.DPTO_CCDGO AS RUV_CCDGO,G.DPTO_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
 var tableDef_Dptos = [{
     field: "OBJECTID",
     visible: false,
@@ -256,7 +256,7 @@ var tableDef_Dptos = [{
 ];
 
 // Tabla DT
-var strSQL_DT = 'SELECT G.OBJECTID,G.DT_CCDGO,G.DT_NCDGO,G.DT_CNMBR, D.VALOR, G.SHAPE ';
+var strSQL_DT = 'SELECT G.OBJECTID,G.DT_CCDGO AS RUV_CCDGO,G.DT_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
 var tableDef_DT = [{
     field: "OBJECTID",
     visible: false,
@@ -286,7 +286,7 @@ var tableDef_DT = [{
 ];
 
 // Tabla PDET
-var strSQL_PDET = 'SELECT G.OBJECTID,G.PDET_CCDGO,G.PDET_NCDGO,G.PDET_CNMBR, D.VALOR, G.SHAPE ';
+var strSQL_PDET = 'SELECT G.OBJECTID,G.PDET_CCDGO AS RUV_CCDGO,G.PDET_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
 var tableDef_PDET = [{
     field: "OBJECTID",
     visible: false,

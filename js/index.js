@@ -1140,7 +1140,28 @@ function addWidgets() {
       index: 0,
     },
   ]);
+
+  // Manejo de popups
   view.popup.defaultPopupTemplateEnabled = true;
+  view.popup.watch('selectedFeature', function (gra) {
+    if (gra) {
+      view.graphics.removeAll();
+      var h = view.highlightOptions;
+
+      gra.symbol = {
+        type: "simple-fill", // autocasts as new SimpleFillSymbol()
+        color: [h.color.r, h.color.g, h.color.b, 0.1],
+        outline: {
+          // autocasts as new SimpleLineSymbol()
+          color: [h.color.r, h.color.g, h.color.b, h.color.a],
+          width: 1
+        }
+      };
+      view.graphics.add(gra);
+    } else {
+      view.graphics.removeAll();
+    }
+  });
 
   // Contraer los widgets
   expandWidgets = [LegendExpand, sketchExpand, baseMapExpand];
@@ -1881,13 +1902,12 @@ function aplicarParametrosVGV() {
     },
   });
 
-
   let tableRUV;
-  let idLayerRUV;
-  let titleRUV = $("#selectFiltro_Variable option:selected").text();
+  let popupContent;
+  let variableRUV = $("#selectFiltro_Variable option:selected").text();
   let Anio = $("#selectFiltro_Anio").val();
 
-  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VALOR FROM GIS2.RUV.RUV_DATOS ';
+  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS RUV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
   let strWhere = "WHERE RUV_CVIGENCIA = '" + Anio + "' AND ";
   strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
   strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
@@ -1901,34 +1921,37 @@ function aplicarParametrosVGV() {
     strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
 
     tableRUV = 'Departamento';
-    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
-    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{RUV_CNMBR}</b>.`;
+
   } else if (filtroGeografico == "filtroMunicipal") {
     strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
     strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
     strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
 
     tableRUV = 'Municipio';
-    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
-    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{RUV_CNMBR}</b>.`;
+
   } else if (filtroGeografico == "filtroDT") {
     strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
     strWhere += getSqlParameter('selectFiltro_DT', 'DT_NCDGO');
     strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
 
     tableRUV = 'DT';
-    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
-    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el <b>{RUV_CNMBR}</b>.`;
+
   } else if (filtroGeografico == "filtroPDET") {
     strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
     strWhere += getSqlParameter('selectFiltro_PDET', 'PDET_NCDGO');
     strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
 
     tableRUV = 'PDET';
-    titleRUV += ' por ' + tableRUV + ' para el año ' + Anio;
-    idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el <b>{RUV_CNMBR}</b>.`;
+
   }
-  
+
+  let titleRUV = variableRUV + ' por ' + tableRUV + ' para el año ' + Anio;
+  let idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
+
   if (map.findLayerById(idLayerRUV)) {
     map.remove(map.findLayerById(idLayerRUV));
   }
@@ -1968,29 +1991,28 @@ function aplicarParametrosVGV() {
       return eventosFeatureLayer.load();
     })
     .then(function (featureLayer) {
-      createRenderer(featureLayer, subLayerRUV)
+      createRenderer(featureLayer, subLayerRUV, layerRUV)
     });
 
-  map.add(layerRUV);
+  subLayerRUV.popupTemplate = {
+    title: "<b>" + titleRUV + "</b>",
+    content: popupContent,
+    fieldInfos: [{
+      fieldName: "RUV_NVALOR",
+      format: {
+        digitSeparator: true,
+        places: 0
+      }
+    }, {
+      fieldName: "RUV_CNMBR",
+    }]
+  };  
 
   closeParametrosVGV();
 
-
-  /*
-  vgv_group_Hechos = [];
-
-  // Recupera los datos, si ya existen datos para el año no va al servidor
-  let varAnio = $("#selectFiltro_Anio").val();
-  varAnio = varAnio != null ? varAnio : vgv_finAnio.toString();
-  loadHechosVictimas(varAnio, true);
-
-
-  setTimeout(function () {
-    displayHechosVictimas();
-  }, 500);*/
 }
 
-function createRenderer(featureLayer, subLayer) {
+function createRenderer(featureLayer, subLayer, layerRUV) {
   const schemes = _colorSchemes2.getSchemeByName({
     name: 'Red 5',
     geometryType: featureLayer.geometryType,
@@ -1999,7 +2021,7 @@ function createRenderer(featureLayer, subLayer) {
 
   const params = {
     layer: featureLayer,
-    field: "VALOR",
+    field: "RUV_NVALOR",
     view: view,
     classificationMethod: "natural-breaks",
     numClasses: 5,
@@ -2012,6 +2034,8 @@ function createRenderer(featureLayer, subLayer) {
       rendererResponse.renderer.defaultLabel = "Sin Datos";
       rendererResponse.renderer.defaultSymbol.color.a = 0.7;
       subLayer.renderer = rendererResponse.renderer;
+
+      map.add(layerRUV);
 
       const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
       map.reorder(tLayerLabels, map.layers.items.length);
