@@ -643,23 +643,28 @@ function addWidgets() {
   // MapasBase
   const localBaseMapSource = new _LocalBasemapsSource({
     basemaps: [
+      _Basemap.fromId("streets-navigation-vector"),
+      _Basemap.fromId("streets-vector"),
+      _Basemap.fromId("oceans"),
+      _Basemap.fromId("osm"),
+      _Basemap.fromId("hybrid"),
+      _Basemap.fromId("topo-vector"),
+      _Basemap.fromId("gray-vector"),
+      _Basemap.fromId("dark-gray-vector"),
+      _Basemap.fromId("streets-night-vector"),
+      //Nuevos
       _Basemap.fromId("arcgis-navigation"),
       _Basemap.fromId("arcgis-streets"),
       _Basemap.fromId("arcgis-oceans"),
       _Basemap.fromId("arcgis-light-gray"),
       _Basemap.fromId("arcgis-topographic"),
-      // _Basemap.fromId("arcgis-terrain"),
-      // _Basemap.fromId("arcgis-community"),
       _Basemap.fromId("arcgis-imagery"),
-      _Basemap.fromId("osm"),
-      // _Basemap.fromId("arcgis-nova"),
       _Basemap.fromId("arcgis-dark-gray"),
-      _Basemap.fromId("arcgis-streets-night"),
-      // _Basemap.fromId("arcgis-navigation-night"),
+      _Basemap.fromId("arcgis-streets-night")
     ],
   });
 
-  const basemapDefault = _Basemap.fromId("arcgis-navigation");
+  const basemapDefault = _Basemap.fromId("streets-navigation-vector");
   const basemapGallery = new _BasemapGallery({
     container: document.createElement("div"),
     view: view,
