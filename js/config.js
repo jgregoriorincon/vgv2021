@@ -138,101 +138,43 @@ var numberSearchPattern = /-?\d+[\.]?\d*/;
 var tableFilterData;
 
 // Tabla Municipios
-var strSQL_Mpios = 'SELECT G.OBJECTID,G.MPIO_CCDGO AS RUV_CCDGO,CONCAT(G.MPIO_CNMBR, \', \', G.DPTO_CNMBR) AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
+var strSQL_Mpios = 'SELECT G.OBJECTID,G.MPIO_CCDGO AS VGV_CCDGO,CONCAT(G.MPIO_CNMBR, \', \', G.DPTO_CNMBR) AS VGV_CNMBR, D.VGV_NVALOR, G.SHAPE ';
 var tableDef_Mpios = [{
-    field: "DPTO_CCDGO",
+    field: "OBJECTID",
+    visible: false
+  },
+  {
+    field: "VGV_CCDGO",
     title: "Código DANE",
     sorter: "string",
     visible: true,
     headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Código DANE",
-    width: 150,
+    headerFilterPlaceholder: "Buscar Código DANE"
   },
   {
-    field: "DPTO_CNMBR",
-    title: "Departamento",
+    field: "VGV_CNMBR",
+    title: "Municipio, Departamento",
     sorter: "string",
     visible: true,
     headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Departamento",
-    width: 250,
-  },
-  {
-    field: "DT_CCDGO",
-    title: "Código Dirección Territorial",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Código DT",
-    width: 150,
-  },
-  {
-    field: "DT_CNMBR",
-    title: "Dirección Territorial",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Dirección Territorial",
-    width: 250,
-  },
-  {
-    field: "PDET_CCDGO",
-    title: "Código PDET",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Código PDET",
-    width: 150,
-  },
-  {
-    field: "PDET_CNMBR",
-    title: "PDET",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar PDET",
-    width: 300,
-  },
-  {
-    field: "MPIO_CCDGO",
-    title: "Código DANE",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Código DANE",
-    width: 150,
-  },
-  {
-    field: "MPIO_CNMBR",
-    title: "Municipio",
-    sorter: "string",
-    visible: true,
-    headerFilter: "input",
-    headerFilterPlaceholder: "Buscar Municipio",
-    width: 250,
+    headerFilterPlaceholder: "Buscar Municipio"
   },
   {
     field: "VGV_NVALOR",
     title: "VGV_NVALOR",
     sorter: "number",
-    visible: true,
-    width: 150,
-  },
-  {
-    field: "OBJECTID",
-    visible: true,
-    width: 50,
-  },
+    visible: true
+  }
 ];
 
 // Tabla Departamentos
-var strSQL_Dptos = 'SELECT G.OBJECTID,G.DPTO_CCDGO AS RUV_CCDGO,G.DPTO_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
+var strSQL_Dptos = 'SELECT G.OBJECTID,G.DPTO_CCDGO AS VGV_CCDGO,G.DPTO_CNMBR AS VGV_CNMBR, D.VGV_NVALOR, G.SHAPE ';
 var tableDef_Dptos = [{
     field: "OBJECTID",
     visible: false,
   },
   {
-    field: "DPTO_CCDGO",
+    field: "VGV_CCDGO",
     title: "Código DANE",
     sorter: "string",
     visible: true,
@@ -240,7 +182,7 @@ var tableDef_Dptos = [{
     headerFilterPlaceholder: "Buscar Código DANE",
   },
   {
-    field: "DPTO_CNMBR",
+    field: "VGV_CNMBR",
     title: "Departamento",
     sorter: "string",
     visible: true,
@@ -256,13 +198,13 @@ var tableDef_Dptos = [{
 ];
 
 // Tabla DT
-var strSQL_DT = 'SELECT G.OBJECTID,G.DT_CCDGO AS RUV_CCDGO,G.DT_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
+var strSQL_DT = 'SELECT G.OBJECTID,G.DT_CCDGO AS VGV_CCDGO,G.DT_CNMBR AS VGV_CNMBR, D.VGV_NVALOR, G.SHAPE ';
 var tableDef_DT = [{
     field: "OBJECTID",
     visible: false,
   },
   {
-    field: "DT_CCDGO",
+    field: "VGV_CCDGO",
     title: "Código Dirección Territorial",
     sorter: "string",
     visible: true,
@@ -270,7 +212,7 @@ var tableDef_DT = [{
     headerFilterPlaceholder: "Buscar Código DT",
   },
   {
-    field: "DT_CNMBR",
+    field: "VGV_CNMBR",
     title: "Dirección Territorial",
     sorter: "string",
     visible: true,
@@ -286,13 +228,13 @@ var tableDef_DT = [{
 ];
 
 // Tabla PDET
-var strSQL_PDET = 'SELECT G.OBJECTID,G.PDET_CCDGO AS RUV_CCDGO,G.PDET_CNMBR AS RUV_CNMBR, D.RUV_NVALOR, G.SHAPE ';
+var strSQL_PDET = 'SELECT G.OBJECTID,G.PDET_CCDGO AS VGV_CCDGO,G.PDET_CNMBR AS VGV_CNMBR, D.VGV_NVALOR, G.SHAPE ';
 var tableDef_PDET = [{
     field: "OBJECTID",
     visible: false,
   },
   {
-    field: "PDET_CCDGO",
+    field: "VGV_CCDGO",
     title: "Código PDET",
     sorter: "string",
     visible: true,
@@ -300,7 +242,7 @@ var tableDef_PDET = [{
     headerFilterPlaceholder: "Buscar Código PDET",
   },
   {
-    field: "PDET_CNMBR",
+    field: "VGV_CNMBR",
     title: "PDET",
     sorter: "string",
     visible: true,

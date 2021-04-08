@@ -262,8 +262,10 @@ function initMap() {
     __GeoJSONLayer,
     __GraphicsLayer,
     __MapImageLayer,
+
     __QueryTask,
     __Query,
+
     __Color,
     __colorRendererCreator,
     __histogram,
@@ -1238,7 +1240,11 @@ function addWidgets() {
         },
       });
 
-      generateTable(tLayer);
+      if (tLayer.type == 'feature') {
+        generateTableFeature(tLayer);
+      } else if (tLayer.type == 'map-image') {
+        generateTableMapServer(tLayer);
+      }
     } else if (id === "tabla-layer-default") {
       collapseExpand(null);
 
@@ -1916,7 +1922,7 @@ function aplicarParametrosVGV() {
   let variableRUV = $("#selectFiltro_Variable option:selected").text();
   let Anio = $("#selectFiltro_Anio").val();
 
-  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS RUV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
+  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VGV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
   let strWhere = "WHERE RUV_CVIGENCIA = '" + Anio + "' AND ";
   strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
   strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
@@ -1929,16 +1935,16 @@ function aplicarParametrosVGV() {
     strWhere += getSqlParameter('selectFiltro_Departamento', 'DPTO_NCDGO');
     strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
 
-    tableRUV = 'Departamento';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{RUV_CNMBR}</b>.`;
+    tableRUV = 'Departamentos';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
 
   } else if (filtroGeografico == "filtroMunicipal") {
     strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
     strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
     strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
 
-    tableRUV = 'Municipio';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{RUV_CNMBR}</b>.`;
+    tableRUV = 'Municipios';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
 
   } else if (filtroGeografico == "filtroDT") {
     strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
@@ -1946,7 +1952,7 @@ function aplicarParametrosVGV() {
     strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
 
     tableRUV = 'DT';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el <b>{RUV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
 
   } else if (filtroGeografico == "filtroPDET") {
     strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
@@ -1954,7 +1960,7 @@ function aplicarParametrosVGV() {
     strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
 
     tableRUV = 'PDET';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{RUV_NVALOR} ${variableRUV}</b> en el <b>{RUV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
 
   }
 
@@ -1973,6 +1979,9 @@ function aplicarParametrosVGV() {
     sublayers: [{
       title: titleRUV,
       id: 0,
+      idRUV: idLayerRUV,
+      layerOrigen: tableRUV,
+      variableOrigen: variableRUV,
       opacity: 0.8,
       listMode: "hide",
       source: {
@@ -2007,15 +2016,15 @@ function aplicarParametrosVGV() {
     title: "<b>" + titleRUV + "</b>",
     content: popupContent,
     fieldInfos: [{
-      fieldName: "RUV_NVALOR",
+      fieldName: "VGV_NVALOR",
       format: {
         digitSeparator: true,
         places: 0
       }
     }, {
-      fieldName: "RUV_CNMBR",
+      fieldName: "VGV_CNMBR",
     }]
-  };  
+  };
 
   closeParametrosVGV();
 
@@ -2030,7 +2039,7 @@ function createRenderer(featureLayer, subLayer, layerRUV) {
 
   const params = {
     layer: featureLayer,
-    field: "RUV_NVALOR",
+    field: "VGV_NVALOR",
     view: view,
     classificationMethod: "natural-breaks",
     numClasses: 5,
@@ -3323,12 +3332,28 @@ function maxTabla() {
   $("#panelTableP").toggleClass("panelTablePSM");
 }
 
-function generateTable(tLayer) {
-  tLayer.queryFeatures().then(function (response) {
+function generateTableMapServer(tLayer) {
+  if (tLayer.id.startsWith('Results_')) {
+    const subLayer = tLayer.sublayers.find(function (sublayer) {
+      return sublayer.id === 0;
+    });
+
+    generateTableFeature(subLayer)
+  }
+}
+
+function generateTableFeature(tLayer) {
+
+  const query = new _Query();
+  query.where = "1=1";
+  query.returnGeometry = false;
+  query.outFields = ["*"];
+
+  tLayer.queryFeatures(query).then(function (response) {
     current_reportes = arrayRemove(current_reportes, "table");
     reporteUso("table", tLayer.id, "load");
 
-    let idLayer = tLayer.id;
+    let idLayer = tLayer.id == 0 ? tLayer.idRUV : tLayer.id;
     let tipoResultados = tLayer.layerOrigen;
     let tituloResultados = tLayer.variableOrigen;
 
@@ -3529,13 +3554,23 @@ function generateTableDefault(tLayer) {
 }
 
 function selectTableFeatures(idLayer, OBJECTID) {
-  var tLayer = map.findLayerById(idLayer);
+  let tLayer = map.findLayerById(idLayer);
   if (tLayer) {
     let query = {
       where: "OBJECTID = " + OBJECTID,
       outFields: ["*"],
       returnGeometry: true,
     };
+
+    if (tLayer.type == 'map-image' && tLayer.id.startsWith('Results_')) {
+      tLayer = tLayer.sublayers.find(function (sublayer) {
+        return sublayer.id === 0;
+      });
+    } else if (tLayer.type == 'feature') {
+      //
+    } else {
+      return;
+    }
 
     tLayer.queryFeatures(query).then(function (graphics) {
       let result = graphics.features[0];
@@ -4712,7 +4747,7 @@ function imprimirMapa() {
       }],
     },
     outScale: scaleImpresion,
-    preserveScale: true,
+    scalePreserved: true,
   });
 
   var params = new _PrintParameters({
