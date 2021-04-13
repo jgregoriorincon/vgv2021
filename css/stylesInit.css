@@ -276,7 +276,7 @@ label.checkbox {
   background-color: var(--color-VGV);
 }
 
-#class-select,
+/* #class-select, */
 #theme-select,
 #num-classes,
 #speed-time {

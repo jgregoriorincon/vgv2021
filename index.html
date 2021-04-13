@@ -429,21 +429,23 @@
         </div>
       </div>
       <div id="collapseFilterVGV" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFilterVGV">
-        <div class="panel-body panel-500w panel-500h">
+        <div class="panel-body panel-500w">
 
           <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#filterVGV" aria-controls="filterVGV" role="tab"
-                data-toggle="tab">Consulta</a></li>
+            <li role="presentation" class="active"><a href="#paramsVGV" aria-controls="paramsVGV" role="tab"
+                data-toggle="tab">Parámetros</a></li>
+            <li role="presentation"><a href="#filterVGV" aria-controls="filterVGV" role="tab"
+                data-toggle="tab">Filtro</a></li>
             <li role="presentation"><a href="#timeVGV" aria-controls="timeVGV" role="tab" data-toggle="tab">Deslizador
                 del Tiempo</a></li>
           </ul>
           <div class="tab-content">
-            <!-- Tab -Load -->
-            <div role="tabpanel" class="tab-pane active" id="filterVGV">
+            <!-- Tab-Params -->
+            <div role="tabpanel" class="tab-pane active" id="paramsVGV">
               <div class="calcite-form-title">
-                <b>Permite filtrar los datos del Modelo Integrado de Víctimas de acuerdo a parametros Espaciales, Hecho
-                  victimizante, Genero, Pertenencia étnica, Ciclo vital, Discapacidad, Año de interes y el tipo de
-                  variable a visualizar</b></div>
+                <b style="text-align: justify;">Permite seleccionar los parámetros espaciales, género, hecho
+                  victimizante, pertenencia étnica, ciclo vital, discapacidad, año de interés y el tipo de variable a
+                  visualizar.</b></div>
               <div class="form-horizontal calcite-form-padding no-padding-top">
                 <div class="form-group">
                   <label for="selectFiltro_Geografico" class="col-xs-4 control-label no-padding-top">Filtro
@@ -550,23 +552,68 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                    <div class="col-xs-4 col-xs-offset-8 no-padding-left">
                       <button id="buscarhechos" type="button" class="btn btn-primary btn-block"
-                        onclick="aplicarParametrosVGV();">Aplicar par&aacute;metros</button>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                      <button id="limpiarhechos" type="button" class="btn btn-primary btn-block"
-                        onclick="limpiarParametrosVGV()">Limpiar
-                        par&aacute;metros</button>
+                        onclick="irTabPanel('filterVGV');">Siguiente</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Tab -Model -->
+            <!-- Tab-Filter -->
+            <div role="tabpanel" class="tab-pane" id="filterVGV">
+              <div class="calcite-form-title">
+                <b style="text-align: justify;">Aplica los parámetros seleccionados con la simbología definida.</b>
+              </div>
+              <div class="form-horizontal calcite-form-padding no-padding-top">
+                <div class="form-group">
+                  <label for="class-select" class="col-xs-4 control-label">Clasificación</label>
+                  <div class="col-xs-8 no-padding-left">
+                    <select id="class-select" class="form-control">
+                      <option value="equal-interval">Intervalos iguales</option>
+                      <option value="quantile" selected>Quantiles</option>
+                      <option value="natural-breaks">Rangos naturales</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="num-classes" class="col-xs-4 control-label" id="label-num-classes">Clases (5)</label>
+                  <div class="col-xs-8 no-padding-left">
+                    <input type="range" id="num-classes" min="3" max="10" value="5" step="1" aria-valuemin="3"
+                      aria-valuemax="10" aria-valuenow="5">
+                  </div>
+                </div>
+                <div class="form-group" style="padding-bottom: 20px;">
+                  <label for="styleRampColors" class="col-xs-4 control-label">Gama de colores</label>
+                  <div class="col-xs-8 no-padding-left">
+                    <div id="styleRampColors" class="row col-xs-12" style="position: relative;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor1" value="#ffe3aa"
+                        style="position: absolute;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor2" value="#ff0000"
+                        style="position: absolute;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor3" value="#0022c8"
+                        style="position: absolute;">
+                      <div id="styleColorRamp"
+                        style="border: 1px gray solid; height: 35px; width: 100%; position: absolute;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                    <button id="buscarhechos" type="button" class="btn btn-primary btn-block"
+                      onclick="aplicarParametrosVGV();">Aplicar par&aacute;metros</button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                    <button id="limpiarhechos" type="button" class="btn btn-primary btn-block"
+                      onclick="limpiarParametrosVGV()">Limpiar
+                      par&aacute;metros</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Tab-Time -->
             <div role="tabpanel" class="tab-pane" id="timeVGV">
               <br />
               <a data-toggle="collapse" class="linkVGV" href="#helpTimeVGV" aria-expanded="false"
@@ -959,11 +1006,13 @@
     };
   </script>
 
-  <!-- <script type="text/javascript" src="dist/js/bootstrap.min.js"></script>-->
+  <script type="text/javascript" src="dist/js/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="dist/js/bootstrap.min.js"></script> -->
 
   <script type="text/javascript" src="dist/js/lazysizes.min.js" async></script>
 
-  <script type="text/javascript" src="dist/js/jquery.min.js"></script>
+  <script type="text/javascript" src="dist/js/rainbowvis.js"></script>
+
   <script type="text/javascript" src="dist/js/interact.min.js"></script>
   <script type="text/javascript" src="dist/js/pako.min.js"></script>
   <script type="text/javascript" src="dist/js/jquery-confirm.min.js"></script>
