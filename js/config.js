@@ -1,3 +1,17 @@
+// Variables globales ESRI
+var _esriConfig, _Map, _Basemap, _MapView, _Graphic;
+var _Collection, _watchUtils, _esriLang, _esriRequest;
+var _Layer, _FeatureLayer, _GeoJSONLayer, _GraphicsLayer, _MapImageLayer;
+var _QueryTask, _Query;
+var _Color, _colorRendererCreator;
+var _PopupTemplate, _webMercatorUtils, _SpatialReference, _Point;
+var _Home, _Zoom, _Compass, _Locate, _Track, _Search, _Legend, _BasemapGallery, _LocalBasemapsSource, _ScaleBar, _Attribution, _LayerList, _Locator, _Expand, _Swipe, _Slider, _Print;
+var _Sketch, _SketchViewModel, _DistanceMeasurement2D, _AreaMeasurement2D, _CoordinateConversion, _FormatCoordinate, _ConversionCoordinate;
+var _PrintTask, _PrintTemplate, _PrintParameters;
+var _CalciteMaps, _CalciteMapArcGISSupport;
+var _Collapse, _Dropdown, _Tab;
+var _query, _aspect;
+
 // componentes de mapas
 var map;
 var view;
@@ -266,3 +280,6 @@ var velocidadTime = 1;
 var sliderTime, sliderTimeRange;
 var animation = null;
 var playButton;
+
+// Pako
+let avancePako = 115000;

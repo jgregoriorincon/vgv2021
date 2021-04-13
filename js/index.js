@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 
 $(document).ready(function () {
   for (let numAnio = vgv_inicioAnio; numAnio <= vgv_finAnio; numAnio++) {
@@ -249,9 +249,6 @@ function initMap() {
     "bootstrap/Collapse",
     "bootstrap/Dropdown",
     "bootstrap/Tab",
-    // "bootstrap/Carousel",
-    // "bootstrap/Tooltip",
-    // "bootstrap/Modal",
 
     // Dojo
     "dojo/query",
@@ -315,7 +312,6 @@ function initMap() {
     __Collapse,
     __Dropdown,
     __Tab,
-    // __Carousel, __Tooltip, __Modal,
     __query,
     __aspect
   ) {
@@ -384,10 +380,7 @@ function initMap() {
       _Collapse = __Collapse;
       _Dropdown = __Dropdown;
       _Tab = __Tab;
-      // _Carousel = __Carousel;
-      // _Tooltip = __Tooltip;
-      // _Modal = __Modal;
-
+      
       _query = __query;
       _aspect = __aspect;
 
