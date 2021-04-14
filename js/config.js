@@ -103,13 +103,6 @@ var nameLayerMunicipios = "Base_Municipios";
 var nameLayerDT = "Base_DT";
 var nameLayerPDET = "Base_PDET";
 
-// Variables VGV
-var vgv_compress_Hechos = [];
-var vgv_resultados_Hechos = [];
-var vgv_filter_Hechos = [];
-var vgv_group_Hechos = [];
-var vgv_graphic_hechos = [];
-
 // Variables listados
 var vgv_lstDepartamentos = [];
 var vgv_lstDepartamentosDT = [];
@@ -280,6 +273,7 @@ var velocidadTime = 1;
 var sliderTime, sliderTimeRange;
 var animation = null;
 var playButton;
+var idLayerTime;
 
 // Pako
 let avancePako = 115000;

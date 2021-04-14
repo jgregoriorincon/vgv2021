@@ -1,253 +1,254 @@
-
+// Inicial
 function initMap() {
     require([
-      // ArcGIS
-      "esri/config",
-      "esri/Map",
-      "esri/Basemap",
-      "esri/views/MapView",
-      "esri/Graphic",
-  
-      // Core
-      "esri/core/Collection",
-      "esri/core/watchUtils",
-      "esri/core/lang",
-      "esri/request",
-  
-      // Layers
-      "esri/layers/Layer",
-      "esri/layers/FeatureLayer",
-      "esri/layers/GeoJSONLayer",
-      "esri/layers/GraphicsLayer",
-      "esri/layers/MapImageLayer",
-  
-      // Tasks
-      "esri/tasks/QueryTask",
-      "esri/tasks/support/Query",
-  
-      // Renderes
-      "esri/Color",
-      "esri/renderers/smartMapping/creators/color",
-      "esri/renderers/smartMapping/statistics/histogram",
-      "esri/widgets/smartMapping/ClassedColorSlider",
-      "esri/renderers/smartMapping/symbology/color",
-      "esri/renderers/smartMapping/creators/type",
-  
-      "esri/smartMapping/renderers/color",
-      "esri/smartMapping/symbology/color",
-  
-      // Popup
-      "esri/PopupTemplate",
-      "esri/geometry/support/webMercatorUtils",
-      "esri/geometry/SpatialReference",
-      "esri/geometry/Point",
-  
-      // Widgets
-      "esri/widgets/Home",
-      "esri/widgets/Zoom",
-      "esri/widgets/Compass",
-      "esri/widgets/Locate",
-      "esri/widgets/Track",
-      "esri/widgets/Search",
-      "esri/widgets/Legend",
-      "esri/widgets/BasemapGallery",
-      "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
-      "esri/widgets/ScaleBar",
-      "esri/widgets/Attribution",
-      "esri/widgets/LayerList",
-      "esri/tasks/Locator",
-      "esri/widgets/Expand",
-      "esri/widgets/Swipe",
-      "esri/widgets/Slider",
-      "esri/widgets/Print",
-  
-      "esri/widgets/Sketch",
-      "esri/widgets/Sketch/SketchViewModel",
-      "esri/widgets/DistanceMeasurement2D",
-      "esri/widgets/AreaMeasurement2D",
-      "esri/widgets/CoordinateConversion",
-      "esri/widgets/CoordinateConversion/support/Format",
-      "esri/widgets/CoordinateConversion/support/Conversion",
-  
-      "esri/tasks/PrintTask",
-      "esri/tasks/support/PrintTemplate",
-      "esri/tasks/support/PrintParameters",
-  
-      // Calcite Maps
-      "calcite-maps/calcitemaps-v0.10",
-      "calcite-maps/calcitemaps-arcgis-support-v0.10",
-  
-      // Boostrap
-      "bootstrap/Collapse",
-      "bootstrap/Dropdown",
-      "bootstrap/Tab",
-      // "bootstrap/Carousel",
-      // "bootstrap/Tooltip",
-      // "bootstrap/Modal",
-  
-      // Dojo
-      "dojo/query",
-      "dojo/aspect",
-      "dojo/domReady!",
-    ], function (
-      __esriConfig,
-      __Map,
-      __Basemap,
-      __MapView,
-      __Graphic,
-      __Collection,
-      __watchUtils,
-      __esriLang,
-      __esriRequest,
-      __Layer,
-      __FeatureLayer,
-      __GeoJSONLayer,
-      __GraphicsLayer,
-      __MapImageLayer,
-  
-      __QueryTask,
-      __Query,
-  
-      __Color,
-      __colorRendererCreator,
-      __histogram,
-      __ClassedColorSlider,
-      __colorSchemes,
-      __typeRendererCreator,
-  
-      __colorRendererCreator2,
-      __colorSchemes2,
-  
-      __PopupTemplate,
-      __webMercatorUtils,
-      __SpatialReference,
-      __Point,
-      __Home,
-      __Zoom,
-      __Compass,
-      __Locate,
-      __Track,
-      __Search,
-      __Legend,
-      __BasemapGallery,
-      __LocalBasemapsSource,
-      __ScaleBar,
-      __Attribution,
-      __LayerList,
-      __Locator,
-      __Expand,
-      __Swipe,
-      __Slider,
-      __Print,
-      __Sketch,
-      __SketchViewModel,
-      __DistanceMeasurement2D,
-      __AreaMeasurement2D,
-      __CoordinateConversion,
-      __FormatCoordinate,
-      __ConversionCoordinate,
-      __PrintTask,
-      __PrintTemplate,
-      __PrintParameters,
-      __CalciteMaps,
-      __CalciteMapArcGISSupport,
-      __Collapse,
-      __Dropdown,
-      __Tab,
-      // __Carousel, __Tooltip, __Modal,
-      __query,
-      __aspect
-    ) {
-      try {
-        _esriConfig = __esriConfig;
-        _Map = __Map;
-        _Basemap = __Basemap;
-        _MapView = __MapView;
-        _Graphic = __Graphic;
-  
-        _Collection = __Collection;
-        _watchUtils = __watchUtils;
-        _esriLang = __esriLang;
-        _esriRequest = __esriRequest;
-  
-        _Layer = __Layer;
-        _FeatureLayer = __FeatureLayer;
-        _GeoJSONLayer = __GeoJSONLayer;
-        _GraphicsLayer = __GraphicsLayer;
-        _MapImageLayer = __MapImageLayer;
-  
-        _QueryTask = __QueryTask;
-        _Query = __Query;
-  
-        _Color = __Color;
-        _colorRendererCreator = __colorRendererCreator;
-        _histogram = __histogram;
-        _ClassedColorSlider = __ClassedColorSlider;
-        _colorSchemes = __colorSchemes;
-        _typeRendererCreator = __typeRendererCreator;
-  
-        _colorRendererCreator2 = __colorRendererCreator2;
-        _colorSchemes2 = __colorSchemes2;
-  
-        _PopupTemplate = __PopupTemplate;
-        _webMercatorUtils = __webMercatorUtils;
-        _SpatialReference = __SpatialReference;
-        _Point = __Point;
-  
-        _Home = __Home;
-        _Zoom = __Zoom;
-        _Compass = __Compass;
-        _Locate = __Locate;
-        _Track = __Track;
-        _Search = __Search;
-        _Legend = __Legend;
-        _BasemapGallery = __BasemapGallery;
-        _LocalBasemapsSource = __LocalBasemapsSource;
-        _ScaleBar = __ScaleBar;
-        _Attribution = __Attribution;
-        _LayerList = __LayerList;
-        _Locator = __Locator;
-        _Expand = __Expand;
-        _Swipe = __Swipe;
-        _Slider = __Slider;
-        _Print = __Print;
-  
-        _Sketch = __Sketch;
-        _SketchViewModel = __SketchViewModel;
-        _DistanceMeasurement2D = __DistanceMeasurement2D;
-        _AreaMeasurement2D = __AreaMeasurement2D;
-        _CoordinateConversion = __CoordinateConversion;
-        _FormatCoordinate = __FormatCoordinate;
-        _ConversionCoordinate = __ConversionCoordinate;
-  
-        _PrintTask = __PrintTask;
-        _PrintTemplate = __PrintTemplate;
-        _PrintParameters = __PrintParameters;
-  
-        _CalciteMaps = __CalciteMaps;
-        _CalciteMapArcGISSupport = __CalciteMapArcGISSupport;
-  
-        _Collapse = __Collapse;
-        _Dropdown = __Dropdown;
-        _Tab = __Tab;
-        // _Carousel = __Carousel;
-        // _Tooltip = __Tooltip;
-        // _Modal = __Modal;
-  
-        _query = __query;
-        _aspect = __aspect;
-  
-        // Carga de servicios
-        loadServicesUARIV();
-  
-        InitMap2();
-  
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  }
+        // ArcGIS
+        "esri/config",
+        "esri/Map",
+        "esri/Basemap",
+        "esri/views/MapView",
+        "esri/Graphic",
 
+        // Core
+        "esri/core/Collection",
+        "esri/core/watchUtils",
+        "esri/core/lang",
+        "esri/request",
+
+        // Layers
+        "esri/layers/Layer",
+        "esri/layers/FeatureLayer",
+        "esri/layers/GeoJSONLayer",
+        "esri/layers/GraphicsLayer",
+        "esri/layers/MapImageLayer",
+
+        // Tasks
+        "esri/tasks/QueryTask",
+        "esri/tasks/support/Query",
+
+        // Renderes
+        "esri/Color",
+        "esri/renderers/smartMapping/creators/color",
+        "esri/renderers/smartMapping/statistics/histogram",
+        "esri/widgets/smartMapping/ClassedColorSlider",
+        "esri/renderers/smartMapping/symbology/color",
+        "esri/renderers/smartMapping/creators/type",
+
+        "esri/smartMapping/renderers/color",
+        "esri/smartMapping/symbology/color",
+
+        // Popup
+        "esri/PopupTemplate",
+        "esri/geometry/support/webMercatorUtils",
+        "esri/geometry/SpatialReference",
+        "esri/geometry/Point",
+
+        // Widgets
+        "esri/widgets/Home",
+        "esri/widgets/Zoom",
+        "esri/widgets/Compass",
+        "esri/widgets/Locate",
+        "esri/widgets/Track",
+        "esri/widgets/Search",
+        "esri/widgets/Legend",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
+        "esri/widgets/ScaleBar",
+        "esri/widgets/Attribution",
+        "esri/widgets/LayerList",
+        "esri/tasks/Locator",
+        "esri/widgets/Expand",
+        "esri/widgets/Swipe",
+        "esri/widgets/Slider",
+        "esri/widgets/Print",
+
+        "esri/widgets/Sketch",
+        "esri/widgets/Sketch/SketchViewModel",
+        "esri/widgets/DistanceMeasurement2D",
+        "esri/widgets/AreaMeasurement2D",
+        "esri/widgets/CoordinateConversion",
+        "esri/widgets/CoordinateConversion/support/Format",
+        "esri/widgets/CoordinateConversion/support/Conversion",
+
+        "esri/tasks/PrintTask",
+        "esri/tasks/support/PrintTemplate",
+        "esri/tasks/support/PrintParameters",
+
+        // Calcite Maps
+        "calcite-maps/calcitemaps-v0.10",
+        "calcite-maps/calcitemaps-arcgis-support-v0.10",
+
+        // Boostrap
+        "bootstrap/Collapse",
+        "bootstrap/Dropdown",
+        "bootstrap/Tab",
+        // "bootstrap/Carousel",
+        // "bootstrap/Tooltip",
+        // "bootstrap/Modal",
+
+        // Dojo
+        "dojo/query",
+        "dojo/aspect",
+        "dojo/domReady!",
+    ], function (
+        __esriConfig,
+        __Map,
+        __Basemap,
+        __MapView,
+        __Graphic,
+        __Collection,
+        __watchUtils,
+        __esriLang,
+        __esriRequest,
+        __Layer,
+        __FeatureLayer,
+        __GeoJSONLayer,
+        __GraphicsLayer,
+        __MapImageLayer,
+
+        __QueryTask,
+        __Query,
+
+        __Color,
+        __colorRendererCreator,
+        __histogram,
+        __ClassedColorSlider,
+        __colorSchemes,
+        __typeRendererCreator,
+
+        __colorRendererCreator2,
+        __colorSchemes2,
+
+        __PopupTemplate,
+        __webMercatorUtils,
+        __SpatialReference,
+        __Point,
+        __Home,
+        __Zoom,
+        __Compass,
+        __Locate,
+        __Track,
+        __Search,
+        __Legend,
+        __BasemapGallery,
+        __LocalBasemapsSource,
+        __ScaleBar,
+        __Attribution,
+        __LayerList,
+        __Locator,
+        __Expand,
+        __Swipe,
+        __Slider,
+        __Print,
+        __Sketch,
+        __SketchViewModel,
+        __DistanceMeasurement2D,
+        __AreaMeasurement2D,
+        __CoordinateConversion,
+        __FormatCoordinate,
+        __ConversionCoordinate,
+        __PrintTask,
+        __PrintTemplate,
+        __PrintParameters,
+        __CalciteMaps,
+        __CalciteMapArcGISSupport,
+        __Collapse,
+        __Dropdown,
+        __Tab,
+        // __Carousel, __Tooltip, __Modal,
+        __query,
+        __aspect
+    ) {
+        try {
+            _esriConfig = __esriConfig;
+            _Map = __Map;
+            _Basemap = __Basemap;
+            _MapView = __MapView;
+            _Graphic = __Graphic;
+
+            _Collection = __Collection;
+            _watchUtils = __watchUtils;
+            _esriLang = __esriLang;
+            _esriRequest = __esriRequest;
+
+            _Layer = __Layer;
+            _FeatureLayer = __FeatureLayer;
+            _GeoJSONLayer = __GeoJSONLayer;
+            _GraphicsLayer = __GraphicsLayer;
+            _MapImageLayer = __MapImageLayer;
+
+            _QueryTask = __QueryTask;
+            _Query = __Query;
+
+            _Color = __Color;
+            _colorRendererCreator = __colorRendererCreator;
+            _histogram = __histogram;
+            _ClassedColorSlider = __ClassedColorSlider;
+            _colorSchemes = __colorSchemes;
+            _typeRendererCreator = __typeRendererCreator;
+
+            _colorRendererCreator2 = __colorRendererCreator2;
+            _colorSchemes2 = __colorSchemes2;
+
+            _PopupTemplate = __PopupTemplate;
+            _webMercatorUtils = __webMercatorUtils;
+            _SpatialReference = __SpatialReference;
+            _Point = __Point;
+
+            _Home = __Home;
+            _Zoom = __Zoom;
+            _Compass = __Compass;
+            _Locate = __Locate;
+            _Track = __Track;
+            _Search = __Search;
+            _Legend = __Legend;
+            _BasemapGallery = __BasemapGallery;
+            _LocalBasemapsSource = __LocalBasemapsSource;
+            _ScaleBar = __ScaleBar;
+            _Attribution = __Attribution;
+            _LayerList = __LayerList;
+            _Locator = __Locator;
+            _Expand = __Expand;
+            _Swipe = __Swipe;
+            _Slider = __Slider;
+            _Print = __Print;
+
+            _Sketch = __Sketch;
+            _SketchViewModel = __SketchViewModel;
+            _DistanceMeasurement2D = __DistanceMeasurement2D;
+            _AreaMeasurement2D = __AreaMeasurement2D;
+            _CoordinateConversion = __CoordinateConversion;
+            _FormatCoordinate = __FormatCoordinate;
+            _ConversionCoordinate = __ConversionCoordinate;
+
+            _PrintTask = __PrintTask;
+            _PrintTemplate = __PrintTemplate;
+            _PrintParameters = __PrintParameters;
+
+            _CalciteMaps = __CalciteMaps;
+            _CalciteMapArcGISSupport = __CalciteMapArcGISSupport;
+
+            _Collapse = __Collapse;
+            _Dropdown = __Dropdown;
+            _Tab = __Tab;
+            // _Carousel = __Carousel;
+            // _Tooltip = __Tooltip;
+            // _Modal = __Modal;
+
+            _query = __query;
+            _aspect = __aspect;
+
+            // Carga de servicios
+            loadServicesUARIV();
+
+            InitMap2();
+
+        } catch (error) {
+            console.log(error);
+        }
+    });
+}
+
+/* Creacion VGV */
 function loadHechosVictimas(varAnio, offLoading) {
     let datosCompressAnio = vgv_compress_Hechos.filter(function (item) {
         return item.Anio == varAnio;
@@ -1014,4 +1015,354 @@ function uniqueRendererLayer(tLayer) {
         .catch(function (error) {
             console.error("there was an error: ", error);
         });
+}
+
+/* Time */
+
+function timeHechosVictimas() {
+    // Recupera el filtro espacial activo
+    let filtroGeografico = $("#selectFiltro_Geografico").val();
+    let parametros;
+
+    if (filtroGeografico == "filtroDepartamento") {
+        parametros = {
+            tLayerBase: nameLayerDepartamentos,
+            domFilter: "selectFiltro_Departamento",
+            nivelGeografico: "Departamento",
+            campoGeografico: "DPTO_NCDGO",
+            nombreGeografico: "DPTO_CNMBR",
+            adjNombreGeografico: null,
+        };
+    } else if (filtroGeografico == "filtroMunicipal") {
+        parametros = {
+            tLayerBase: nameLayerMunicipios,
+            domFilter: "selectFiltro_Municipios",
+            nivelGeografico: "Municipio",
+            campoGeografico: "MPIO_NCDGO",
+            nombreGeografico: "MPIO_CNMBR",
+            adjNombreGeografico: "DPTO_CNMBR",
+        };
+    } else if (filtroGeografico == "filtroDT") {
+        parametros = {
+            tLayerBase: nameLayerDT,
+            domFilter: "selectFiltro_DT",
+            nivelGeografico: "Dirección Territorial",
+            campoGeografico: "DT_NCDGO",
+            nombreGeografico: "DT_CNMBR",
+        };
+    } else if (filtroGeografico == "filtroPDET") {
+        parametros = {
+            tLayerBase: nameLayerPDET,
+            domFilter: "selectFiltro_PDET",
+            nivelGeografico: "PDET",
+            campoGeografico: "PDET_NCDGO",
+            nombreGeografico: "PDET_CNMBR",
+            adjNombreGeografico: null,
+        };
+    }
+
+    // Obtención de los datos finales
+    if (map.findLayerById(parametros.tLayerBase) == undefined) {
+        loadBaseGeografica(parametros.tLayerBase);
+        let tLayer = map.findLayerById(parametros.tLayerBase);
+        tLayer.when(function () {
+            timeFeaturesVGV(parametros);
+        });
+    } else {
+        timeFeaturesVGV(parametros);
+    }
+}
+
+function timeFeaturesVGV(lstParametros) {
+    const tLayer = map.findLayerById(lstParametros.tLayerBase);
+
+    let query = tLayer.createQuery();
+    query.where = "1=1";
+
+    let selectFiltroSelected = $(
+        "#" + lstParametros.domFilter + " option:selected"
+    );
+    let selectFiltroOption = $("#" + lstParametros.domFilter + " option");
+
+    if (selectFiltroSelected.length == 1) {
+        query.where =
+            lstParametros.campoGeografico +
+            " = " +
+            parseInt(selectFiltroSelected.val());
+    } else if (selectFiltroSelected.length < selectFiltroOption.length) {
+        let areaGeograficaSeleccionada = selectFiltroSelected.map(function (
+            a,
+            item
+        ) {
+            return parseInt(item.value);
+        });
+
+        areaGeograficaSeleccionada = Object.values(areaGeograficaSeleccionada);
+        areaGeograficaSeleccionada.pop();
+        areaGeograficaSeleccionada.pop();
+        areaGeograficaSeleccionada = areaGeograficaSeleccionada.join(",");
+        query.where =
+            lstParametros.campoGeografico +
+            " IN (" +
+            areaGeograficaSeleccionada +
+            ")";
+    }
+
+    tLayer.queryFeatures(query).then(function (results) {
+        let ext = tLayer.fullExtent;
+        let cloneExt = ext.clone();
+        view.goTo({
+            target: tLayer.fullExtent,
+            extent: cloneExt.expand(1.25),
+        });
+
+        let varVariable = $("#selectFiltro_Variable").val();
+        let txtVariable = $("#selectFiltro_Variable").val();
+
+        if (txtVariable == vgv_lstVariable[0]) {
+            varVariable = "PER_OCU";
+        } else if (txtVariable == vgv_lstVariable[1]) {
+            varVariable = "PER_DECLA";
+        } else if (txtVariable == vgv_lstVariable[2]) {
+            varVariable = "EVENTOS";
+        }
+
+        for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+            if (
+                vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
+                vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+            ) {
+                let groupHechosAnio = vgv_group_Hechos.filter(function (item) {
+                    return item.Anio == vgv_lstAnios[idxAnio];
+                })[0].Data;
+
+                let featuresTemp = [];
+                for (let indexGeo = 0; indexGeo < results.features.length; indexGeo++) {
+                    results.features[indexGeo].attributes.OBJECTID = indexGeo;
+                    results.features[indexGeo].attributes.VGV_NVALOR = null;
+
+                    let groupHechoAnioGeo = groupHechosAnio.filter(function (item) {
+                        return parseInt(item.VAR_AGRUPACION) == parseInt(results.features[indexGeo].attributes[lstParametros.campoGeografico])
+                    })[0];
+
+                    if (groupHechoAnioGeo != undefined && parseInt(groupHechoAnioGeo[varVariable]) > 0) {
+                        results.features[indexGeo].attributes.VGV_NVALOR = parseInt(groupHechoAnioGeo[varVariable]);
+                    }
+
+                    featuresTemp.push($.extend(true, {}, results.features[indexGeo]));
+                }
+
+                let AnioActual = vgv_lstAnios[idxAnio];
+                let varContent = "";
+                if (lstParametros.adjNombreGeografico != null) {
+                    varContent = `Durante el año <b>${AnioActual}</b> se presentaron <b>{VGV_NVALOR} ${txtVariable}</b> en el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}} ({${lstParametros.adjNombreGeografico}})</b>.`;
+                } else {
+                    varContent = `Durante el año <b>${AnioActual}</b> se presentaron <b>{VGV_NVALOR} ${txtVariable}</b> en el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}}</b>.`;
+                }
+
+                const layerTime = new _FeatureLayer({
+                    source: featuresTemp,
+                    fields: tLayer.fields,
+                    objectIdField: "OBJECTID",
+                    opacity: 0.8,
+                    title: txtVariable +
+                        " por " +
+                        lstParametros.nivelGeografico +
+                        " para el año " +
+                        vgv_lstAnios[idxAnio],
+                    id: "Time_" + vgv_lstAnios[idxAnio],
+                    popupTemplate: {
+                        title: "<b>" + txtVariable + "</b>",
+                        content: varContent,
+                        fieldInfos: [{
+                            fieldName: "VGV_NVALOR",
+                            format: {
+                                digitSeparator: true,
+                                places: 0,
+                            },
+                        }, ],
+                    },
+                    copyright: "Unidad para las Víctimas",
+                    visible: false,
+                    legendEnabled: true,
+                    listMode: "hide",
+                    layerOrigen: tLayer.id.split("_")[1],
+                    variableOrigen: txtVariable,
+                });
+
+                current_reportes = arrayRemove(current_reportes, "TimeSlider");
+                reporteUso(
+                    "TimeSlider",
+                    layerTime.layerOrigen + " - " + layerTime.variableOrigen,
+                    "load"
+                );
+
+                map.add(layerTime);
+                generateSimbology(layerTime);
+            }
+        }
+
+        const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+        map.reorder(tLayerLabels, map.layers.items.length);
+        tLayerLabels.visible = true;
+
+        displayTimeVGV();
+    });
+}
+
+function simbologyTimeVGV() {
+    closeSimbology();
+
+    if (map.findLayerById("Time_" + sliderTimeRange.values[0])) {
+        gotoSimbology(map.findLayerById("Time_" + sliderTimeRange.values[0]));
+    }
+
+    stopAnimation();
+    $("#speed-time").val(1);
+    $("#speed-time").trigger("change");
+    $("#settingsTimeVGV").removeClass("in");
+    setTimeYear(sliderTimeRange.values[0]);
+}
+
+
+
+
+
+function displayTimeVGV() {
+    sliderTime.on("thumb-drag", inputTimeHandler);
+
+    setTimeYear(sliderTimeRange.values[0]);
+    let layerTime = map.findLayerById(idLayerTime);
+    layerTime.when(function () {
+        $("#sliderContainerTime").show();
+        $("#legendTimeVGV").show();
+        $("#deleteTimeVGV").show();
+        $("#settingsTime").show();
+        $("#helpTimeVGV").removeClass("in");
+
+        const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+            return sublayer.id === sliderTime.min;
+        });
+        subLayerTime.visible = true;
+
+        if (loading.isOpen()) {
+            loading.close();
+        }
+    });
+}
+
+function deleteTimeVGV() {
+    vgv_group_Hechos = [];
+
+    current_reportes = arrayRemove(current_reportes, "TimeSlider");
+    reporteUso(
+        "TimeSlider",
+        sliderTimeRange.values[0] + " - " + sliderTimeRange.values[1],
+        "delete"
+    );
+
+    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+        if (map.findLayerById("Time_" + vgv_lstAnios[idxAnio])) {
+            map.remove(map.findLayerById("Time_" + vgv_lstAnios[idxAnio]));
+        }
+    }
+
+    sliderTimeRange.values[0] = vgv_lstAnios[0];
+    sliderTimeRange.values[1] = vgv_lstAnios[vgv_lstAnios.length - 1];
+
+    sliderTime.min = sliderTimeRange.values[0];
+    sliderTime.max = sliderTimeRange.values[1];
+
+    stopAnimation();
+
+    $("#textSliderTimeRange").text(
+        "Rango de años a calcular (" +
+        vgv_lstAnios[0].toString() +
+        " - " +
+        vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
+        ")"
+    );
+    $("#legendTimeVGV").hide();
+    $("#sliderContainerTime").hide();
+    $("#deleteTimeVGV").hide();
+    $("#settingsTime").hide();
+    $("#helpTimeVGV").addClass("in");
+    $("#createTimeVGV").show();
+}
+
+function setTimeYear(value) {
+    var sliderValue = document.getElementById("sliderValue");
+    sliderValue.innerHTML = Math.floor(value);
+    sliderTime.viewModel.setValue(0, value);
+
+    offLayersTime();
+    let layerTime = map.findLayerById(idLayerTime);
+    const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+        return sublayer.id === Math.floor(value);
+    });
+    subLayerTime.visible = true;
+
+}
+
+function startAnimation() {
+    stopAnimation();
+    animation = animate(sliderTimeRange.values[0]);
+    playButton.classList.add("toggled");
+}
+
+function stopAnimation() {
+    if (!animation) {
+        return;
+    }
+
+    animation.remove();
+    animation = null;
+    playButton.classList.remove("toggled");
+}
+
+function animate(startValue) {
+    var animating = true;
+    var value = startValue;
+
+    var frame = function (timestamp) {
+        if (!animating) {
+            return;
+        }
+
+        value += 0.5;
+        if (value > sliderTimeRange.values[1]) {
+            value = sliderTimeRange.values[0];
+        }
+
+        setTimeYear(value);
+
+        setTimeout(function () {
+            requestAnimationFrame(frame);
+        }, 1000 / velocidadTime);
+    };
+
+    frame();
+
+    return {
+        remove: function () {
+            animating = false;
+        },
+    };
+}
+
+function inputTimeHandler(event) {
+    stopAnimation();
+    setTimeYear(event.value);
+}
+
+function offLayersTime() {
+    let layerTime = map.findLayerById(idLayerTime);
+    for (let idxAnio = sliderTime.min; idxAnio <= sliderTime.max; idxAnio++) {
+
+        const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+            return sublayer.id === idxAnio;
+        });
+        subLayerTime.visible = false;
+
+    }
 }

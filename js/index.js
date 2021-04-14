@@ -380,7 +380,7 @@ function initMap() {
       _Collapse = __Collapse;
       _Dropdown = __Dropdown;
       _Tab = __Tab;
-      
+
       _query = __query;
       _aspect = __aspect;
 
@@ -558,11 +558,11 @@ function InitMap2() {
     });
   });
 
-  _watchUtils.when(legendWidget, "activeLayerInfos.length", function (evt) {
-    setTimeout(function () {
-      activeFirstLegend();
-    }, 500);
-  });
+  // _watchUtils.when(legendWidget, "activeLayerInfos.length", function (evt) {
+  //   setTimeout(function () {
+  //     activeFirstLegend();
+  //   }, 500);
+  // });
 }
 
 function addWidgets() {
@@ -1873,6 +1873,129 @@ function getSqlParameter(domFilter, nombreCampo) {
   }
 }
 
+function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
+  let tableRUV;
+  let popupContent;
+
+  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VGV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
+  let strWhere = "WHERE RUV_CVIGENCIA = 'YYYY' AND ";
+  strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
+  strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
+  strWhere += getSqlParameter('selectFiltro_Etnia', 'RUV_NETNIA');
+  strWhere += getSqlParameter('selectFiltro_Discapacidad', 'RUV_NDISCAPACIDAD');
+  strWhere += getSqlParameter('selectFiltro_CicloVital', 'RUV_NCICLOVITAL');
+  if (filtroGeografico == "filtroDepartamento") {
+    strFrom = strSQL_Dptos + ' FROM GIS2.Publicacion.DEPARTAMENTOS G LEFT JOIN (SELECT DPTO_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_Departamento', 'DPTO_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
+    tableRUV = 'Departamentos';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
+  } else if (filtroGeografico == "filtroMunicipal") {
+    strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
+    tableRUV = 'Municipios';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
+  } else if (filtroGeografico == "filtroDT") {
+    strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_DT', 'DT_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
+    tableRUV = 'DT';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
+  } else if (filtroGeografico == "filtroPDET") {
+    strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
+    strWhere += getSqlParameter('selectFiltro_PDET', 'PDET_NCDGO');
+    strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
+    tableRUV = 'PDET';
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
+  }
+
+  let titleRUV = variableRUV + ' por ' + tableRUV + ' para el año YYYY';
+  let idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_YYYY";
+  let strSqlVGV = strFrom + strWhere;
+
+  return {
+    idLayerRUV,
+    titleRUV,
+    strSqlVGV,
+    tableRUV,
+    popupContent
+  };
+}
+
+function getSchemeVGV(numClasses) {
+  let noDataColor = '#cccccc';
+  let color_1 = $("#styleRampColor1").val();
+  let color_2 = $("#styleRampColor2").val();
+  let color_3 = $("#styleRampColor3").val();
+  let rainbow = new Rainbow();
+  rainbow.setNumberRange(1, numClasses);
+  rainbow.setSpectrum(color_1, color_2, color_3);
+  let colorsArray = [];
+  for (let i = 1; i <= numClasses; i++) {
+    let hexColour = rainbow.colourAt(i);
+    colorsArray.push(new _Color('#' + hexColour));
+  }
+  const schemesVGV = {
+    "id": "rampColorVGV",
+    "colors": [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
+    "noDataColor": new _Color(noDataColor),
+    "colorsForClassBreaks": [{
+      "colors": colorsArray,
+      "numClasses": numClasses
+    }],
+    "outline": {
+      "color": {
+        "r": 153,
+        "g": 153,
+        "b": 153,
+        "a": 0.25
+      },
+      "width": "0.25px"
+    },
+    "opacity": 0.8
+  };
+  return schemesVGV;
+}
+
+function createRenderer(featureLayer, subLayer, layerRUV) {
+  let classificationMethod = $("#class-select").val();
+  let numClasses = parseInt($("#num-classes").val());
+  const schemesVGV = getSchemeVGV(numClasses);
+
+  const params = {
+    layer: featureLayer,
+    field: "VGV_NVALOR",
+    view: view,
+    classificationMethod: classificationMethod,
+    numClasses: numClasses,
+    colorScheme: schemesVGV
+  };
+
+  _colorRendererCreator
+    .createClassBreaksRenderer(params)
+    .then(function (rendererResponse) {
+      rendererResponse.renderer.defaultLabel = "Sin Datos";
+      rendererResponse.renderer.defaultSymbol.color.a = 0.7;
+      subLayer.renderer = rendererResponse.renderer;
+
+      map.add(layerRUV);
+      consulta_layers.push(layerRUV.id);
+
+      const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+      map.reorder(tLayerLabels, map.layers.items.length);
+      tLayerLabels.visible = true;
+
+      if (loading.isOpen()) {
+        loading.close();
+      }
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
 function aplicarParametrosVGV() {
   let filtroGeografico = $("#selectFiltro_Geografico").val();
 
@@ -1906,59 +2029,23 @@ function aplicarParametrosVGV() {
     },
   });
 
-  let tableRUV;
-  let popupContent;
   let variableRUV = $("#selectFiltro_Variable option:selected").text();
   let Anio = $("#selectFiltro_Anio").val();
 
-  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VGV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
-  let strWhere = "WHERE RUV_CVIGENCIA = '" + Anio + "' AND ";
-  strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
-  strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
-  strWhere += getSqlParameter('selectFiltro_Etnia', 'RUV_NETNIA');
-  strWhere += getSqlParameter('selectFiltro_Discapacidad', 'RUV_NDISCAPACIDAD');
-  strWhere += getSqlParameter('selectFiltro_CicloVital', 'RUV_NCICLOVITAL');
+  let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
+  ({
+    idLayerRUV,
+    titleRUV,
+    strSqlVGV,
+    tableRUV,
+    popupContent
+  } = defineSqlVGV(Anio, filtroGeografico, variableRUV));
 
-  if (filtroGeografico == "filtroDepartamento") {
-    strFrom = strSQL_Dptos + ' FROM GIS2.Publicacion.DEPARTAMENTOS G LEFT JOIN (SELECT DPTO_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_Departamento', 'DPTO_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
+  idLayerRUV = idLayerRUV.replace('YYYY', Anio);
+  titleRUV = titleRUV.replace('YYYY', Anio);
+  strSqlVGV = strSqlVGV.replace('YYYY', Anio);
 
-    tableRUV = 'Departamentos';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
-
-  } else if (filtroGeografico == "filtroMunicipal") {
-    strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
-
-    tableRUV = 'Municipios';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
-
-  } else if (filtroGeografico == "filtroDT") {
-    strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_DT', 'DT_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
-
-    tableRUV = 'DT';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
-
-  } else if (filtroGeografico == "filtroPDET") {
-    strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_PDET', 'PDET_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
-
-    tableRUV = 'PDET';
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
-
-  }
-
-  let titleRUV = variableRUV + ' por ' + tableRUV + ' para el año ' + Anio;
-  let idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_" + Anio;
-
-  if (map.findLayerById(idLayerRUV)) {
-    map.remove(map.findLayerById(idLayerRUV));
-  }
+  removeLayer(idLayerRUV);
 
   const layerRUV = new _MapImageLayer({
     url: URL_RUV,
@@ -1978,7 +2065,7 @@ function aplicarParametrosVGV() {
         dataSource: {
           type: "query-table",
           workspaceId: "CONSULTA_RUV",
-          query: strFrom + strWhere,
+          query: strSqlVGV,
           geometryType: "polygon",
           spatialReference: {
             "wkid": 4326
@@ -2019,77 +2106,6 @@ function aplicarParametrosVGV() {
 
 }
 
-function createRenderer(featureLayer, subLayer, layerRUV) {
-  let noDataColor = '#cccccc';
-  let color_1 = $("#styleRampColor1").val();
-  let color_2 = $("#styleRampColor2").val();
-  let color_3 = $("#styleRampColor3").val();
-
-  let classificationMethod = $("#class-select").val();
-  let numClasses = parseInt($("#num-classes").val());
-
-  let rainbow = new Rainbow();
-  rainbow.setNumberRange(1, numClasses);
-  rainbow.setSpectrum(color_1, color_2, color_3);
-  let colorsArray = [];
-  for (let i = 1; i <= numClasses; i++) {
-    let hexColour = rainbow.colourAt(i);
-    colorsArray.push(new _Color('#' + hexColour));
-  }
-
-  const schemesVGV = {
-    "id": "rampColorVGV",
-    "colors": [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
-    "noDataColor": new _Color(noDataColor),
-    "colorsForClassBreaks": [{
-      "colors": colorsArray,
-      "numClasses": numClasses
-    }],
-    "outline": {
-      "color": {
-        "r": 153,
-        "g": 153,
-        "b": 153,
-        "a": 0.25
-      },
-      "width": "0.25px"
-    },
-    "opacity": 0.8
-  };
-
-  const params = {
-    layer: featureLayer,
-    field: "VGV_NVALOR",
-    view: view,
-    classificationMethod: classificationMethod,
-    numClasses: numClasses,
-    colorScheme: schemesVGV
-  };
-
-  _colorRendererCreator
-    .createClassBreaksRenderer(params)
-    .then(function (rendererResponse) {
-      rendererResponse.renderer.defaultLabel = "Sin Datos";
-      rendererResponse.renderer.defaultSymbol.color.a = 0.7;
-      subLayer.renderer = rendererResponse.renderer;
-
-      map.add(layerRUV);
-      consulta_layers.push(layerRUV.id);
-
-      const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
-      map.reorder(tLayerLabels, map.layers.items.length);
-      tLayerLabels.visible = true;
-
-      if (loading.isOpen()) {
-        loading.close();
-      }
-
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
 function limpiarParametrosVGV() {
   let listSelect = [
     "selectFiltro_Hecho",
@@ -2123,12 +2139,38 @@ function closeParametrosVGV() {
 // Tiempo
 
 function createTimeVGV() {
+  // Valida el anio inicial y final
   if (sliderTimeRange.values[0] == sliderTimeRange.values[1]) {
     alerta(
       "El año de inicio y fin del deslizador del tiempo no pueden ser el mismo"
     );
     return;
   } else {
+
+    let filtroGeografico = $("#selectFiltro_Geografico").val();
+
+    if (filtroGeografico == "filtroDepartamento") {
+      if ($("#selectFiltro_Departamento option:selected").length == 0) {
+        alerta("Debe seleccionar al menos un departamento");
+        return;
+      }
+    } else if (filtroGeografico == "filtroMunicipal") {
+      if ($("#selectFiltro_Municipios option:selected").length == 0) {
+        alerta("Debe seleccionar al menos un municipio");
+        return;
+      }
+    } else if (filtroGeografico == "filtroDT") {
+      if ($("#selectFiltro_DT option:selected").length == 0) {
+        alerta("Debe seleccionar al menos una dirección territorial");
+        return;
+      }
+    } else if (filtroGeografico == "filtroPDET") {
+      if ($("#selectFiltro_PDET option:selected").length == 0) {
+        alerta("Debe seleccionar al menos un PDET");
+        return;
+      }
+    }
+
     loading = $.dialog({
       title: "",
       content: "",
@@ -2137,19 +2179,13 @@ function createTimeVGV() {
       },
     });
 
+    // obtiene el anio inicial y final
     sliderTime.min = sliderTimeRange.values[0];
     sliderTime.max = sliderTimeRange.values[1];
 
+    // Oculta el botón para que no ejecuten de nuevo el comando
     $("#createTimeVGV").hide();
-    $("#createTimeVGV").hide();
-
-    vgv_group_Hechos = [];
-
-    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
-      if (map.findLayerById("Time_" + vgv_lstAnios[idxAnio])) {
-        map.remove(map.findLayerById("Time_" + vgv_lstAnios[idxAnio]));
-      }
-    }
+    // $("#createTimeVGV").hide();
 
     current_reportes = arrayRemove(current_reportes, "TimeSlider");
     reporteUso(
@@ -2158,21 +2194,175 @@ function createTimeVGV() {
       "create"
     );
 
-    setTimeout(function () {
-      for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
-        if (
-          vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
-          vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
-        ) {
-          loadHechosVictimas(vgv_lstAnios[idxAnio], false);
-        }
+    let variableRUV = $("#selectFiltro_Variable option:selected").text();
+    let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
+
+    ({
+      idLayerRUV,
+      titleRUV,
+      strSqlVGV,
+      tableRUV,
+      popupContent
+    } = defineSqlVGV(sliderTime.min, filtroGeografico, variableRUV));
+
+    idLayerRUV = idLayerRUV.replace('_YYYY', '');
+    idLayerRUV = idLayerRUV.replace('Results_', 'Time_');
+    removeLayer(idLayerRUV);
+
+    const layerTime = new _MapImageLayer({
+      url: URL_RUV,
+      title: titleRUV.replace(' para el año YYYY', ''),
+      id: idLayerRUV,
+      visible: true,
+      listMode: "hide",
+      sublayers: []
+    });
+
+    let numClasses = parseInt($("#num-classes").val());
+    const schemesTime = getSchemeVGV(numClasses);
+
+    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+      if (
+        vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
+        vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+      ) {
+        let Anio = vgv_lstAnios[idxAnio];
+        let titleAnio = titleRUV.replace('YYYY', Anio);
+        let strSqlAnio = strSqlVGV.replace('YYYY', Anio);
+
+        let defineSubLayer = {
+          title: titleAnio,
+          id: Anio,
+          idRUV: idLayerRUV,
+          layerOrigen: tableRUV,
+          variableOrigen: variableRUV,
+          opacity: 0.8,
+          listMode: "hide",
+          visible: false,
+          source: {
+            type: "data-layer",
+            dataSource: {
+              type: "query-table",
+              workspaceId: "CONSULTA_RUV",
+              query: strSqlAnio,
+              geometryType: "polygon",
+              spatialReference: {
+                "wkid": 4326
+              },
+              oidFields: "objectid"
+            }
+          }
+        };
+
+        layerTime.sublayers.push(defineSubLayer);
+
+        const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+          return sublayer.id === Anio;
+        });
+
+        subLayerTime.popupTemplate = {
+          title: "<b>" + titleAnio + "</b>",
+          content: popupContent,
+          fieldInfos: [{
+            fieldName: "VGV_NVALOR",
+            format: {
+              digitSeparator: true,
+              places: 0
+            }
+          }, {
+            fieldName: "VGV_CNMBR",
+          }]
+        };
+
+        subLayerTime.createFeatureLayer()
+          .then(function (eventosFeatureLayer) {
+            return eventosFeatureLayer.load();
+          })
+          .then(function (featureLayer) {
+            createRendererTime(featureLayer, schemesTime, subLayerTime)
+          });
+
+      }
+    }
+
+    idLayerTime = idLayerRUV;
+    map.add(layerTime);
+
+    // layerTime.when(function () {
+    //   const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+    //     return sublayer.id === sliderTime.min;
+    //   });
+    //   subLayerTime.visible = true;
+    //   displayTimeVGV();
+    // })
+
+    view.whenLayerView(layerTime)
+      .then(function (layerView) {
+        displayTimeVGV();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+}
+
+function createRendererTime(featureLayer, schemesTime, subLayer) {
+  let classificationMethod = $("#class-select").val();
+  let numClasses = parseInt($("#num-classes").val());
+
+  const params = {
+    layer: featureLayer,
+    field: "VGV_NVALOR",
+    view: view,
+    classificationMethod: classificationMethod,
+    numClasses: numClasses,
+    colorScheme: schemesTime
+  };
+
+  _colorRendererCreator
+    .createClassBreaksRenderer(params)
+    .then(function (rendererResponse) {
+      rendererResponse.renderer.defaultLabel = "Sin Datos";
+      rendererResponse.renderer.defaultSymbol.color.a = 0.7;
+      subLayer.renderer = rendererResponse.renderer;
+
+      if (loading.isOpen()) {
+        loading.close();
       }
 
-      setTimeout(function () {
-        timeHechosVictimas();
-      }, (sliderTime.max - sliderTime.min) * 300);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 
-    }, 500);
+function displayTimeVGV() {
+  try {
+    sliderTime.on("thumb-drag", inputTimeHandler);
+
+    setTimeYear(sliderTimeRange.values[0]);
+
+    let layerTime = map.findLayerById(idLayerTime);
+    const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+      return sublayer.id === sliderTime.min;
+    });
+    subLayerTime.visible = true;
+
+    subLayerTime.when(function () {
+      $("#sliderContainerTime").show();
+      $("#legendTimeVGV").show();
+      $("#deleteTimeVGV").show();
+      $("#settingsTime").show();
+      $("#helpTimeVGV").removeClass("in");
+
+      if (loading.isOpen()) {
+        loading.close();
+      }
+    });
+
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -2215,308 +2405,104 @@ function deleteTimeVGV() {
   $("#createTimeVGV").show();
 }
 
-function timeHechosVictimas() {
-  // Recupera el filtro espacial activo
-  let filtroGeografico = $("#selectFiltro_Geografico").val();
-  let parametros;
-
-  if (filtroGeografico == "filtroDepartamento") {
-    parametros = {
-      tLayerBase: nameLayerDepartamentos,
-      domFilter: "selectFiltro_Departamento",
-      nivelGeografico: "Departamento",
-      campoGeografico: "DPTO_NCDGO",
-      nombreGeografico: "DPTO_CNMBR",
-      adjNombreGeografico: null,
-    };
-  } else if (filtroGeografico == "filtroMunicipal") {
-    parametros = {
-      tLayerBase: nameLayerMunicipios,
-      domFilter: "selectFiltro_Municipios",
-      nivelGeografico: "Municipio",
-      campoGeografico: "MPIO_NCDGO",
-      nombreGeografico: "MPIO_CNMBR",
-      adjNombreGeografico: "DPTO_CNMBR",
-    };
-  } else if (filtroGeografico == "filtroDT") {
-    parametros = {
-      tLayerBase: nameLayerDT,
-      domFilter: "selectFiltro_DT",
-      nivelGeografico: "Dirección Territorial",
-      campoGeografico: "DT_NCDGO",
-      nombreGeografico: "DT_CNMBR",
-    };
-  } else if (filtroGeografico == "filtroPDET") {
-    parametros = {
-      tLayerBase: nameLayerPDET,
-      domFilter: "selectFiltro_PDET",
-      nivelGeografico: "PDET",
-      campoGeografico: "PDET_NCDGO",
-      nombreGeografico: "PDET_CNMBR",
-      adjNombreGeografico: null,
-    };
-  }
-
-  // Obtención de los datos finales
-  if (map.findLayerById(parametros.tLayerBase) == undefined) {
-    loadBaseGeografica(parametros.tLayerBase);
-    let tLayer = map.findLayerById(parametros.tLayerBase);
-    tLayer.when(function () {
-      timeFeaturesVGV(parametros);
-    });
-  } else {
-    timeFeaturesVGV(parametros);
-  }
-}
-
-function timeFeaturesVGV(lstParametros) {
-  const tLayer = map.findLayerById(lstParametros.tLayerBase);
-
-  let query = tLayer.createQuery();
-  query.where = "1=1";
-
-  let selectFiltroSelected = $(
-    "#" + lstParametros.domFilter + " option:selected"
-  );
-  let selectFiltroOption = $("#" + lstParametros.domFilter + " option");
-
-  if (selectFiltroSelected.length == 1) {
-    query.where =
-      lstParametros.campoGeografico +
-      " = " +
-      parseInt(selectFiltroSelected.val());
-  } else if (selectFiltroSelected.length < selectFiltroOption.length) {
-    let areaGeograficaSeleccionada = selectFiltroSelected.map(function (
-      a,
-      item
-    ) {
-      return parseInt(item.value);
-    });
-
-    areaGeograficaSeleccionada = Object.values(areaGeograficaSeleccionada);
-    areaGeograficaSeleccionada.pop();
-    areaGeograficaSeleccionada.pop();
-    areaGeograficaSeleccionada = areaGeograficaSeleccionada.join(",");
-    query.where =
-      lstParametros.campoGeografico +
-      " IN (" +
-      areaGeograficaSeleccionada +
-      ")";
-  }
-
-  tLayer.queryFeatures(query).then(function (results) {
-    let ext = tLayer.fullExtent;
-    let cloneExt = ext.clone();
-    view.goTo({
-      target: tLayer.fullExtent,
-      extent: cloneExt.expand(1.25),
-    });
-
-    let varVariable = $("#selectFiltro_Variable").val();
-    let txtVariable = $("#selectFiltro_Variable").val();
-
-    if (txtVariable == vgv_lstVariable[0]) {
-      varVariable = "PER_OCU";
-    } else if (txtVariable == vgv_lstVariable[1]) {
-      varVariable = "PER_DECLA";
-    } else if (txtVariable == vgv_lstVariable[2]) {
-      varVariable = "EVENTOS";
-    }
-
-    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
-      if (
-        vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
-        vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
-      ) {
-        let groupHechosAnio = vgv_group_Hechos.filter(function (item) {
-          return item.Anio == vgv_lstAnios[idxAnio];
-        })[0].Data;
-
-        let featuresTemp = [];
-        for (let indexGeo = 0; indexGeo < results.features.length; indexGeo++) {
-          results.features[indexGeo].attributes.OBJECTID = indexGeo;
-          results.features[indexGeo].attributes.VGV_NVALOR = null;
-
-          let groupHechoAnioGeo = groupHechosAnio.filter(function (item) {
-            return parseInt(item.VAR_AGRUPACION) == parseInt(results.features[indexGeo].attributes[lstParametros.campoGeografico])
-          })[0];
-
-          if (groupHechoAnioGeo != undefined && parseInt(groupHechoAnioGeo[varVariable]) > 0) {
-            results.features[indexGeo].attributes.VGV_NVALOR = parseInt(groupHechoAnioGeo[varVariable]);
-          }
-
-          featuresTemp.push($.extend(true, {}, results.features[indexGeo]));
-        }
-
-        let AnioActual = vgv_lstAnios[idxAnio];
-        let varContent = "";
-        if (lstParametros.adjNombreGeografico != null) {
-          varContent = `Durante el año <b>${AnioActual}</b> se presentaron <b>{VGV_NVALOR} ${txtVariable}</b> en el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}} ({${lstParametros.adjNombreGeografico}})</b>.`;
-        } else {
-          varContent = `Durante el año <b>${AnioActual}</b> se presentaron <b>{VGV_NVALOR} ${txtVariable}</b> en el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}}</b>.`;
-        }
-
-        const layerTime = new _FeatureLayer({
-          source: featuresTemp,
-          fields: tLayer.fields,
-          objectIdField: "OBJECTID",
-          opacity: 0.8,
-          title: txtVariable +
-            " por " +
-            lstParametros.nivelGeografico +
-            " para el año " +
-            vgv_lstAnios[idxAnio],
-          id: "Time_" + vgv_lstAnios[idxAnio],
-          popupTemplate: {
-            title: "<b>" + txtVariable + "</b>",
-            content: varContent,
-            fieldInfos: [{
-              fieldName: "VGV_NVALOR",
-              format: {
-                digitSeparator: true,
-                places: 0,
-              },
-            }, ],
-          },
-          copyright: "Unidad para las Víctimas",
-          visible: false,
-          legendEnabled: true,
-          listMode: "hide",
-          layerOrigen: tLayer.id.split("_")[1],
-          variableOrigen: txtVariable,
-        });
-
-        current_reportes = arrayRemove(current_reportes, "TimeSlider");
-        reporteUso(
-          "TimeSlider",
-          layerTime.layerOrigen + " - " + layerTime.variableOrigen,
-          "load"
-        );
-
-        map.add(layerTime);
-        generateSimbology(layerTime);
-      }
-    }
-
-    const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
-    map.reorder(tLayerLabels, map.layers.items.length);
-    tLayerLabels.visible = true;
-
-    displayTimeVGV();
-  });
-}
-
 function setTimeYear(value) {
-  var sliderValue = document.getElementById("sliderValue");
-  sliderValue.innerHTML = Math.floor(value);
-  sliderTime.viewModel.setValue(0, value);
+  try {
+    var sliderValue = document.getElementById("sliderValue");
+    sliderValue.innerHTML = Math.floor(value);
+    sliderTime.viewModel.setValue(0, value);
 
-  offLayersTime();
-  map.findLayerById("Time_" + Math.floor(value).toString()).visible = true;
-
-  // layer.renderer = createRenderer(value);
+    offLayersTime();
+    let layerTime = map.findLayerById(idLayerTime);
+    const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+      return sublayer.id === parseInt(Math.floor(value))
+    });
+    subLayerTime.visible = true;
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function startAnimation() {
-  stopAnimation();
-  animation = animate(sliderTimeRange.values[0]);
-  playButton.classList.add("toggled");
+  try {
+    stopAnimation();
+    animation = animate(sliderTimeRange.values[0]);
+    playButton.classList.add("toggled");
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function stopAnimation() {
-  if (!animation) {
-    return;
-  }
-
-  animation.remove();
-  animation = null;
-  playButton.classList.remove("toggled");
-}
-
-function animate(startValue) {
-  var animating = true;
-  var value = startValue;
-
-  var frame = function (timestamp) {
-    if (!animating) {
+  try {
+    if (!animation) {
       return;
     }
 
-    value += 0.5;
-    if (value > sliderTimeRange.values[1]) {
-      value = sliderTimeRange.values[0];
-    }
+    animation.remove();
+    animation = null;
+    playButton.classList.remove("toggled");
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-    setTimeYear(value);
+function animate(startValue) {
+  try {
+    var animating = true;
+    var value = startValue;
 
-    setTimeout(function () {
-      requestAnimationFrame(frame);
-    }, 1000 / velocidadTime);
-  };
+    var frame = function (timestamp) {
+      if (!animating) {
+        return;
+      }
 
-  frame();
+      value += 0.5;
+      if (value > sliderTimeRange.values[1]) {
+        value = sliderTimeRange.values[0];
+      }
 
-  return {
-    remove: function () {
-      animating = false;
-    },
-  };
+      setTimeYear(value);
+
+      setTimeout(function () {
+        requestAnimationFrame(frame);
+      }, 1000 / velocidadTime);
+    };
+
+    frame();
+
+    return {
+      remove: function () {
+        animating = false;
+      },
+    };
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function inputTimeHandler(event) {
-  stopAnimation();
-  setTimeYear(event.value);
-}
-
-function displayTimeVGV() {
-  sliderTime.on("thumb-drag", inputTimeHandler);
-
-  setTimeYear(sliderTimeRange.values[0]);
-  let tLayerTimeInicial = map.findLayerById(
-    "Time_" + sliderTimeRange.values[0].toString()
-  );
-  tLayerTimeInicial.when(function () {
-    $("#sliderContainerTime").show();
-    $("#legendTimeVGV").show();
-    $("#deleteTimeVGV").show();
-    $("#settingsTime").show();
-    $("#helpTimeVGV").removeClass("in");
-
-    if (loading.isOpen()) {
-      loading.close();
-    }
-  });
+  try {
+    stopAnimation();
+    setTimeYear(event.value);
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function offLayersTime() {
+  let layerTime = map.findLayerById(idLayerTime);
   for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
     if (
       vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
       vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
     ) {
-      if (
-        map.findLayerById("Time_" + vgv_lstAnios[idxAnio].toString()).visible
-      ) {
-        map.findLayerById(
-          "Time_" + vgv_lstAnios[idxAnio].toString()
-        ).visible = false;
-      }
+      const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+        return sublayer.id === vgv_lstAnios[idxAnio];
+      });
+      subLayerTime.visible = false;
+
     }
   }
-}
-
-function simbologyTimeVGV() {
-  closeSimbology();
-
-  if (map.findLayerById("Time_" + sliderTimeRange.values[0])) {
-    gotoSimbology(map.findLayerById("Time_" + sliderTimeRange.values[0]));
-  }
-
-  stopAnimation();
-  $("#speed-time").val(1);
-  $("#speed-time").trigger("change");
-  $("#settingsTimeVGV").removeClass("in");
-  setTimeYear(sliderTimeRange.values[0]);
 }
 
 // Graficas
@@ -3845,9 +3831,7 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
 
     const tLayer = map.findLayerById(lstParametros.tLayerBase);
 
-    if (map.findLayerById(settingsTitleCSV)) {
-      map.remove(map.findLayerById(settingsTitleCSV));
-    }
+    removeLayer(settingsTitleCSV);
 
     let query = tLayer.createQuery();
     query.where = "1=1";
@@ -4738,6 +4722,12 @@ function ajustarRamp() {
   let color_3 = $("#styleRampColor3").val();
 
   $("#styleColorRamp").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
+}
+
+function removeLayer(tLayer) {
+  if (map.findLayerById(tLayer)) {
+    map.remove(map.findLayerById(tLayer));
+  }
 }
 
 window.Clipboard = (function (window, document, navigator) {
