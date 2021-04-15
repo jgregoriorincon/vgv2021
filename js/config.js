@@ -274,6 +274,7 @@ var sliderTime, sliderTimeRange;
 var animation = null;
 var playButton;
 var idLayerTime;
+var loopFull = false;
 
 // Pako
 let avancePako = 115000;

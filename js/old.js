@@ -1366,3 +1366,22 @@ function offLayersTime() {
 
     }
 }
+
+
+
+for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+    if (
+      vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
+      vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+    ) {
+      let AnioTime = vgv_lstAnios[idxAnio];
+
+      setTimeout(() => {
+        offLayersTime();
+        onLayerTime(AnioTime);
+        var sliderValue = document.getElementById("sliderValue");
+        sliderValue.innerHTML = AnioTime;
+        // sliderTime.viewModel.setValue(0, AnioTime);
+      }, 2000 * (AnioTime - sliderTime.min));
+    }
+  }

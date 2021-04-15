@@ -627,7 +627,7 @@
                   bastante memoria RAM de su navegador.
                   <br />
                   <br />
-                  Este proceso puede demorar entre 3 y 5 minutos.
+                  Este proceso puede demorar entre 30 segundos y un minuto.
                 </p>
                 <br />
                 <div class="form-horizontal calcite-form-padding no-padding-top">
@@ -654,12 +654,6 @@
                       <input class="col-xs-12" type="range" id="speed-time" min="1" max="30" value="1" step="1"
                         aria-valuemin="1" aria-valuemax="30" aria-valuenow="1">
                     </div>
-                    <div class="form-group">
-                      <div class="col-xs-10 col-xs-offset-1">
-                        <button id="simbologyTimeVGV" type="button" class="btn btn-primary btn-block"
-                          onclick="simbologyTimeVGV();">Cambiar simbología</button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -676,7 +670,7 @@
                     <div id="sliderContainerTime" class="esri-widget" style="display: none;">
                       <span id="sliderValue"></span>
                       <div id="sliderInnerContainer">
-                        <div id="sliderTime"></div>
+                        <div id="sliderTime" style="display: none;"></div>
                       </div>
                       <div id="playButton" class="esri-widget esri-widget--button toggle-button">
                         <div>

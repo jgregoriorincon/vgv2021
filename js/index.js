@@ -2367,7 +2367,6 @@ function displayTimeVGV() {
 }
 
 function deleteTimeVGV() {
-  vgv_group_Hechos = [];
 
   current_reportes = arrayRemove(current_reportes, "TimeSlider");
   reporteUso(
@@ -2376,11 +2375,7 @@ function deleteTimeVGV() {
     "delete"
   );
 
-  for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
-    if (map.findLayerById("Time_" + vgv_lstAnios[idxAnio])) {
-      map.remove(map.findLayerById("Time_" + vgv_lstAnios[idxAnio]));
-    }
-  }
+  removeLayer(idLayerTime);
 
   sliderTimeRange.values[0] = vgv_lstAnios[0];
   sliderTimeRange.values[1] = vgv_lstAnios[vgv_lstAnios.length - 1];
@@ -2407,16 +2402,17 @@ function deleteTimeVGV() {
 
 function setTimeYear(value) {
   try {
+    let AnioTime = parseInt(Math.floor(value));
     var sliderValue = document.getElementById("sliderValue");
-    sliderValue.innerHTML = Math.floor(value);
-    sliderTime.viewModel.setValue(0, value);
+    sliderValue.innerHTML = AnioTime;
+    if (loopFull){
+      $("#sliderTime").show();
+      sliderTime.viewModel.setValue(0, AnioTime);
+    }
 
     offLayersTime();
-    let layerTime = map.findLayerById(idLayerTime);
-    const subLayerTime = layerTime.sublayers.find(function (sublayer) {
-      return sublayer.id === parseInt(Math.floor(value))
-    });
-    subLayerTime.visible = true;
+    onLayerTime(AnioTime);
+
   } catch (error) {
     console.error(error)
   }
@@ -2459,6 +2455,7 @@ function animate(startValue) {
       value += 0.5;
       if (value > sliderTimeRange.values[1]) {
         value = sliderTimeRange.values[0];
+        loopFull = true;
       }
 
       setTimeYear(value);
@@ -2503,6 +2500,14 @@ function offLayersTime() {
 
     }
   }
+}
+
+function onLayerTime(Anio) {
+  let layerTime = map.findLayerById(idLayerTime);
+  const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+    return sublayer.id === Anio
+  });
+  subLayerTime.visible = true;
 }
 
 // Graficas
