@@ -39,9 +39,7 @@ var current_layers = [];
 var consulta_layers = [];
 
 // Simbologia
-var schemeLayer = [];
 var legendWidget;
-var sliderSimbology;
 
 // Layer de dibujo y medicion
 var layerGraphicsTemp;

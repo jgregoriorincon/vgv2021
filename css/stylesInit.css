@@ -280,48 +280,6 @@ label.checkbox {
   text-align: center !important;
 }
 
-/* Simbologia */
-#panelSymbologyP {
-  top: calc(100vh - 525px);
-  right: 50px;
-  left: 55px;
-  height: 320px;
-}
-
-#headingSymbology {
-  background-color: var(--color-VGV);
-}
-
-#theme-select,
-#num-classes,
-#speed-time {
-  height: 30px;
-}
-
-.border {
-  padding: 10px;
-}
-
-.border:hover {
-  box-shadow: inset 0 0 0 10px var(--back-VGV);
-}
-
-.colorSchemaNameP {
-  margin: auto;
-  text-align: center;
-}
-
-.colorSchemaNameRow {
-  font-size: x-small;
-  height: 54px;
-  display: flex;
-  margin: auto;
-}
-
-.colorSchemaNameRow:hover {
-  background-color: var(--back-VGV);
-}
-
 #selectFiltro_Geografico,
 #selectFiltro_Anio,
 #selectFiltro_Variable,
@@ -543,13 +501,6 @@ div.form-group {
     right: 50px;
     left: 0px;
     bottom: 35px;
-  }
-
-  #panelSymbologyP {
-    top: calc(100vh - 525px);
-    right: 50px;
-    left: 0px;
-    height: 320px;
   }
 }
 

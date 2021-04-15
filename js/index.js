@@ -1191,30 +1191,9 @@ function addWidgets() {
         hideLayer(tLayer.id);
       }
 
-      schemeLayer = schemeLayer.filter(function (item) {
-        return item.idLayer != tLayer.id;
-      });
-
-      consulta_layers = consulta_layers.filter(function (item) {
-        return item != tLayer.id;
-      });
-
-      vgv_filter_Hechos = vgv_filter_Hechos.filter(function (item) {
-        return item.Title != tLayer.id;
-      });
-
-      if (schemeLayer.indexOf(tLayer.id) != -1) {
-        hideLayer(tLayer.id);
-      }
-
-      if (schemeLayer.length == 0 && current_layers == 0) {
-        if (LegendExpand.expanded) {
-          LegendExpand.collapse();
-        }
-      }
-
       removeOptionSwipe(tLayer);
       map.remove(tLayer);
+
     } else if (id === "simbology-layer") {
       collapseExpand(null);
       closeSimbology();
