@@ -79,8 +79,8 @@ $(document).ready(function () {
   });
   $("#settingsTipoChart").on("change", function () {
     if ($("#settingsTipoChart").val() == "heatmap") {
-      $("#labelParametro2Chart").show();
-      $("#settingsParametro2Chart").show();
+      // $("#labelParametro2Chart").show();
+      // $("#settingsParametro2Chart").show();
     } else {
       $("#labelParametro2Chart").hide();
       $("#settingsParametro2Chart").hide();
@@ -506,9 +506,6 @@ function InitMap2() {
     // Carga la capa de labels
     loadLabelsGeo();
 
-    // Carga automaticamente los datos del modelo integrado
-    // loadDataVGV();
-
     $("#escalaImpresion").val(formatNumber(parseInt(view.scale)));
 
     let yearParameter = getParameterByName("year");
@@ -558,16 +555,16 @@ function InitMap2() {
     });
   });
 
-  // _watchUtils.when(legendWidget, "activeLayerInfos.length", function (evt) {
-  //   setTimeout(function () {
-  //     activeFirstLegend();
-  //   }, 500);
-  // });
+  _watchUtils.when(legendWidget, "activeLayerInfos.length", function (evt) {
+    setTimeout(function () {
+      activeFirstLegend();
+    }, 500);
+  });
 }
 
 function addWidgets() {
   // Map widgets
-  const home = new _Home({
+  home = new _Home({
     view: view,
   });
   const zoom = new _Zoom({
@@ -675,16 +672,6 @@ function addWidgets() {
   var handle = basemapGallery.watch("activeBasemap", function (basemap) {
     current_reportes = arrayRemove(current_reportes, "mapa base");
     reporteUso("mapa base", basemap.title, "load");
-    // generateColors();
-    // for (let index = 0; index < map.layers.items.length; index++) {
-    //   const tLayer = map.layers.items[index];
-    //   if (
-    //     tLayer.id.startsWith("Results_Base_") ||
-    //     tLayer.id.startsWith("Time_")
-    //   ) {
-    //     generateSimbology(tLayer);
-    //   }
-    // }
   });
 
   // Dibujar
@@ -1182,7 +1169,12 @@ function addWidgets() {
     let id = event.action.id;
 
     if (id === "full-extent") {
-      view.goTo(tLayer.fullExtent);
+      let extent = tLayer.fullExtent;
+      if (extent.ymax == 90 && extent.ymin == -90 && extent.xmax == 180 && extent.xmin == -180) {
+        home.viewModel.go();
+      } else {
+        view.goTo(tLayer.fullExtent);
+      }
     } else if (id === "delete-layer") {
       collapseExpand(null);
       closeTabla();
@@ -1194,10 +1186,6 @@ function addWidgets() {
       removeOptionSwipe(tLayer);
       map.remove(tLayer);
 
-    } else if (id === "simbology-layer") {
-      collapseExpand(null);
-      closeSimbology();
-      gotoSimbology(tLayer);
     } else if (id === "tabla-layer") {
       collapseExpand(null);
 
@@ -1280,12 +1268,6 @@ function defineActions(event) {
     },
   ];
 
-  let actionSimbology = [{
-    title: "Ajustar simbologia",
-    className: "esri-icon-settings",
-    id: "simbology-layer",
-  }, ];
-
   let actionDelete = [{
     title: "Borrar capa",
     className: "esri-icon-trash",
@@ -1316,7 +1298,6 @@ function defineActions(event) {
       actionFullExtent,
       actionTable,
       actionTransparency,
-      actionSimbology,
       actionDelete,
     ];
   }
@@ -1688,11 +1669,11 @@ function loadFechaCorte() {
 }
 
 function loadDomainsVGV() {
-  const table = new _FeatureLayer({
+  VGV_TABLA_DATOS = new _FeatureLayer({
     url: URL_RUV_DATOS
   });
-  table.load().then(function () {
-    const fields = table.sourceJSON.fields;
+  VGV_TABLA_DATOS.load().then(function () {
+    const fields = VGV_TABLA_DATOS.sourceJSON.fields;
     fields.forEach(field => {
       switch (field.name) {
         case "RUV_NHECHO":
@@ -1717,33 +1698,6 @@ function loadDomainsVGV() {
     });
     loadSelectMultiple();
   });
-}
-
-function loadDataVGV() {
-  for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
-    let numAnio = vgv_lstAnios[idxAnio].toString();
-    let datosAnio = vgv_compress_Hechos.filter(function (item) {
-      return item.Anio == numAnio;
-    });
-
-    if (datosAnio.length == 0) {
-      $.ajax({
-        url: URL_HechosBuscar_Services + numAnio + "C.json",
-        success: function (data) {
-          vgv_compress_Hechos.push({
-            Data: data,
-            Anio: numAnio,
-          });
-        },
-        error: function (xhr, status, error) {
-          alerta(
-            "No se pudieron cargar los datos desde la Base de Datos\n\nPor favor intente acceder al visor más tarde."
-          );
-          console.log(error);
-        },
-      });
-    }
-  }
 }
 
 function loadLabelsGeo() {
@@ -2030,6 +1984,7 @@ function aplicarParametrosVGV() {
     url: URL_RUV,
     title: titleRUV,
     id: idLayerRUV,
+    anio: Anio,
     visible: true,
     sublayers: [{
       title: titleRUV,
@@ -2384,7 +2339,7 @@ function setTimeYear(value) {
     let AnioTime = parseInt(Math.floor(value));
     var sliderValue = document.getElementById("sliderValue");
     sliderValue.innerHTML = AnioTime;
-    if (loopFull){
+    if (loopFull) {
       $("#sliderTime").show();
       sliderTime.viewModel.setValue(0, AnioTime);
     }
@@ -2520,41 +2475,105 @@ function maxChart() {
   $("#panelChartP").toggleClass("panelTablePSM");
 }
 
-function generateDataChart(tLayer) {
-  vgv_graphic_hechos = [];
+async function generateDataChart(tLayer) {
+  let strWhere = "RUV_CVIGENCIA = '" + tLayer.anio + "' and DPTO_NCDGO <> 0";
 
-  let filterDataLayer = vgv_filter_Hechos.filter(function (item) {
-    return item.Title == tLayer.id;
-  })[0].DataFilter;
+  const queryHecho = groupDataVGV(strWhere, "RUV_NHECHO");
+  const querySexo = groupDataVGV(strWhere, "RUV_NSEXO");
+  const queryEtnia = groupDataVGV(strWhere, "RUV_NETNIA");
+  const queryDiscapacidad = groupDataVGV(strWhere, "RUV_NDISCAPACIDAD");
+  const queryCicloVital = groupDataVGV(strWhere, "RUV_NCICLOVITAL");
 
-  vgv_graphic_hechos.push({
-    Parametros: "HECHO",
-    DataGroup: agruparHechosVictimas(filterDataLayer, "HECHO"),
-  });
-  vgv_graphic_hechos.push({
-    Parametros: "SEXO",
-    DataGroup: agruparHechosVictimas(filterDataLayer, "SEXO"),
-  });
-  vgv_graphic_hechos.push({
-    Parametros: "ETNIA",
-    DataGroup: agruparHechosVictimas(filterDataLayer, "ETNIA"),
-  });
-  vgv_graphic_hechos.push({
-    Parametros: "DISCAPACIDAD",
-    DataGroup: agruparHechosVictimas(filterDataLayer, "DISCAPACIDAD"),
-  });
-  vgv_graphic_hechos.push({
-    Parametros: "CICLO_VITAL",
-    DataGroup: agruparHechosVictimas(filterDataLayer, "CICLO_VITAL"),
-  });
+  try {
+    let [dataVGVHecho, dataVGVSexo, dataVGVEtnia, dataVGVDiscapacidad, dataVGVCicloVital] = await Promise.all([
+      VGV_TABLA_DATOS.queryFeatures(queryHecho).then((response) => {
+        return response.features
+      }),
+      VGV_TABLA_DATOS.queryFeatures(querySexo).then((response) => {
+        return response.features
+      }),
+      VGV_TABLA_DATOS.queryFeatures(queryEtnia).then((response) => {
+        return response.features
+      }),
+      VGV_TABLA_DATOS.queryFeatures(queryDiscapacidad).then((response) => {
+        return response.features
+      }),
+      VGV_TABLA_DATOS.queryFeatures(queryCicloVital).then((response) => {
+        return response.features
+      })
+    ]);
 
-  $("#tituloChart").text("Gráficos - " + tLayer.title);
-  $("#panelChartP").data("idLayer", tLayer.id);
-  $("#panelChartP").show();
-  generateVisualChart();
+    vgv_graphic_hechos = [];
+    vgv_graphic_hechos.push({
+      Parametros: "HECHO",
+      DataGroup: processDataGroupVGV(dataVGVHecho, 'RUV_NHECHO', vgv_lstHechos)
+    });
+    vgv_graphic_hechos.push({
+      Parametros: "SEXO",
+      DataGroup: processDataGroupVGV(dataVGVSexo, 'RUV_NSEXO', vgv_lstSexo)
+    });
+    vgv_graphic_hechos.push({
+      Parametros: "ETNIA",
+      DataGroup: processDataGroupVGV(dataVGVEtnia, 'RUV_NETNIA', vgv_lstEtnia)
+    });
+    vgv_graphic_hechos.push({
+      Parametros: "DISCAPACIDAD",
+      DataGroup: processDataGroupVGV(dataVGVDiscapacidad, 'RUV_NDISCAPACIDAD', vgv_lstDiscapacidad)
+    });
+    vgv_graphic_hechos.push({
+      Parametros: "CICLO_VITAL",
+      DataGroup: processDataGroupVGV(dataVGVCicloVital, 'RUV_NCICLOVITAL', vgv_lstCicloVital)
+    });
 
-  current_reportes = arrayRemove(current_reportes, "chart");
-  reporteUso("chart", tLayer.id, "load");
+    $("#tituloChart").text("Gráficos - " + tLayer.title);
+    $("#panelChartP").data("idLayer", tLayer.id);
+    $("#panelChartP").show();
+    generateVisualChart();
+
+    current_reportes = arrayRemove(current_reportes, "chart");
+    reporteUso("chart", tLayer.id, "load");
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function processDataGroupVGV(dataVGV, field, vgvList) {
+  let dataGroupVGV = [];
+  dataVGV.forEach(data => {
+    dataGroupVGV.push(data.attributes);
+  });
+  for (let idxList = 0; idxList < vgvList.length; idxList++) {
+    for (let idxData = 0; idxData < dataGroupVGV.length; idxData++) {
+      if (vgvList[idxList].code == dataGroupVGV[idxData][field]) {
+        dataGroupVGV[idxData].VAR_AGRUPACION = vgvList[idxList].name;
+        delete dataGroupVGV[idxData][field];
+      }
+    }
+  }
+  return dataGroupVGV;
+}
+
+function groupDataVGV(strWhere, fieldGroup) {
+  const query = new _Query();
+  query.where = strWhere;
+  query.returnGeometry = false;
+  query.outFields = ["*"];
+  query.outStatistics = [{
+    onStatisticField: "RUV_NDECLARACION",
+    outStatisticFieldName: "PER_DECLA",
+    statisticType: "sum"
+  }, {
+    onStatisticField: "RUV_NEVENTOS",
+    outStatisticFieldName: "EVENTOS",
+    statisticType: "sum"
+  }, {
+    onStatisticField: "RUV_NOCURRENCIA",
+    outStatisticFieldName: "PER_OCU",
+    statisticType: "sum"
+  }];
+  query.groupByFieldsForStatistics = [fieldGroup];
+  return query;
 }
 
 function generateVisualChart() {
@@ -2574,11 +2593,11 @@ function generateVisualChart() {
   let tipoValueChart = $("#settingsTipoChart").val();
 
   if (tipoValueChart == "heatmap") {
-    generateVisual2DChart(
-      parametro1ValueChart,
-      parametro2ValueChart,
-      variableValueChart
-    );
+    // generateVisual2DChart(
+    //   parametro1ValueChart,
+    //   parametro2ValueChart,
+    //   variableValueChart
+    // );
   } else {
     let dataGroupChart = vgv_graphic_hechos.filter(function (item) {
       return item.Parametros == parametro1ValueChart;

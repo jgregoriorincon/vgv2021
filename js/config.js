@@ -15,6 +15,7 @@ var _query, _aspect;
 // componentes de mapas
 var map;
 var view;
+var home;
 var zoomInicial = 4.5;
 var centerInicial = [-74, 4];
 
@@ -90,10 +91,11 @@ var vgv_lstImpresion = [{
 var URL_RUV = URL_server + "/RUV/RUV/MapServer";
 var URL_RUV_DATOS = URL_RUV + "/3";
 var URL_RUV_FECHACORTE = URL_RUV + "/4";
+var VGV_TABLA_DATOS;
+var vgv_graphic_hechos;
 
 // Datos a procesar
 var URL_DT_Services = "./files/data/data_DTC.json";
-var URL_HechosBuscar_Services = "./files/data/data";
 
 // Nombres capas geográficas
 var nameLayerDepartamentos = "Base_Departamentos";
@@ -113,7 +115,6 @@ var vgv_lstPDET = [];
 var vgv_lstAnios = [];
 
 // Listados base
-var vgv_lstEnfoque = ["SEXO", "DISCAPACIDAD", "ETNIA", "CICLO_VITAL"];
 var vgv_lstVariable = [{
   nombre: "EVENTOS",
   titulo: "Eventos"

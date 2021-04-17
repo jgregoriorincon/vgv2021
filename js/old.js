@@ -249,6 +249,33 @@ function initMap() {
 }
 
 /* Creacion VGV */
+function loadDataVGV() {
+    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+        let numAnio = vgv_lstAnios[idxAnio].toString();
+        let datosAnio = vgv_compress_Hechos.filter(function (item) {
+            return item.Anio == numAnio;
+        });
+
+        if (datosAnio.length == 0) {
+            $.ajax({
+                url: URL_HechosBuscar_Services + numAnio + "C.json",
+                success: function (data) {
+                    vgv_compress_Hechos.push({
+                        Data: data,
+                        Anio: numAnio,
+                    });
+                },
+                error: function (xhr, status, error) {
+                    alerta(
+                        "No se pudieron cargar los datos desde la Base de Datos\n\nPor favor intente acceder al visor más tarde."
+                    );
+                    console.log(error);
+                },
+            });
+        }
+    }
+}
+
 function loadHechosVictimas(varAnio, offLoading) {
     let datosCompressAnio = vgv_compress_Hechos.filter(function (item) {
         return item.Anio == varAnio;
@@ -1371,17 +1398,17 @@ function offLayersTime() {
 
 for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
     if (
-      vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
-      vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+        vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
+        vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
     ) {
-      let AnioTime = vgv_lstAnios[idxAnio];
+        let AnioTime = vgv_lstAnios[idxAnio];
 
-      setTimeout(() => {
-        offLayersTime();
-        onLayerTime(AnioTime);
-        var sliderValue = document.getElementById("sliderValue");
-        sliderValue.innerHTML = AnioTime;
-        // sliderTime.viewModel.setValue(0, AnioTime);
-      }, 2000 * (AnioTime - sliderTime.min));
+        setTimeout(() => {
+            offLayersTime();
+            onLayerTime(AnioTime);
+            var sliderValue = document.getElementById("sliderValue");
+            sliderValue.innerHTML = AnioTime;
+            // sliderTime.viewModel.setValue(0, AnioTime);
+        }, 2000 * (AnioTime - sliderTime.min));
     }
-  }
+}
