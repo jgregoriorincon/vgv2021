@@ -1,30 +1,38 @@
 // Variables globales ESRI
 var _esriConfig, _Map, _Basemap, _MapView, _Graphic;
-var _Collection, _watchUtils, _esriLang, _esriRequest;
-var _Layer, _FeatureLayer, _GeoJSONLayer, _GraphicsLayer, _MapImageLayer;
+var _Collection, _watchUtils;
+var _FeatureLayer, _GeoJSONLayer, _GraphicsLayer, _MapImageLayer;
 var _QueryTask, _Query;
 var _Color, _colorRendererCreator;
-var _PopupTemplate, _webMercatorUtils, _SpatialReference, _Point;
-var _Home, _Zoom, _Compass, _Locate, _Track, _Search, _Legend, _BasemapGallery, _LocalBasemapsSource, _ScaleBar, _Attribution, _LayerList, _Locator, _Expand, _Swipe, _Slider, _Print;
+var _webMercatorUtils, _SpatialReference, _Point;
+var _Home, _Zoom, _Compass, _Locate, _Track, _Search, _Legend, _BasemapGallery, _LocalBasemapsSource, _ScaleBar, _Attribution, _LayerList, _Expand, _Swipe, _Slider;
 var _Sketch, _SketchViewModel, _DistanceMeasurement2D, _AreaMeasurement2D, _CoordinateConversion, _FormatCoordinate, _ConversionCoordinate;
 var _PrintTask, _PrintTemplate, _PrintParameters;
 var _CalciteMaps, _CalciteMapArcGISSupport;
 var _Collapse, _Dropdown, _Tab;
-var _query, _aspect;
 
 // componentes de mapas
 var map;
 var view;
 var home;
-var zoomInicial = 4.5;
-var centerInicial = [-74, 4];
+var initialExtent = {
+  "type": "extent",
+  "spatialReference": {
+      "latestWkid": 3857,
+      "wkid": 102100
+  },
+  "xmin": -9605046.96521345,
+  "ymin": -512072.09152068413,
+  "xmax": -6913392.128351059,
+  "ymax": 1481222.7193910647
+};
 
 // Widgets
 var expandWidgets = [];
 var swipeMapa;
 var layerListWigdet;
+var legendWidget;
 var LegendExpand;
-var printTask;
 
 // z-index base
 var current_Zindex = 4100;
@@ -39,9 +47,6 @@ var base_layers = [];
 var current_layers = [];
 var consulta_layers = [];
 
-// Simbologia
-var legendWidget;
-
 // Layer de dibujo y medicion
 var layerGraphicsTemp;
 var measureDistance, measureArea, measurePoint;
@@ -51,12 +56,13 @@ var tLayerBaseLabelsId = "Base_Labels";
 var categoriaBaseOcultos = "0";
 
 // URLs base
-var URL_base = "https://vgv.unidadvictimas.gov.co";
-var URL_server = URL_base + "/server/rest/services";
-var URL_proxy = URL_base + "/DotNet/proxy.ashx";
+var URL_BASE = "https://vgv.unidadvictimas.gov.co";
+var URL_SERVER = URL_BASE + "/server/rest/services";
+var URL_PROXY = URL_BASE + "/DotNet/proxy.ashx";
 
 // Impresion
-var URL_Print_Services = URL_server + "/GP_UARIV/Imprimir/GPServer/Export%20Web%20Map";
+var printTask;
+var URL_Print_Services = URL_SERVER + "/GP_UARIV/Imprimir/GPServer/Export%20Web%20Map";
 var vgv_lstImpresion = [{
     nombre: "MAP_ONLY",
     titulo: "Solo mapa"
@@ -88,7 +94,7 @@ var vgv_lstImpresion = [{
 ];
 
 // Servicios RUV
-var URL_RUV = URL_server + "/RUV/RUV/MapServer";
+var URL_RUV = URL_SERVER + "/RUV/RUV/MapServer";
 var URL_RUV_DATOS = URL_RUV + "/3";
 var URL_RUV_FECHACORTE = URL_RUV + "/4";
 var VGV_TABLA_DATOS;

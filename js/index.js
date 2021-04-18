@@ -176,10 +176,6 @@ function init() {
   updateSize();
 
   // Inicializar mapa
-  if (window.innerWidth <= 500) {
-    zoomInicial = 4;
-    centerInicial = [-73, 4.5];
-  }
   initMap();
 }
 
@@ -207,11 +203,8 @@ function initMap() {
     // Core
     "esri/core/Collection",
     "esri/core/watchUtils",
-    "esri/core/lang",
-    "esri/request",
 
     // Layers
-    "esri/layers/Layer",
     "esri/layers/FeatureLayer",
     "esri/layers/GeoJSONLayer",
     "esri/layers/GraphicsLayer",
@@ -226,7 +219,6 @@ function initMap() {
     "esri/smartMapping/renderers/color",
 
     // Popup
-    "esri/PopupTemplate",
     "esri/geometry/support/webMercatorUtils",
     "esri/geometry/SpatialReference",
     "esri/geometry/Point",
@@ -244,11 +236,9 @@ function initMap() {
     "esri/widgets/ScaleBar",
     "esri/widgets/Attribution",
     "esri/widgets/LayerList",
-    "esri/tasks/Locator",
     "esri/widgets/Expand",
     "esri/widgets/Swipe",
     "esri/widgets/Slider",
-    "esri/widgets/Print",
 
     "esri/widgets/Sketch",
     "esri/widgets/Sketch/SketchViewModel",
@@ -272,8 +262,6 @@ function initMap() {
     "bootstrap/Tab",
 
     // Dojo
-    "dojo/query",
-    "dojo/aspect",
     "dojo/domReady!",
   ], function (
     __esriConfig,
@@ -281,11 +269,10 @@ function initMap() {
     __Basemap,
     __MapView,
     __Graphic,
+
     __Collection,
     __watchUtils,
-    __esriLang,
-    __esriRequest,
-    __Layer,
+    
     __FeatureLayer,
     __GeoJSONLayer,
     __GraphicsLayer,
@@ -297,10 +284,10 @@ function initMap() {
     __Color,
     __colorRendererCreator,
 
-    __PopupTemplate,
     __webMercatorUtils,
     __SpatialReference,
     __Point,
+
     __Home,
     __Zoom,
     __Compass,
@@ -313,11 +300,10 @@ function initMap() {
     __ScaleBar,
     __Attribution,
     __LayerList,
-    __Locator,
     __Expand,
     __Swipe,
     __Slider,
-    __Print,
+    
     __Sketch,
     __SketchViewModel,
     __DistanceMeasurement2D,
@@ -325,16 +311,17 @@ function initMap() {
     __CoordinateConversion,
     __FormatCoordinate,
     __ConversionCoordinate,
+
     __PrintTask,
     __PrintTemplate,
     __PrintParameters,
+
     __CalciteMaps,
     __CalciteMapArcGISSupport,
+
     __Collapse,
     __Dropdown,
-    __Tab,
-    __query,
-    __aspect
+    __Tab
   ) {
     try {
       _esriConfig = __esriConfig;
@@ -345,10 +332,7 @@ function initMap() {
 
       _Collection = __Collection;
       _watchUtils = __watchUtils;
-      _esriLang = __esriLang;
-      _esriRequest = __esriRequest;
 
-      _Layer = __Layer;
       _FeatureLayer = __FeatureLayer;
       _GeoJSONLayer = __GeoJSONLayer;
       _GraphicsLayer = __GraphicsLayer;
@@ -360,7 +344,6 @@ function initMap() {
       _Color = __Color;
       _colorRendererCreator = __colorRendererCreator;
 
-      _PopupTemplate = __PopupTemplate;
       _webMercatorUtils = __webMercatorUtils;
       _SpatialReference = __SpatialReference;
       _Point = __Point;
@@ -377,11 +360,9 @@ function initMap() {
       _ScaleBar = __ScaleBar;
       _Attribution = __Attribution;
       _LayerList = __LayerList;
-      _Locator = __Locator;
       _Expand = __Expand;
       _Swipe = __Swipe;
       _Slider = __Slider;
-      _Print = __Print;
 
       _Sketch = __Sketch;
       _SketchViewModel = __SketchViewModel;
@@ -402,9 +383,6 @@ function initMap() {
       _Dropdown = __Dropdown;
       _Tab = __Tab;
 
-      _query = __query;
-      _aspect = __aspect;
-
       // Carga de servicios
       loadServicesUARIV();
 
@@ -419,7 +397,7 @@ function initMap() {
 function InitMap2() {
   // Config
   _esriConfig.apiKey = "AAPK16dc245e51af4cd58792f446f40c58edICSmkURdJi5igB7OXHABEip3-nJYIwlv1PBR87gdjey1CAdMES1tgYBrPqjDZhFo";
-  _esriConfig.request.proxyUrl = URL_proxy;
+  _esriConfig.request.proxyUrl = URL_PROXY;
   _esriConfig.timeout = 600000;
   _esriConfig.request.interceptors.push({
     // Captura las peticiones a la URL de impresión
@@ -463,8 +441,7 @@ function InitMap2() {
   view = new _MapView({
     container: "mapViewDiv",
     map: map,
-    zoom: zoomInicial,
-    center: centerInicial,
+    extent: initialExtent,
     padding: {
       top: 50,
       bottom: 0,
@@ -474,6 +451,7 @@ function InitMap2() {
     },
   });
 
+  view.constraints.geometry = initialExtent;
   view.constraints.snapToZoom = false;
 
   // Dibujar
@@ -1050,13 +1028,6 @@ function addWidgets() {
   // Print
   printTask = new _PrintTask({
     url: URL_Print_Services,
-  });
-
-  var print = new _Print({
-    view: view,
-    container: "printDiv",
-    // specify your own print service
-    printServiceUrl: "https://vgv.unidadvictimas.gov.co/server/rest/services/GP_UARIV/Imprimir/GPServer/Export%20Web%20Map"
   });
 
   // Time
