@@ -272,16 +272,18 @@
         </div>
       </div>
       <div id="collapseLoadCSV" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLoadCSV">
-        <div class="panel-body">
+        <div class="panel-body panel-500w">
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#loadCSV" aria-controls="loadCSV" role="tab"
                 data-toggle="tab">Subir CSV</a></li>
+            <li role="presentation"><a href="#simbologiaCSV" aria-controls="simbologiaVGV" role="tab"
+                data-toggle="tab">Simbología</a></li>
             <li role="presentation"><a href="#modelCSV" aria-controls="modelCSV" role="tab" data-toggle="tab">Modelos
                 CSV</a></li>
           </ul>
           <div class="tab-content">
 
-            <!-- Tab -Load -->
+            <!-- Tab-Load -->
 
             <div role="tabpanel" class="tab-pane active" id="loadCSV">
               <div class="calcite-form-title" style="padding-top: 10px !important; text-align: justify;">Esta
@@ -323,16 +325,64 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-xs-9 col-xs-offset-3">
-                      <a href="#" class="btn btn-primary btn-block" onclick="loadFileCSV();"
-                        style="color: white;">Visualizar CSV</a>
+                    <div class="col-xs-4 col-xs-offset-8 no-padding-left">
+                      <button type="button" class="btn btn-primary btn-block"
+                        onclick="irTabPanel('simbologiaCSV');">Siguiente</button>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
 
-            <!-- Tab -Model -->
+            <!-- Tab-Simbologia -->
+            <div role="tabpanel" class="tab-pane" id="simbologiaCSV">
+              <div class="calcite-form-title">
+                <b style="text-align: justify;">Carga el CSV con la simbología definida.</b>
+              </div>
+              <div class="form-horizontal calcite-form-padding no-padding-top">
+                <div class="form-group">
+                  <label for="class-select-CSV" class="col-xs-3 control-label">Clasificación</label>
+                  <div class="col-xs-9">
+                    <select id="class-select-CSV" class="form-control">
+                      <option value="equal-interval">Intervalos iguales</option>
+                      <option value="quantile" selected>Quantiles</option>
+                      <option value="natural-breaks">Rangos naturales</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="styleRampColors-CSV" class="col-xs-3 control-label">Gama de colores</label>
+                  <div class="col-xs-9">
+                    <div id="styleRampColors-CSV" class="row col-xs-12" style="position: relative;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor1-CSV" value="#ffefdc"
+                        style="position: absolute;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor2-CSV" value="#d15e3d"
+                        style="position: absolute;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor3-CSV" value="#660202"
+                        style="position: absolute;">
+                      <div id="styleColorRamp-CSV"
+                        style="border: 1px gray solid; height: 35px; width: 100%; position: absolute;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" style="padding-bottom: 20px;">
+                  <label for="num-classes-CSV" class="col-xs-3 control-label" id="label-num-classes-CSV">Clases (5)</label>
+                  <div class="col-xs-9">
+                    <input type="range" id="num-classes-CSV" min="3" max="10" value="5" step="1" aria-valuemin="3"
+                      aria-valuemax="10" aria-valuenow="5">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <div class="col-xs-9 col-xs-offset-3">
+                    <a href="#" class="btn btn-primary btn-block" onclick="loadFileCSV();"
+                      style="color: white;">Visualizar CSV</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab-Model -->
 
             <div role="tabpanel" class="tab-pane" id="modelCSV">
               <div class="calcite-form-title" style="padding-top: 10px !important; text-align: justify;">Archivos CSV
@@ -440,8 +490,8 @@
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#paramsVGV" aria-controls="paramsVGV" role="tab"
                 data-toggle="tab">Parámetros</a></li>
-            <li role="presentation"><a href="#filterVGV" aria-controls="filterVGV" role="tab"
-                data-toggle="tab">Filtro</a></li>
+            <li role="presentation"><a href="#simbologiaVGV" aria-controls="simbologiaVGV" role="tab"
+                data-toggle="tab">Simbología</a></li>
             <li role="presentation"><a href="#timeVGV" aria-controls="timeVGV" role="tab" data-toggle="tab">Deslizador
                 del Tiempo</a></li>
           </ul>
@@ -559,23 +609,23 @@
                   </div>
                   <div class="form-group">
                     <div class="col-xs-4 col-xs-offset-8 no-padding-left">
-                      <button id="buscarhechos" type="button" class="btn btn-primary btn-block"
-                        onclick="irTabPanel('filterVGV');">Siguiente</button>
+                      <button type="button" class="btn btn-primary btn-block"
+                        onclick="irTabPanel('simbologiaVGV');">Siguiente</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Tab-Filter -->
-            <div role="tabpanel" class="tab-pane" id="filterVGV">
+            <!-- Tab-Simbologia -->
+            <div role="tabpanel" class="tab-pane" id="simbologiaVGV">
               <div class="calcite-form-title">
                 <b style="text-align: justify;">Aplica los parámetros seleccionados con la simbología definida.</b>
               </div>
               <div class="form-horizontal calcite-form-padding no-padding-top">
                 <div class="form-group">
-                  <label for="class-select" class="col-xs-4 control-label">Clasificación</label>
+                  <label for="class-select-VGV" class="col-xs-4 control-label">Clasificación</label>
                   <div class="col-xs-8 no-padding-left">
-                    <select id="class-select" class="form-control">
+                    <select id="class-select-VGV" class="form-control">
                       <option value="equal-interval">Intervalos iguales</option>
                       <option value="quantile" selected>Quantiles</option>
                       <option value="natural-breaks">Rangos naturales</option>
@@ -583,30 +633,30 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="num-classes" class="col-xs-4 control-label" id="label-num-classes">Clases (5)</label>
+                  <label for="styleRampColors-VGV" class="col-xs-4 control-label">Gama de colores</label>
                   <div class="col-xs-8 no-padding-left">
-                    <input type="range" id="num-classes" min="3" max="10" value="5" step="1" aria-valuemin="3"
-                      aria-valuemax="10" aria-valuenow="5">
-                  </div>
-                </div>
-                <div class="form-group" style="padding-bottom: 20px;">
-                  <label for="styleRampColors" class="col-xs-4 control-label">Gama de colores</label>
-                  <div class="col-xs-8 no-padding-left">
-                    <div id="styleRampColors" class="row col-xs-12" style="position: relative;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor1" value="#ffefdc"
+                    <div id="styleRampColors-VGV" class="row col-xs-12" style="position: relative;">
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor1-VGV" value="#ffefdc"
                         style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor2" value="#d15e3d"
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor2-VGV" value="#d15e3d"
                         style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor3" value="#660202"
+                      <input class="form-control col-xs-4" type="color" id="styleRampColor3-VGV" value="#660202"
                         style="position: absolute;">
-                      <div id="styleColorRamp"
+                      <div id="styleColorRamp-VGV"
                         style="border: 1px gray solid; height: 35px; width: 100%; position: absolute;"></div>
                     </div>
                   </div>
                 </div>
+                <div class="form-group" style="padding-bottom: 20px;">
+                  <label for="num-classes-VGV" class="col-xs-4 control-label" id="label-num-classes-VGV">Clases (5)</label>
+                  <div class="col-xs-8 no-padding-left">
+                    <input type="range" id="num-classes-VGV" min="3" max="10" value="5" step="1" aria-valuemin="3"
+                      aria-valuemax="10" aria-valuenow="5">
+                  </div>
+                </div>
                 <div class="form-group">
                   <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                    <button id="buscarhechos" type="button" class="btn btn-primary btn-block"
+                    <button type="button" class="btn btn-primary btn-block"
                       onclick="aplicarParametrosVGV();">Aplicar par&aacute;metros</button>
                   </div>
                 </div>
@@ -831,7 +881,6 @@
         </div>
       </div>
     </div>
-
 
   </div>
 

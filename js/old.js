@@ -934,8 +934,8 @@ function changeScheme(theme, colorSchemeName) {
 }
 
 function generateSimbology(tLayer) {
-    let classificationMethod = $("#class-select").val();
-    let numClasses = parseInt($("#num-classes").val());
+    let classificationMethod = $("#class-select-VGV").val();
+    let numClasses = parseInt($("#num-classes-VGV").val());
 
     classificationMethod =
         classificationMethod == undefined ||

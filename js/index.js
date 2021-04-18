@@ -54,9 +54,15 @@ $(document).ready(function () {
     });
   });
 
-  $("#num-classes").on("change", function () {
-    $("#label-num-classes").text(
-      "Clases (" + $("#num-classes").val() + ")"
+  $("#num-classes-VGV").on("change", function () {
+    $("#label-num-classes-VGV").text(
+      "Clases (" + $("#num-classes-VGV").val() + ")"
+    );
+  });
+
+  $("#num-classes-CSV").on("change", function () {
+    $("#label-num-classes-CSV").text(
+      "Clases (" + $("#num-classes-CSV").val() + ")"
     );
   });
 
@@ -84,25 +90,45 @@ $(document).ready(function () {
   });
 
   // Cambios de Simbologia
-  ajustarRamp();
+  ajustarRampVGV();
 
-  $('#styleColorRamp').click(function (e) {
+  $('#styleColorRamp-VGV').click(function (e) {
     if (e.offsetX <= 100) {
-      $("#styleRampColor1")[0].click();
+      $("#styleRampColor1-VGV")[0].click();
     } else if (e.offsetX > 100 && e.offsetX <= 200) {
-      $("#styleRampColor2")[0].click();
+      $("#styleRampColor2-VGV")[0].click();
     } else if (e.offsetX > 200) {
-      $("#styleRampColor3")[0].click();
+      $("#styleRampColor3-VGV")[0].click();
     }
   });
-  $("#styleRampColor1").on("change", function () {
-    ajustarRamp();
+  $("#styleRampColor1-VGV").on("change", function () {
+    ajustarRampVGV();
   })
-  $("#styleRampColor2").on("change", function () {
-    ajustarRamp();
+  $("#styleRampColor2-VGV").on("change", function () {
+    ajustarRampVGV();
   })
-  $("#styleRampColor3").on("change", function () {
-    ajustarRamp();
+  $("#styleRampColor3-VGV").on("change", function () {
+    ajustarRampVGV();
+  })
+  
+  ajustarRampCSV();
+  $('#styleColorRamp-CSV').click(function (e) {
+    if (e.offsetX <= 100) {
+      $("#styleRampColor1-CSV")[0].click();
+    } else if (e.offsetX > 100 && e.offsetX <= 200) {
+      $("#styleRampColor2-CSV")[0].click();
+    } else if (e.offsetX > 200) {
+      $("#styleRampColor3-CSV")[0].click();
+    }
+  });
+  $("#styleRampColor1-CSV").on("change", function () {
+    ajustarRampCSV();
+  })
+  $("#styleRampColor2-CSV").on("change", function () {
+    ajustarRampCSV();
+  })
+  $("#styleRampColor3-CSV").on("change", function () {
+    ajustarRampCSV();
   })
 });
 
@@ -1781,7 +1807,7 @@ function loadGeoMpios() {
   map.add(geoMpios);
 }
 
-// Buscar los datos en la base de datos
+/* Buscar los datos en la base de datos */
 
 function getSqlParameter(domFilter, nombreCampo) {
   let parameterSelected = $("#" + domFilter + " option:selected");
@@ -1853,9 +1879,9 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
 
 function getSchemeVGV(numClasses) {
   let noDataColor = '#cccccc';
-  let color_1 = $("#styleRampColor1").val();
-  let color_2 = $("#styleRampColor2").val();
-  let color_3 = $("#styleRampColor3").val();
+  let color_1 = $("#styleRampColor1-VGV").val();
+  let color_2 = $("#styleRampColor2-VGV").val();
+  let color_3 = $("#styleRampColor3-VGV").val();
   let rainbow = new Rainbow();
   rainbow.setNumberRange(1, numClasses);
   rainbow.setSpectrum(color_1, color_2, color_3);
@@ -1887,8 +1913,8 @@ function getSchemeVGV(numClasses) {
 }
 
 function createRenderer(featureLayer, subLayer, layerRUV) {
-  let classificationMethod = $("#class-select").val();
-  let numClasses = parseInt($("#num-classes").val());
+  let classificationMethod = $("#class-select-VGV").val();
+  let numClasses = parseInt($("#num-classes-VGV").val());
   const schemesVGV = getSchemeVGV(numClasses);
 
   const params = {
@@ -2066,7 +2092,7 @@ function closeParametrosVGV() {
   $("#panelFilterVGV_title").addClass("visible-mobile-only");
 }
 
-// Tiempo
+/* Tiempo */
 
 function createTimeVGV() {
   // Valida el anio inicial y final
@@ -2148,7 +2174,7 @@ function createTimeVGV() {
       sublayers: []
     });
 
-    let numClasses = parseInt($("#num-classes").val());
+    let numClasses = parseInt($("#num-classes-VGV").val());
     const schemesTime = getSchemeVGV(numClasses);
 
     for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
@@ -2218,13 +2244,9 @@ function createTimeVGV() {
     idLayerTime = idLayerRUV;
     map.add(layerTime);
 
-    // layerTime.when(function () {
-    //   const subLayerTime = layerTime.sublayers.find(function (sublayer) {
-    //     return sublayer.id === sliderTime.min;
-    //   });
-    //   subLayerTime.visible = true;
-    //   displayTimeVGV();
-    // })
+    const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+    map.reorder(tLayerLabels, map.layers.items.length);
+    tLayerLabels.visible = true;
 
     view.whenLayerView(layerTime)
       .then(function (layerView) {
@@ -2238,8 +2260,8 @@ function createTimeVGV() {
 }
 
 function createRendererTime(featureLayer, schemesTime, subLayer) {
-  let classificationMethod = $("#class-select").val();
-  let numClasses = parseInt($("#num-classes").val());
+  let classificationMethod = $("#class-select-VGV").val();
+  let numClasses = parseInt($("#num-classes-VGV").val());
 
   const params = {
     layer: featureLayer,
@@ -2440,7 +2462,8 @@ function onLayerTime(Anio) {
   subLayerTime.visible = true;
 }
 
-// Graficas
+/* Graficas */
+
 function zChart() {
   $("#panelChartP").css("z-index", current_Zindex);
   current_Zindex = current_Zindex + 1;
@@ -2698,9 +2721,8 @@ function generateVisualChart() {
   Plotly.newPlot("chartFilterData", dataChart, layoutChart, config);
 }
 
+/* tabla */
 
-
-// tabla
 function zTabla() {
   $("#panelTableP").css("z-index", current_Zindex);
   current_Zindex = current_Zindex + 1;
@@ -2993,7 +3015,8 @@ function selectTableFeatures(idLayer, OBJECTID) {
   }
 }
 
-//Swipe
+/* Swipe */
+
 function viewSwipe() {
   if (
     $("#selectSwipe_Derecha").val() != -1 &&
@@ -3123,7 +3146,7 @@ function activeFirstLegend() {
   }
 }
 
-// Agregar servicios web geograficos
+/* Agregar servicios web geograficos */
 
 function gotoAgregar() {
   if ($("#servicesList").html() == "") {
@@ -3546,7 +3569,7 @@ function reportLoad(id) {
   }
 }
 
-// CSV
+/* CSV */
 
 function uploadCSV(evt) {
   let Campo1Req = "";
@@ -3768,8 +3791,9 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
         variableOrigen: capitalizeFirstLetter(settingsVariableCSV),
       });
 
+      createRendererCSV(layerResults);
       map.add(layerResults);
-      generateSimbology(layerResults);
+      //generateSimbology(layerResults);
 
       layerResults.when(function () {
         current_reportes = arrayRemove(current_reportes, "CSV");
@@ -3809,7 +3833,77 @@ function clearFileCSV() {
   $("#settingsVariableCSV").val("");
 }
 
-// Imprimir
+function getSchemeCSV(numClasses) {
+  let noDataColor = '#cccccc';
+  let color_1 = $("#styleRampColor1-CSV").val();
+  let color_2 = $("#styleRampColor2-CSV").val();
+  let color_3 = $("#styleRampColor3-CSV").val();
+  let rainbow = new Rainbow();
+  rainbow.setNumberRange(1, numClasses);
+  rainbow.setSpectrum(color_1, color_2, color_3);
+  let colorsArray = [];
+  for (let i = 1; i <= numClasses; i++) {
+    let hexColour = rainbow.colourAt(i);
+    colorsArray.push(new _Color('#' + hexColour));
+  }
+  const schemesCSV = {
+    "id": "rampColorCSV",
+    "colors": [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
+    "noDataColor": new _Color(noDataColor),
+    "colorsForClassBreaks": [{
+      "colors": colorsArray,
+      "numClasses": numClasses
+    }],
+    "outline": {
+      "color": {
+        "r": 153,
+        "g": 153,
+        "b": 153,
+        "a": 0.25
+      },
+      "width": "0.25px"
+    },
+    "opacity": 0.8
+  };
+  return schemesCSV;
+}
+
+function createRendererCSV(tLayer) {
+  let classificationMethod = $("#class-select-CSV").val();
+  let numClasses = parseInt($("#num-classes-CSV").val());
+  const schemesCSV = getSchemeVGV(numClasses);
+
+  const params = {
+    layer: tLayer,
+    field: "VGV_NVALOR",
+    view: view,
+    classificationMethod: classificationMethod,
+    numClasses: numClasses,
+    colorScheme: schemesCSV
+  };
+
+  _colorRendererCreator
+    .createClassBreaksRenderer(params)
+    .then(function (rendererResponse) {
+      rendererResponse.renderer.defaultLabel = "Sin Datos";
+      rendererResponse.renderer.defaultSymbol.color.a = 0.7;
+      tLayer.renderer = rendererResponse.renderer;
+
+      const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+      map.reorder(tLayerLabels, map.layers.items.length);
+      tLayerLabels.visible = true;
+
+      if (loading.isOpen()) {
+        loading.close();
+      }
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+/* Imprimir */
 
 function imprimirMapa() {
   reporteUso("print", "", "load");
@@ -3884,7 +3978,7 @@ function imprimirMapa() {
   );
 }
 
-// Utilidades
+/* Utilidades */
 
 function arrayRemove(arr, value) {
   return arr.filter(function (ele) {
@@ -4584,12 +4678,20 @@ function irTabPanel(strPanel) {
   $("a[href='#" + strPanel + "']")[0].click();
 }
 
-function ajustarRamp() {
-  let color_1 = $("#styleRampColor1").val();
-  let color_2 = $("#styleRampColor2").val();
-  let color_3 = $("#styleRampColor3").val();
+function ajustarRampVGV() {
+  let color_1 = $("#styleRampColor1-VGV").val();
+  let color_2 = $("#styleRampColor2-VGV").val();
+  let color_3 = $("#styleRampColor3-VGV").val();
 
-  $("#styleColorRamp").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
+  $("#styleColorRamp-VGV").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
+}
+
+function ajustarRampCSV() {
+  let color_1 = $("#styleRampColor1-CSV").val();
+  let color_2 = $("#styleRampColor2-CSV").val();
+  let color_3 = $("#styleRampColor3-CSV").val();
+
+  $("#styleColorRamp-CSV").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
 }
 
 function removeLayer(tLayer) {
