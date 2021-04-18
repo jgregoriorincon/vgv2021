@@ -1394,7 +1394,131 @@ function offLayersTime() {
     }
 }
 
-
+/* Graphics */
+function generateVisual2DChart() {
+    let variableValueChart = $("#settingsVariableChart").val();
+    let variableTextChart = $("#settingsVariableChart option:selected").text();
+  
+    let parametro1ValueChart = $("#settingsParametro1Chart").val();
+    let parametro1TextChart = $(
+      "#settingsParametro1Chart option:selected"
+    ).text();
+  
+    let parametro2ValueChart = $("#settingsParametro2Chart").val();
+    let parametro2TextChart = $(
+      "#settingsParametro2Chart option:selected"
+    ).text();
+  
+    let idLayer = $("#panelChartP").data("idLayer");
+    let filterDataLayer = vgv_filter_Hechos.filter(function (item) {
+      return item.Title == idLayer;
+    })[0].DataFilter;
+  
+    let listData = agruparHechosVictimasMulti(
+      filterDataLayer,
+      parametro1ValueChart,
+      parametro2ValueChart
+    );
+  
+    for (let idxList = listData.length - 1; idxList >= 0; idxList--) {
+      if (listData[idxList][parametro1ValueChart] == "SIN DEFINIR") {
+        listData.splice(idxList, 1);
+      }
+    }
+  
+    listDataGeo = agruparHechosVictimas(listData, parametro1ValueChart);
+    listDataVar = agruparHechosVictimas(listData, parametro2ValueChart);
+  
+    let labelDataGeo = listDataGeo.map(function (item) {
+      return item.VAR_AGRUPACION;
+    });
+    let labelDataVar = listDataVar.map(function (item) {
+      return item.VAR_AGRUPACION;
+    });
+  
+    let dataValuesGraph = [];
+  
+    for (let idxGeo = 0; idxGeo < labelDataGeo.length; idxGeo++) {
+      let dataValuesGraphRow = [];
+      for (let idxVar = 0; idxVar < labelDataVar.length; idxVar++) {
+        let entroVar = false;
+        for (let idxData = 0; idxData < listData.length; idxData++) {
+          if (
+            listData[idxData][parametro1ValueChart] == labelDataGeo[idxGeo] &&
+            listData[idxData][parametro2ValueChart] == labelDataVar[idxVar]
+          ) {
+            dataValuesGraphRow.push(listData[idxData][variableValueChart]);
+            entroVar = true;
+            break;
+          }
+        }
+        if (!entroVar) {
+          dataValuesGraphRow.push(0);
+        }
+      }
+      dataValuesGraph.push(dataValuesGraphRow);
+    }
+  
+    let colorscaleValue = [
+      [0, "#ffffff"],
+      [0.0001, "#a6bddb"],
+      [0.005, "#3690c0"],
+      [0.1, "#045a8d"],
+      [0.15, "#fdbb84"],
+      [0.2, "#fc8d59"],
+      [0.25, "#ef6548"],
+      [0.4, "#d7301f"],
+      [0.5, "#b30000"],
+      [1, "#7f0000"],
+    ];
+  
+    let dataHeatMap = [{
+      z: dataValuesGraph,
+      x: labelDataVar,
+      y: labelDataGeo,
+      colorscale: colorscaleValue,
+      type: "heatmap",
+      // reversescale: true,
+      hoverongaps: false,
+    }, ];
+  
+    Plotly.purge("chartFilterData");
+    $("#panelChartP").show();
+  
+    let layoutChart = {
+      title: {
+        text: variableTextChart +
+          " por " +
+          parametro1TextChart +
+          " vs " +
+          parametro2TextChart,
+        font: {
+          family: "Work Sans, sans-serif",
+          size: 16,
+        },
+        xref: "paper",
+        x: 0.5,
+        y: 0.95,
+      },
+      autosize: true,
+      margin: {
+        l: 50,
+        r: 0,
+        b: 100,
+        t: 50,
+        pad: 4,
+      },
+    };
+  
+    let config = {
+      responsive: true,
+      displayModeBar: true,
+      locale: "es",
+      displaylogo: false,
+    };
+  
+    Plotly.newPlot("chartFilterData", dataHeatMap, layoutChart, config);
+  }
 
 for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
     if (
