@@ -6,10 +6,10 @@ $(document).ready(function () {
   }
   $("#textSliderTimeRange").text(
     "Rango de años a calcular (" +
-    vgv_lstAnios[0].toString() +
-    " - " +
-    vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
-    ")"
+      vgv_lstAnios[0].toString() +
+      " - " +
+      vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
+      ")"
   );
 
   init();
@@ -92,7 +92,7 @@ $(document).ready(function () {
   // Cambios de Simbologia
   ajustarRampVGV();
 
-  $('#styleColorRamp-VGV').click(function (e) {
+  $("#styleColorRamp-VGV").click(function (e) {
     if (e.offsetX <= 100) {
       $("#styleRampColor1-VGV")[0].click();
     } else if (e.offsetX > 100 && e.offsetX <= 200) {
@@ -103,16 +103,16 @@ $(document).ready(function () {
   });
   $("#styleRampColor1-VGV").on("change", function () {
     ajustarRampVGV();
-  })
+  });
   $("#styleRampColor2-VGV").on("change", function () {
     ajustarRampVGV();
-  })
+  });
   $("#styleRampColor3-VGV").on("change", function () {
     ajustarRampVGV();
-  })
-  
+  });
+
   ajustarRampCSV();
-  $('#styleColorRamp-CSV').click(function (e) {
+  $("#styleColorRamp-CSV").click(function (e) {
     if (e.offsetX <= 100) {
       $("#styleRampColor1-CSV")[0].click();
     } else if (e.offsetX > 100 && e.offsetX <= 200) {
@@ -123,13 +123,13 @@ $(document).ready(function () {
   });
   $("#styleRampColor1-CSV").on("change", function () {
     ajustarRampCSV();
-  })
+  });
   $("#styleRampColor2-CSV").on("change", function () {
     ajustarRampCSV();
-  })
+  });
   $("#styleRampColor3-CSV").on("change", function () {
     ajustarRampCSV();
-  })
+  });
 });
 
 /* Inicializar la carga de interfaz */
@@ -165,8 +165,7 @@ function init() {
   $(window).on("click", function (event) {
     if (!event.target.matches(".moreOptionsDots")) {
       let dropdowns = document.getElementsByClassName("moreOptions-content");
-      for (let i = 0; i < dropdowns.length; i++) {
-        let openDropdown = dropdowns[i];
+      for (let openDropdown of dropdowns) {
         if (openDropdown.classList.contains("show")) {
           openDropdown.classList.remove("show");
         }
@@ -272,7 +271,7 @@ function initMap() {
 
     __Collection,
     __watchUtils,
-    
+
     __FeatureLayer,
     __GeoJSONLayer,
     __GraphicsLayer,
@@ -303,7 +302,7 @@ function initMap() {
     __Expand,
     __Swipe,
     __Slider,
-    
+
     __Sketch,
     __SketchViewModel,
     __DistanceMeasurement2D,
@@ -387,7 +386,6 @@ function initMap() {
       loadServicesUARIV();
 
       InitMap2();
-
     } catch (error) {
       console.log(error);
     }
@@ -396,7 +394,8 @@ function initMap() {
 
 function InitMap2() {
   // Config
-  _esriConfig.apiKey = "AAPK16dc245e51af4cd58792f446f40c58edICSmkURdJi5igB7OXHABEip3-nJYIwlv1PBR87gdjey1CAdMES1tgYBrPqjDZhFo";
+  _esriConfig.apiKey =
+    "AAPK16dc245e51af4cd58792f446f40c58edICSmkURdJi5igB7OXHABEip3-nJYIwlv1PBR87gdjey1CAdMES1tgYBrPqjDZhFo";
   _esriConfig.request.proxyUrl = URL_PROXY;
   _esriConfig.timeout = 600000;
   _esriConfig.request.interceptors.push({
@@ -409,8 +408,10 @@ function InitMap2() {
 
       if (webMapJson.layoutOptions.legendOptions.operationalLayers.length > 0) {
         for (
-          let idxOperationalLayer = 0; idxOperationalLayer <
-          webMapJson.layoutOptions.legendOptions.operationalLayers.length; idxOperationalLayer++
+          let idxOperationalLayer = 0;
+          idxOperationalLayer <
+          webMapJson.layoutOptions.legendOptions.operationalLayers.length;
+          idxOperationalLayer++
         ) {
           if (
             webMapJson.layoutOptions.legendOptions.operationalLayers[
@@ -430,7 +431,7 @@ function InitMap2() {
       }
     },
     after: function (response) {
-      // console.log(response);
+      // pass
     },
   });
 
@@ -507,37 +508,8 @@ function InitMap2() {
 
     $("#escalaImpresion").val(formatNumber(parseInt(view.scale)));
 
-    let yearParameter = getParameterByName("year");
-    let variableParameter = getParameterByName("variable");
-    let filtroParameter = getParameterByName("filtro");
-
-    if (yearParameter != null) {
-      $("#selectFiltro_Anio").val(yearParameter);
-    }
-    if (variableParameter != null) {
-      if (filtroParameter == "Eventos") {
-        $("#selectFiltro_Variable").val("Eventos");
-      } else if (filtroParameter == "Declaracion") {
-        $("#selectFiltro_Variable").val("Víctimas Declaración");
-      } else if (filtroParameter == "Ocurrencia") {
-        $("#selectFiltro_Variable").val("Víctimas Ocurrencia");
-      }
-    }
-    if (filtroParameter != null) {
-      if (filtroParameter == "Dpto") {
-        $("#selectFiltro_Geografico").val("filtroDepartamento");
-      } else if (filtroParameter == "Mpio") {
-        $("#selectFiltro_Geografico").val("filtroMunicipal");
-      } else if (filtroParameter == "DT") {
-        $("#selectFiltro_Geografico").val("filtroDT");
-      } else if (filtroParameter == "PDET") {
-        $("#selectFiltro_Geografico").val("filtroPDET");
-      }
-    }
-
-    if (yearParameter != null || variableParameter != null || filtroParameter != null) {
-      aplicarParametrosVGV();
-    }
+    // Procesa la lista de parametros
+    processParametersVGV();
 
     map.layers.on("after-remove", function (event) {
       if (
@@ -559,6 +531,44 @@ function InitMap2() {
       activeFirstLegend();
     }, 500);
   });
+}
+
+function processParametersVGV() {
+  let yearParameter = getParameterByName("year");
+  let variableParameter = getParameterByName("variable");
+  let filtroParameter = getParameterByName("filtro");
+
+  if (yearParameter != null) {
+    $("#selectFiltro_Anio").val(yearParameter);
+  }
+  if (variableParameter != null) {
+    if (filtroParameter == "Eventos") {
+      $("#selectFiltro_Variable").val("Eventos");
+    } else if (filtroParameter == "Declaracion") {
+      $("#selectFiltro_Variable").val("Víctimas Declaración");
+    } else if (filtroParameter == "Ocurrencia") {
+      $("#selectFiltro_Variable").val("Víctimas Ocurrencia");
+    }
+  }
+  if (filtroParameter != null) {
+    if (filtroParameter == "Dpto") {
+      $("#selectFiltro_Geografico").val("filtroDepartamento");
+    } else if (filtroParameter == "Mpio") {
+      $("#selectFiltro_Geografico").val("filtroMunicipal");
+    } else if (filtroParameter == "DT") {
+      $("#selectFiltro_Geografico").val("filtroDT");
+    } else if (filtroParameter == "PDET") {
+      $("#selectFiltro_Geografico").val("filtroPDET");
+    }
+  }
+
+  if (
+    yearParameter != null ||
+    variableParameter != null ||
+    filtroParameter != null
+  ) {
+    aplicarParametrosVGV();
+  }
 }
 
 function addWidgets() {
@@ -625,7 +635,7 @@ function addWidgets() {
     view: view,
     id: "layerListWigdet",
     listItemCreatedFunction: defineActions,
-    selectionEnabled: true
+    selectionEnabled: true,
   });
 
   // MapasBase
@@ -648,7 +658,7 @@ function addWidgets() {
       _Basemap.fromId("arcgis-topographic"),
       _Basemap.fromId("arcgis-imagery"),
       _Basemap.fromId("arcgis-dark-gray"),
-      _Basemap.fromId("arcgis-streets-night")
+      _Basemap.fromId("arcgis-streets-night"),
     ],
   });
 
@@ -668,7 +678,7 @@ function addWidgets() {
     expandTooltip: "Cambiar Mapa Base",
   });
 
-  var handle = basemapGallery.watch("activeBasemap", function (basemap) {
+  basemapGallery.watch("activeBasemap", function (basemap) {
     current_reportes = arrayRemove(current_reportes, "mapa base");
     reporteUso("mapa base", basemap.title, "load");
   });
@@ -780,7 +790,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "Longitude",
         description: "Longitud",
         searchPattern: numberSearchPattern,
@@ -811,7 +822,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "Longitude",
         description: "Longitud",
         searchPattern: numberSearchPattern,
@@ -842,7 +854,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "East",
         searchPattern: numberSearchPattern,
@@ -873,7 +886,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -904,7 +918,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -935,7 +950,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -966,7 +982,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -997,7 +1014,8 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [{
+    coordinateSegments: [
+      {
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -1055,10 +1073,10 @@ function addWidgets() {
   sliderTimeRange.on(["thumb-change", "thumb-drag"], function () {
     $("#textSliderTimeRange").text(
       "Rango de años a calcular (" +
-      sliderTimeRange.values[0].toString() +
-      " - " +
-      sliderTimeRange.values[1].toString() +
-      ")"
+        sliderTimeRange.values[0].toString() +
+        " - " +
+        sliderTimeRange.values[1].toString() +
+        ")"
     );
   });
 
@@ -1069,7 +1087,8 @@ function addWidgets() {
     right: 10,
     bottom: 20,
   };
-  view.ui.add([{
+  view.ui.add([
+    {
       component: home,
       position: "bottom-right",
       index: 0,
@@ -1123,7 +1142,7 @@ function addWidgets() {
 
   // Manejo de popups
   view.popup.defaultPopupTemplateEnabled = true;
-  view.popup.watch('selectedFeature', function (gra) {
+  view.popup.watch("selectedFeature", function (gra) {
     if (gra) {
       view.graphics.removeAll();
       var h = view.highlightOptions;
@@ -1134,8 +1153,8 @@ function addWidgets() {
         outline: {
           // autocasts as new SimpleLineSymbol()
           color: [h.color.r, h.color.g, h.color.b, h.color.a],
-          width: 1
-        }
+          width: 1,
+        },
       };
       view.graphics.add(gra);
     } else {
@@ -1162,7 +1181,12 @@ function addWidgets() {
 
     if (id === "full-extent") {
       let extent = tLayer.fullExtent;
-      if (extent.ymax == 90 && extent.ymin == -90 && extent.xmax == 180 && extent.xmin == -180) {
+      if (
+        extent.ymax == 90 &&
+        extent.ymin == -90 &&
+        extent.xmax == 180 &&
+        extent.xmin == -180
+      ) {
         home.viewModel.go();
       } else {
         view.goTo(tLayer.fullExtent);
@@ -1177,7 +1201,6 @@ function addWidgets() {
 
       removeOptionSwipe(tLayer);
       map.remove(tLayer);
-
     } else if (id === "tabla-layer") {
       collapseExpand(null);
 
@@ -1189,9 +1212,9 @@ function addWidgets() {
         },
       });
 
-      if (tLayer.type == 'feature') {
+      if (tLayer.type == "feature") {
         generateTableFeature(tLayer);
-      } else if (tLayer.type == 'map-image') {
+      } else if (tLayer.type == "map-image") {
         generateTableMapServer(tLayer);
       }
     } else if (id === "tabla-layer-default") {
@@ -1224,31 +1247,40 @@ function addWidgets() {
 function defineActions(event) {
   var item = event.item;
 
-  let actionFullExtent = [{
-    title: "Mapa completo",
-    className: "esri-icon-globe",
-    id: "full-extent",
-  }, ];
+  let actionFullExtent = [
+    {
+      title: "Mapa completo",
+      className: "esri-icon-globe",
+      id: "full-extent",
+    },
+  ];
 
-  let actionTable = [{
-    title: "Ver tabla",
-    className: "esri-icon-table",
-    id: "tabla-layer",
-  }, ];
+  let actionTable = [
+    {
+      title: "Ver tabla",
+      className: "esri-icon-table",
+      id: "tabla-layer",
+    },
+  ];
 
-  let actionTableDefault = [{
-    title: "Ver tabla",
-    className: "esri-icon-table",
-    id: "tabla-layer-default",
-  }, ];
+  let actionTableDefault = [
+    {
+      title: "Ver tabla",
+      className: "esri-icon-table",
+      id: "tabla-layer-default",
+    },
+  ];
 
-  let actionChart = [{
-    title: "Ver gráficas",
-    className: "esri-icon-chart",
-    id: "chart-layer",
-  }, ];
+  let actionChart = [
+    {
+      title: "Ver gráficas",
+      className: "esri-icon-chart",
+      id: "chart-layer",
+    },
+  ];
 
-  let actionTransparency = [{
+  let actionTransparency = [
+    {
       title: "Reducir transparencia",
       className: "esri-icon-up",
       id: "increase-opacity",
@@ -1260,11 +1292,13 @@ function defineActions(event) {
     },
   ];
 
-  let actionDelete = [{
-    title: "Borrar capa",
-    className: "esri-icon-trash",
-    id: "delete-layer",
-  }, ];
+  let actionDelete = [
+    {
+      title: "Borrar capa",
+      className: "esri-icon-trash",
+      id: "delete-layer",
+    },
+  ];
 
   let itemConfigLayers = config_layers.filter(function (element) {
     return element.ID_SERVICIO == item.layer.id.toString();
@@ -1296,10 +1330,10 @@ function defineActions(event) {
 }
 
 function collapseExpand(widgetExpand) {
-  for (let i = 0; i < expandWidgets.length; i++) {
-    if (expandWidgets[i] !== widgetExpand) {
-      if (expandWidgets[i].expanded) {
-        expandWidgets[i].collapse();
+  for (const widget of expandWidgets) {
+    if (widget !== widgetExpand) {
+      if (widget.expanded) {
+        widget.collapse();
       }
     }
   }
@@ -1315,111 +1349,110 @@ function loadSelectMultiple() {
   buildSelectImpresion("selectFiltro_Variable", vgv_lstVariable);
   buildSelectImpresion("plantillaImpresion", vgv_lstImpresion);
 
-  buildSelectMultiple(
-    "selectFiltro_Hecho",
-    vgv_lstHechos,
-    "code",
-    "name",
-    "Todos los Hechos",
-    null
-  );
-  buildSelectMultiple(
-    "selectFiltro_Genero",
-    vgv_lstSexo,
-    "code",
-    "name",
-    "Todos los Generos",
-    null
-  );
-  buildSelectMultiple(
-    "selectFiltro_Etnia",
-    vgv_lstEtnia,
-    "code",
-    "name",
-    "Todas las Etnias",
-    null
-  );
-  buildSelectMultiple(
-    "selectFiltro_CicloVital",
-    vgv_lstCicloVital,
-    "code",
-    "name",
-    "Todos los Ciclos",
-    null
-  );
-  buildSelectMultiple(
-      "selectFiltro_Discapacidad",
-      vgv_lstDiscapacidad,
-      "code",
-      "name",
-      "Todas los Discapa",
-      null
-    ),
-    buildSelectMultiple(
-      "selectFiltro_Departamento",
-      vgv_lstDepartamentos,
-      "DANE_DEPTO",
-      "DEPARTAMENTO",
-      "Todos los Dptos",
-      null
-    );
-  buildSelectMultiple(
-    "selectFiltro_Municipios",
-    vgv_lstMunicipios,
-    "DANE_MUNICIPIO",
-    "MUNICIPIO",
-    "Todos los Mpios",
-    "DEPARTAMENTO"
-  );
-  buildSelectMultiple(
-    "selectFiltro_DT",
-    vgv_lstDT,
-    "COD_TERRITORIAL",
-    "DIR_TERRITORIAL",
-    "Todas los DT",
-    null
-  );
-  buildSelectMultiple(
-    "selectFiltro_PDET",
-    vgv_lstPDET,
-    "COD_PDET",
-    "NOMBRE_PDET",
-    "Todos los PDET",
-    null
-  );
+  let selObjHecho = {
+    domElement: "selectFiltro_Hecho",
+    valueList: vgv_lstHechos,
+    codeList: "code",
+    descList: "name",
+    defaultText: "Todos los Hechos",
+    subText: null,
+  };
+  let selObjSexo = {
+    domElement: "selectFiltro_Genero",
+    valueList: vgv_lstSexo,
+    codeList: "code",
+    descList: "name",
+    defaultText: "Todos los Géneros",
+    subText: null,
+  };
+  let selObjEtnia = {
+    domElement: "selectFiltro_Etnia",
+    valueList: vgv_lstEtnia,
+    codeList: "code",
+    descList: "name",
+    defaultText: "Todas las Etnias",
+    subText: null,
+  };
+  let selObjCicloVital = {
+    domElement: "selectFiltro_CicloVital",
+    valueList: vgv_lstCicloVital,
+    codeList: "code",
+    descList: "name",
+    defaultText: "Todos los Ciclos",
+    subText: null,
+  };
+  let selObjDiscapacidad = {
+    domElement: "selectFiltro_Discapacidad",
+    valueList: vgv_lstDiscapacidad,
+    codeList: "code",
+    descList: "name",
+    defaultText: "Todas las Discapacidades",
+    subText: null,
+  };
+
+  buildSelectMultiple(selObjHecho);
+  buildSelectMultiple(selObjSexo);
+  buildSelectMultiple(selObjEtnia);
+  buildSelectMultiple(selObjCicloVital);
+  buildSelectMultiple(selObjDiscapacidad);
+
+  let selObjDepartamentos = {
+    domElement: "selectFiltro_Departamento",
+    valueList: vgv_lstDepartamentos,
+    codeList: "DANE_DEPTO",
+    descList: "DEPARTAMENTO",
+    defaultText: "Todos los Dptos",
+    subText: null,
+  };
+  let selObjMunicipios = {
+    domElement: "selectFiltro_Municipios",
+    valueList: vgv_lstMunicipios,
+    codeList: "DANE_MUNICIPIO",
+    descList: "MUNICIPIO",
+    defaultText: "Todos los Mpios",
+    subText: "DEPARTAMENTO",
+  };
+  let selObjDT = {
+    domElement: "selectFiltro_DT",
+    valueList: vgv_lstDT,
+    codeList: "COD_TERRITORIAL",
+    descList: "DIR_TERRITORIAL",
+    defaultText: "Todas las DT",
+    subText: null,
+  };
+  let selObjPDET = {
+    domElement: "selectFiltro_PDET",
+    valueList: vgv_lstPDET,
+    codeList: "COD_PDET",
+    descList: "NOMBRE_PDET",
+    defaultText: "Todos los PDET",
+    subText: null,
+  };
+  buildSelectMultiple(selObjDepartamentos);
+  buildSelectMultiple(selObjMunicipios);
+  buildSelectMultiple(selObjDT);
+  buildSelectMultiple(selObjPDET);
 }
 
 function cambioFiltroGeografico() {
   let filtroGeograficoSeleccionado = $("#selectFiltro_Geografico").val();
 
   if (filtroGeograficoSeleccionado == "filtroDepartamento") {
-    // buildSelectMultiple("selectFiltro_Departamento", vgv_lstDepartamentos, "DANE_DEPTO", "DEPARTAMENTO", "Todos los Departamentos")
-    // buildSelectMultiple("selectFiltro_Municipios", vgv_lstMunicipios, "DANE_MUNICIPIO", "MUNICIPIO", "Todos los Municipios")
-
     $("#divFiltroGeograficoDT").hide();
     $("#divFiltroGeograficoPDET").hide();
     $("#divFiltroGeograficoMunicipio").hide();
     $("#divFiltroGeograficoDepartamento").show();
   } else if (filtroGeograficoSeleccionado == "filtroMunicipal") {
-    // buildSelectMultiple("selectFiltro_Departamento", vgv_lstDepartamentos, "DANE_DEPTO", "DEPARTAMENTO", "Todos los Departamentos")
-    // buildSelectMultiple("selectFiltro_Municipios", vgv_lstMunicipios, "DANE_MUNICIPIO", "MUNICIPIO", "Todos los Municipios")
-
     $("#divFiltroGeograficoDT").hide();
     $("#divFiltroGeograficoPDET").hide();
     $("#divFiltroGeograficoDepartamento").show();
     $("#divFiltroGeograficoMunicipio").show();
   } else if (filtroGeograficoSeleccionado == "filtroDT") {
-    // buildSelectMultiple("selectFiltro_Departamento", vgv_lstDepartamentosDT, "DANE_DEPTO", "DEPARTAMENTO", "Todos los Departamentos")
-    // buildSelectMultiple("selectFiltro_Municipios", vgv_lstMunicipiosDT, "DANE_MUNICIPIO", "MUNICIPIO", "Todos los Municipios")
-
     $("#divFiltroGeograficoPDET").hide();
     $("#divFiltroGeograficoDepartamento").hide();
     $("#divFiltroGeograficoMunicipio").hide();
     $("#divFiltroGeograficoDT").show();
   } else if (filtroGeograficoSeleccionado == "filtroPDET") {
-    // buildSelectMultiple("selectFiltro_Departamento", vgv_lstDepartamentosPDET, "DANE_DEPTO", "DEPARTAMENTO", "Todos los Departamentos")
-    // buildSelectMultiple("selectFiltro_Municipios", vgv_lstMunicipiosPDET, "DANE_MUNICIPIO", "MUNICIPIO", "Todos los Municipios
-
     $("#divFiltroGeograficoDT").hide();
     $("#divFiltroGeograficoDepartamento").hide();
     $("#divFiltroGeograficoMunicipio").hide();
@@ -1441,28 +1474,26 @@ function loadConfigLayers() {
     type: "GET",
     dataType: "json",
     success: function (data) {
-      if (data.status) {
-        if (data.servicios != null) {
-          for (var i = 0; i < data.servicios.length; i++) {
-            if (
-              config_layers.find(function (item) {
-                return item.ID_SERVICIO == data.servicios[i].ID_SERVICIO;
-              }) == null &&
-              data.servicios[i].ID_CATEGORIA != categoriaBaseOcultos
-            ) {
-              config_layers.push(data.servicios[i]);
-            } else if (
-              base_layers.find(function (item) {
-                return item.ID_SERVICIO == data.servicios[i].ID_SERVICIO;
-              }) == null &&
-              data.servicios[i].ID_CATEGORIA == categoriaBaseOcultos
-            ) {
-              base_layers.push(data.servicios[i]);
-            }
+      if (data.status && data.servicios) {
+        for (const element of data.servicios) {
+          if (
+            config_layers.find(function (item) {
+              return item.ID_SERVICIO == element.ID_SERVICIO;
+            }) == null &&
+            element.ID_CATEGORIA != categoriaBaseOcultos
+          ) {
+            config_layers.push(element);
+          } else if (
+            base_layers.find(function (item) {
+              return item.ID_SERVICIO == element.ID_SERVICIO;
+            }) == null &&
+            element.ID_CATEGORIA == categoriaBaseOcultos
+          ) {
+            base_layers.push(element);
           }
-          reporteUso("catalogo", "", "load");
-          gotoAgregar();
         }
+        reporteUso("catalogo", "", "load");
+        gotoAgregar();
       } else {
         alerta("Problema iniciando el catalogo de mapas en cache");
       }
@@ -1492,9 +1523,7 @@ function loadListasServices() {
       let tmpDT = [];
       let tmpPDET = [];
 
-      for (let index = 0; index < dataPakoJSON.length; index++) {
-        const element = dataPakoJSON[index];
-
+      for (const element of dataPakoJSON) {
         element.DEPARTAMENTO = element.DEPARTAMENTO.toUpperCase();
         element.MUNICIPIO = element.MUNICIPIO.toUpperCase();
         element.DIR_TERRITORIAL = element.DIR_TERRITORIAL.toUpperCase();
@@ -1632,7 +1661,7 @@ function loadListasServices() {
 
 function loadFechaCorte() {
   var queryTask = new _QueryTask({
-    url: URL_RUV_FECHACORTE
+    url: URL_RUV_FECHACORTE,
   });
 
   var query = new _Query();
@@ -1640,33 +1669,38 @@ function loadFechaCorte() {
   query.outFields = ["*"];
   query.where = "1=1";
 
-  queryTask.execute(query).then(function (results) {
-    let infoVGV = results.features[0].attributes
-    FechaCorte = infoVGV.RUV_CFECHA;
-    $("#FechaCorteVGV").html("FECHA DE CORTE: " + infoVGV.RUV_CFECHA);
-    $("#CountPersonasVGV").html(
-      "VÍCTIMAS CONFLICTO ARMADO: " + formatNumber(infoVGV.RUV_NPERSONAS)
-    );
-    $("#CountSujetosVGV").html(
-      "SUJETOS DE ATENCIÓN: " + formatNumber(infoVGV.RUV_NSUJETOS)
-    );
-    $("#CountEventosVGV").html("EVENTOS: " + formatNumber(infoVGV.RUV_NEVENTOS));
+  queryTask.execute(query).then(
+    function (results) {
+      let infoVGV = results.features[0].attributes;
+      FechaCorte = infoVGV.RUV_CFECHA;
+      $("#FechaCorteVGV").html("FECHA DE CORTE: " + infoVGV.RUV_CFECHA);
+      $("#CountPersonasVGV").html(
+        "VÍCTIMAS CONFLICTO ARMADO: " + formatNumber(infoVGV.RUV_NPERSONAS)
+      );
+      $("#CountSujetosVGV").html(
+        "SUJETOS DE ATENCIÓN: " + formatNumber(infoVGV.RUV_NSUJETOS)
+      );
+      $("#CountEventosVGV").html(
+        "EVENTOS: " + formatNumber(infoVGV.RUV_NEVENTOS)
+      );
 
-    $("#DefinitionPersonasVGV").html(infoVGV.RUV_CPERSONAS);
-    $("#DefinitionSujetosVGV").html(infoVGV.RUV_CSUJETOS);
-    $("#DefinitionEventosVGV").html(infoVGV.RUV_CEVENTOS);
-  }, function (error) {
-    console.log('Error FechaCorte: ', error);
-  });
+      $("#DefinitionPersonasVGV").html(infoVGV.RUV_CPERSONAS);
+      $("#DefinitionSujetosVGV").html(infoVGV.RUV_CSUJETOS);
+      $("#DefinitionEventosVGV").html(infoVGV.RUV_CEVENTOS);
+    },
+    function (error) {
+      console.log("Error FechaCorte: ", error);
+    }
+  );
 }
 
 function loadDomainsVGV() {
   VGV_TABLA_DATOS = new _FeatureLayer({
-    url: URL_RUV_DATOS
+    url: URL_RUV_DATOS,
   });
   VGV_TABLA_DATOS.load().then(function () {
     const fields = VGV_TABLA_DATOS.sourceJSON.fields;
-    fields.forEach(field => {
+    fields.forEach((field) => {
       switch (field.name) {
         case "RUV_NHECHO":
           vgv_lstHechos = field.domain.codedValues;
@@ -1693,13 +1727,12 @@ function loadDomainsVGV() {
 }
 
 function loadLabelsGeo() {
-  for (let index = 0; index < base_layers.length; index++) {
-    const element = base_layers[index];
-    if (element.CATEGORIA == "Base" && element.TIPO == "MapImageLayer") {
+  for (const layer of base_layers) {
+    if (layer.CATEGORIA == "Base" && element.TIPO == "MapImageLayer") {
       const tLayer = new _MapImageLayer({
-        url: element.URL,
-        title: element.CATEGORIA + "_" + element.NOMBRE,
-        id: element.CATEGORIA + "_" + element.NOMBRE,
+        url: layer.URL,
+        title: layer.CATEGORIA + "_" + layer.NOMBRE,
+        id: layer.CATEGORIA + "_" + layer.NOMBRE,
         visible: false,
         legendEnabled: false,
         listMode: "hide",
@@ -1789,12 +1822,12 @@ function getSqlParameter(domFilter, nombreCampo) {
       return parseInt(item.value);
     });
 
-    let strSQL = nombreCampo + ' IN (';
+    let strSQL = nombreCampo + " IN (";
     strSQL += parametrosSeleccionados.toArray().toString();
     strSQL += ") AND ";
     return strSQL;
   } else {
-    return '';
+    return "";
   }
 }
 
@@ -1802,41 +1835,60 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
   let tableRUV;
   let popupContent;
 
-  let strFrom = ', SUM(RUV_N' + $("#selectFiltro_Variable").val() + ') AS VGV_NVALOR FROM GIS2.RUV.RUV_DATOS ';
+  let strFrom =
+    ", SUM(RUV_N" +
+    $("#selectFiltro_Variable").val() +
+    ") AS VGV_NVALOR FROM GIS2.RUV.RUV_DATOS ";
   let strWhere = "WHERE RUV_CVIGENCIA = 'YYYY' AND ";
-  strWhere += getSqlParameter('selectFiltro_Hecho', 'RUV_NHECHO');
-  strWhere += getSqlParameter('selectFiltro_Genero', 'RUV_NSEXO');
-  strWhere += getSqlParameter('selectFiltro_Etnia', 'RUV_NETNIA');
-  strWhere += getSqlParameter('selectFiltro_Discapacidad', 'RUV_NDISCAPACIDAD');
-  strWhere += getSqlParameter('selectFiltro_CicloVital', 'RUV_NCICLOVITAL');
+  strWhere += getSqlParameter("selectFiltro_Hecho", "RUV_NHECHO");
+  strWhere += getSqlParameter("selectFiltro_Genero", "RUV_NSEXO");
+  strWhere += getSqlParameter("selectFiltro_Etnia", "RUV_NETNIA");
+  strWhere += getSqlParameter("selectFiltro_Discapacidad", "RUV_NDISCAPACIDAD");
+  strWhere += getSqlParameter("selectFiltro_CicloVital", "RUV_NCICLOVITAL");
   if (filtroGeografico == "filtroDepartamento") {
-    strFrom = strSQL_Dptos + ' FROM GIS2.Publicacion.DEPARTAMENTOS G LEFT JOIN (SELECT DPTO_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_Departamento', 'DPTO_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO';
-    tableRUV = 'Departamentos';
+    strFrom =
+      strSQL_Dptos +
+      " FROM GIS2.Publicacion.DEPARTAMENTOS G LEFT JOIN (SELECT DPTO_NCDGO" +
+      strFrom;
+    strWhere += getSqlParameter("selectFiltro_Departamento", "DPTO_NCDGO");
+    strWhere +=
+      " (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO";
+    tableRUV = "Departamentos";
     popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroMunicipal") {
-    strFrom = strSQL_Mpios + ' FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_Municipios', 'MPIO_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO';
-    tableRUV = 'Municipios';
+    strFrom =
+      strSQL_Mpios +
+      " FROM GIS2.Publicacion.MUNICIPIOS G LEFT JOIN (SELECT MPIO_NCDGO" +
+      strFrom;
+    strWhere += getSqlParameter("selectFiltro_Municipios", "MPIO_NCDGO");
+    strWhere +=
+      " (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO";
+    tableRUV = "Municipios";
     popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroDT") {
-    strFrom = strSQL_DT + ' FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_DT', 'DT_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO';
-    tableRUV = 'DT';
+    strFrom =
+      strSQL_DT +
+      " FROM GIS2.Publicacion.DT G LEFT JOIN (SELECT DT_NCDGO" +
+      strFrom;
+    strWhere += getSqlParameter("selectFiltro_DT", "DT_NCDGO");
+    strWhere += " (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO";
+    tableRUV = "DT";
     popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroPDET") {
-    strFrom = strSQL_PDET + ' FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO' + strFrom;
-    strWhere += getSqlParameter('selectFiltro_PDET', 'PDET_NCDGO');
-    strWhere += ' (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO';
-    tableRUV = 'PDET';
+    strFrom =
+      strSQL_PDET +
+      " FROM GIS2.Publicacion.PDET G LEFT JOIN (SELECT PDET_NCDGO" +
+      strFrom;
+    strWhere += getSqlParameter("selectFiltro_PDET", "PDET_NCDGO");
+    strWhere +=
+      " (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO";
+    tableRUV = "PDET";
     popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
   }
 
-  let titleRUV = variableRUV + ' por ' + tableRUV + ' para el año YYYY';
-  let idLayerRUV = "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_YYYY";
+  let titleRUV = variableRUV + " por " + tableRUV + " para el año YYYY";
+  let idLayerRUV =
+    "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_YYYY";
   let strSqlVGV = strFrom + strWhere;
 
   return {
@@ -1844,49 +1896,18 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     titleRUV,
     strSqlVGV,
     tableRUV,
-    popupContent
+    popupContent,
   };
-}
-
-function getSchemeVGV(numClasses) {
-  let noDataColor = '#cccccc';
-  let color_1 = $("#styleRampColor1-VGV").val();
-  let color_2 = $("#styleRampColor2-VGV").val();
-  let color_3 = $("#styleRampColor3-VGV").val();
-  let rainbow = new Rainbow();
-  rainbow.setNumberRange(1, numClasses);
-  rainbow.setSpectrum(color_1, color_2, color_3);
-  let colorsArray = [];
-  for (let i = 1; i <= numClasses; i++) {
-    let hexColour = rainbow.colourAt(i);
-    colorsArray.push(new _Color('#' + hexColour));
-  }
-  const schemesVGV = {
-    "id": "rampColorVGV",
-    "colors": [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
-    "noDataColor": new _Color(noDataColor),
-    "colorsForClassBreaks": [{
-      "colors": colorsArray,
-      "numClasses": numClasses
-    }],
-    "outline": {
-      "color": {
-        "r": 153,
-        "g": 153,
-        "b": 153,
-        "a": 0.25
-      },
-      "width": "0.25px"
-    },
-    "opacity": 0.8
-  };
-  return schemesVGV;
 }
 
 function createRenderer(featureLayer, subLayer, layerRUV) {
   let classificationMethod = $("#class-select-VGV").val();
   let numClasses = parseInt($("#num-classes-VGV").val());
-  const schemesVGV = getSchemeVGV(numClasses);
+
+  let color_1 = $("#styleRampColor1-VGV").val();
+  let color_2 = $("#styleRampColor2-VGV").val();
+  let color_3 = $("#styleRampColor3-VGV").val();
+  const schemesVGV = getScheme(color_1, color_2, color_3);
 
   const params = {
     layer: featureLayer,
@@ -1894,7 +1915,7 @@ function createRenderer(featureLayer, subLayer, layerRUV) {
     view: view,
     classificationMethod: classificationMethod,
     numClasses: numClasses,
-    colorScheme: schemesVGV
+    colorScheme: schemesVGV,
   };
 
   _colorRendererCreator
@@ -1915,7 +1936,6 @@ function createRenderer(featureLayer, subLayer, layerRUV) {
       if (loading.isOpen()) {
         loading.close();
       }
-
     })
     .catch(function (error) {
       console.log(error);
@@ -1959,17 +1979,15 @@ function aplicarParametrosVGV() {
   let Anio = $("#selectFiltro_Anio").val();
 
   let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
-  ({
-    idLayerRUV,
-    titleRUV,
-    strSqlVGV,
-    tableRUV,
-    popupContent
-  } = defineSqlVGV(Anio, filtroGeografico, variableRUV));
+  ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
+    Anio,
+    filtroGeografico,
+    variableRUV
+  ));
 
-  idLayerRUV = idLayerRUV.replace('YYYY', Anio);
-  titleRUV = titleRUV.replace('YYYY', Anio);
-  strSqlVGV = strSqlVGV.replace('YYYY', Anio);
+  idLayerRUV = idLayerRUV.replace("YYYY", Anio);
+  titleRUV = titleRUV.replace("YYYY", Anio);
+  strSqlVGV = strSqlVGV.replace("YYYY", Anio);
 
   removeLayer(idLayerRUV);
 
@@ -1979,58 +1997,63 @@ function aplicarParametrosVGV() {
     id: idLayerRUV,
     anio: Anio,
     visible: true,
-    sublayers: [{
-      title: titleRUV,
-      id: 0,
-      idRUV: idLayerRUV,
-      layerOrigen: tableRUV,
-      variableOrigen: variableRUV,
-      opacity: 0.8,
-      listMode: "hide",
-      source: {
-        type: "data-layer",
-        dataSource: {
-          type: "query-table",
-          workspaceId: "CONSULTA_RUV",
-          query: strSqlVGV,
-          geometryType: "polygon",
-          spatialReference: {
-            "wkid": 4326
+    sublayers: [
+      {
+        title: titleRUV,
+        id: 0,
+        idRUV: idLayerRUV,
+        layerOrigen: tableRUV,
+        variableOrigen: variableRUV,
+        opacity: 0.8,
+        listMode: "hide",
+        source: {
+          type: "data-layer",
+          dataSource: {
+            type: "query-table",
+            workspaceId: "CONSULTA_RUV",
+            query: strSqlVGV,
+            geometryType: "polygon",
+            spatialReference: {
+              wkid: 4326,
+            },
+            oidFields: "objectid",
           },
-          oidFields: "objectid"
-        }
-      }
-    }]
+        },
+      },
+    ],
   });
 
   const subLayerRUV = layerRUV.sublayers.find(function (sublayer) {
     return sublayer.id === 0;
   });
 
-  subLayerRUV.createFeatureLayer()
+  subLayerRUV
+    .createFeatureLayer()
     .then(function (eventosFeatureLayer) {
       return eventosFeatureLayer.load();
     })
     .then(function (featureLayer) {
-      createRenderer(featureLayer, subLayerRUV, layerRUV)
+      createRenderer(featureLayer, subLayerRUV, layerRUV);
     });
 
   subLayerRUV.popupTemplate = {
     title: "<b>" + titleRUV + "</b>",
     content: popupContent,
-    fieldInfos: [{
-      fieldName: "VGV_NVALOR",
-      format: {
-        digitSeparator: true,
-        places: 0
-      }
-    }, {
-      fieldName: "VGV_CNMBR",
-    }]
+    fieldInfos: [
+      {
+        fieldName: "VGV_NVALOR",
+        format: {
+          digitSeparator: true,
+          places: 0,
+        },
+      },
+      {
+        fieldName: "VGV_CNMBR",
+      },
+    ],
   };
 
   closeParametrosVGV();
-
 }
 
 function limpiarParametrosVGV() {
@@ -2046,9 +2069,9 @@ function limpiarParametrosVGV() {
     "selectFiltro_PDET",
   ];
 
-  for (let idxList = 0; idxList < listSelect.length; idxList++) {
-    $("#" + listSelect[idxList]).multiselect("selectAll", false);
-    $("#" + listSelect[idxList]).multiselect("updateButtonText");
+  for (const element of listSelect) {
+    $("#" + element).multiselect("selectAll", false);
+    $("#" + element).multiselect("updateButtonText");
   }
 
   $("#selectFiltro_Anio").prop("selectedIndex", 0);
@@ -2071,9 +2094,7 @@ function createTimeVGV() {
     alerta(
       "El año de inicio y fin del deslizador del tiempo no pueden ser el mismo"
     );
-    return;
   } else {
-
     let filtroGeografico = $("#selectFiltro_Geografico").val();
 
     if (filtroGeografico == "filtroDepartamento") {
@@ -2112,7 +2133,6 @@ function createTimeVGV() {
 
     // Oculta el botón para que no ejecuten de nuevo el comando
     $("#createTimeVGV").hide();
-    // $("#createTimeVGV").hide();
 
     current_reportes = arrayRemove(current_reportes, "TimeSlider");
     reporteUso(
@@ -2124,38 +2144,38 @@ function createTimeVGV() {
     let variableRUV = $("#selectFiltro_Variable option:selected").text();
     let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
 
-    ({
-      idLayerRUV,
-      titleRUV,
-      strSqlVGV,
-      tableRUV,
-      popupContent
-    } = defineSqlVGV(sliderTime.min, filtroGeografico, variableRUV));
+    ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
+      sliderTime.min,
+      filtroGeografico,
+      variableRUV
+    ));
 
-    idLayerRUV = idLayerRUV.replace('_YYYY', '');
-    idLayerRUV = idLayerRUV.replace('Results_', 'Time_');
+    idLayerRUV = idLayerRUV.replace("_YYYY", "");
+    idLayerRUV = idLayerRUV.replace("Results_", "Time_");
     removeLayer(idLayerRUV);
 
     const layerTime = new _MapImageLayer({
       url: URL_RUV,
-      title: titleRUV.replace(' para el año YYYY', ''),
+      title: titleRUV.replace(" para el año YYYY", ""),
       id: idLayerRUV,
       visible: true,
       listMode: "hide",
-      sublayers: []
+      sublayers: [],
     });
 
-    let numClasses = parseInt($("#num-classes-VGV").val());
-    const schemesTime = getSchemeVGV(numClasses);
+    let color_1 = $("#styleRampColor1-VGV").val();
+    let color_2 = $("#styleRampColor2-VGV").val();
+    let color_3 = $("#styleRampColor3-VGV").val();
+    const schemesTime = getScheme(color_1, color_2, color_3);
 
-    for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+    for (const idxAnio of vgv_lstAnios) {
       if (
-        vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
-        vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+        idxAnio >= sliderTimeRange.values[0] &&
+        idxAnio <= sliderTimeRange.values[1]
       ) {
-        let Anio = vgv_lstAnios[idxAnio];
-        let titleAnio = titleRUV.replace('YYYY', Anio);
-        let strSqlAnio = strSqlVGV.replace('YYYY', Anio);
+        let Anio = idxAnio;
+        let titleAnio = titleRUV.replace("YYYY", Anio);
+        let strSqlAnio = strSqlVGV.replace("YYYY", Anio);
 
         let defineSubLayer = {
           title: titleAnio,
@@ -2174,11 +2194,11 @@ function createTimeVGV() {
               query: strSqlAnio,
               geometryType: "polygon",
               spatialReference: {
-                "wkid": 4326
+                wkid: 4326,
               },
-              oidFields: "objectid"
-            }
-          }
+              oidFields: "objectid",
+            },
+          },
         };
 
         layerTime.sublayers.push(defineSubLayer);
@@ -2190,25 +2210,28 @@ function createTimeVGV() {
         subLayerTime.popupTemplate = {
           title: "<b>" + titleAnio + "</b>",
           content: popupContent,
-          fieldInfos: [{
-            fieldName: "VGV_NVALOR",
-            format: {
-              digitSeparator: true,
-              places: 0
-            }
-          }, {
-            fieldName: "VGV_CNMBR",
-          }]
+          fieldInfos: [
+            {
+              fieldName: "VGV_NVALOR",
+              format: {
+                digitSeparator: true,
+                places: 0,
+              },
+            },
+            {
+              fieldName: "VGV_CNMBR",
+            },
+          ],
         };
 
-        subLayerTime.createFeatureLayer()
+        subLayerTime
+          .createFeatureLayer()
           .then(function (eventosFeatureLayer) {
             return eventosFeatureLayer.load();
           })
           .then(function (featureLayer) {
-            createRendererTime(featureLayer, schemesTime, subLayerTime)
+            createRendererTime(featureLayer, schemesTime, subLayerTime);
           });
-
       }
     }
 
@@ -2219,14 +2242,14 @@ function createTimeVGV() {
     map.reorder(tLayerLabels, map.layers.items.length);
     tLayerLabels.visible = true;
 
-    view.whenLayerView(layerTime)
+    view
+      .whenLayerView(layerTime)
       .then(function (layerView) {
         displayTimeVGV();
       })
       .catch(function (error) {
         console.log(error);
       });
-
   }
 }
 
@@ -2240,7 +2263,7 @@ function createRendererTime(featureLayer, schemesTime, subLayer) {
     view: view,
     classificationMethod: classificationMethod,
     numClasses: numClasses,
-    colorScheme: schemesTime
+    colorScheme: schemesTime,
   };
 
   _colorRendererCreator
@@ -2253,7 +2276,6 @@ function createRendererTime(featureLayer, schemesTime, subLayer) {
       if (loading.isOpen()) {
         loading.close();
       }
-
     })
     .catch(function (error) {
       console.log(error);
@@ -2283,14 +2305,12 @@ function displayTimeVGV() {
         loading.close();
       }
     });
-
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
 function deleteTimeVGV() {
-
   current_reportes = arrayRemove(current_reportes, "TimeSlider");
   reporteUso(
     "TimeSlider",
@@ -2308,12 +2328,13 @@ function deleteTimeVGV() {
 
   stopAnimation();
 
+  loopFull = false;
   $("#textSliderTimeRange").text(
     "Rango de años a calcular (" +
-    vgv_lstAnios[0].toString() +
-    " - " +
-    vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
-    ")"
+      vgv_lstAnios[0].toString() +
+      " - " +
+      vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
+      ")"
   );
   $("#legendTimeVGV").hide();
   $("#sliderContainerTime").hide();
@@ -2335,9 +2356,8 @@ function setTimeYear(value) {
 
     offLayersTime();
     onLayerTime(AnioTime);
-
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -2347,7 +2367,7 @@ function startAnimation() {
     animation = animate(sliderTimeRange.values[0]);
     playButton.classList.add("toggled");
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -2361,7 +2381,7 @@ function stopAnimation() {
     animation = null;
     playButton.classList.remove("toggled");
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -2396,7 +2416,7 @@ function animate(startValue) {
       },
     };
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -2405,22 +2425,21 @@ function inputTimeHandler(event) {
     stopAnimation();
     setTimeYear(event.value);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
 function offLayersTime() {
   let layerTime = map.findLayerById(idLayerTime);
-  for (let idxAnio = 0; idxAnio < vgv_lstAnios.length; idxAnio++) {
+  for (const idxAnio of vgv_lstAnios) {
     if (
-      vgv_lstAnios[idxAnio] >= sliderTimeRange.values[0] &&
-      vgv_lstAnios[idxAnio] <= sliderTimeRange.values[1]
+      idxAnio >= sliderTimeRange.values[0] &&
+      idxAnio <= sliderTimeRange.values[1]
     ) {
       const subLayerTime = layerTime.sublayers.find(function (sublayer) {
-        return sublayer.id === vgv_lstAnios[idxAnio];
+        return sublayer.id === idxAnio;
       });
       subLayerTime.visible = false;
-
     }
   }
 }
@@ -2428,7 +2447,7 @@ function offLayersTime() {
 function onLayerTime(Anio) {
   let layerTime = map.findLayerById(idLayerTime);
   const subLayerTime = layerTime.sublayers.find(function (sublayer) {
-    return sublayer.id === Anio
+    return sublayer.id === Anio;
   });
   subLayerTime.visible = true;
 }
@@ -2475,44 +2494,58 @@ async function generateDataChart(tLayer) {
   const queryCicloVital = groupDataVGV(strWhere, "RUV_NCICLOVITAL");
 
   try {
-    let [dataVGVHecho, dataVGVSexo, dataVGVEtnia, dataVGVDiscapacidad, dataVGVCicloVital] = await Promise.all([
+    let [
+      dataVGVHecho,
+      dataVGVSexo,
+      dataVGVEtnia,
+      dataVGVDiscapacidad,
+      dataVGVCicloVital,
+    ] = await Promise.all([
       VGV_TABLA_DATOS.queryFeatures(queryHecho).then((response) => {
-        return response.features
+        return response.features;
       }),
       VGV_TABLA_DATOS.queryFeatures(querySexo).then((response) => {
-        return response.features
+        return response.features;
       }),
       VGV_TABLA_DATOS.queryFeatures(queryEtnia).then((response) => {
-        return response.features
+        return response.features;
       }),
       VGV_TABLA_DATOS.queryFeatures(queryDiscapacidad).then((response) => {
-        return response.features
+        return response.features;
       }),
       VGV_TABLA_DATOS.queryFeatures(queryCicloVital).then((response) => {
-        return response.features
-      })
+        return response.features;
+      }),
     ]);
 
     vgv_graphic_hechos = [];
     vgv_graphic_hechos.push({
       Parametros: "HECHO",
-      DataGroup: processDataGroupVGV(dataVGVHecho, 'RUV_NHECHO', vgv_lstHechos)
+      DataGroup: processDataGroupVGV(dataVGVHecho, "RUV_NHECHO", vgv_lstHechos),
     });
     vgv_graphic_hechos.push({
       Parametros: "SEXO",
-      DataGroup: processDataGroupVGV(dataVGVSexo, 'RUV_NSEXO', vgv_lstSexo)
+      DataGroup: processDataGroupVGV(dataVGVSexo, "RUV_NSEXO", vgv_lstSexo),
     });
     vgv_graphic_hechos.push({
       Parametros: "ETNIA",
-      DataGroup: processDataGroupVGV(dataVGVEtnia, 'RUV_NETNIA', vgv_lstEtnia)
+      DataGroup: processDataGroupVGV(dataVGVEtnia, "RUV_NETNIA", vgv_lstEtnia),
     });
     vgv_graphic_hechos.push({
       Parametros: "DISCAPACIDAD",
-      DataGroup: processDataGroupVGV(dataVGVDiscapacidad, 'RUV_NDISCAPACIDAD', vgv_lstDiscapacidad)
+      DataGroup: processDataGroupVGV(
+        dataVGVDiscapacidad,
+        "RUV_NDISCAPACIDAD",
+        vgv_lstDiscapacidad
+      ),
     });
     vgv_graphic_hechos.push({
       Parametros: "CICLO_VITAL",
-      DataGroup: processDataGroupVGV(dataVGVCicloVital, 'RUV_NCICLOVITAL', vgv_lstCicloVital)
+      DataGroup: processDataGroupVGV(
+        dataVGVCicloVital,
+        "RUV_NCICLOVITAL",
+        vgv_lstCicloVital
+      ),
     });
 
     $("#tituloChart").text("Gráficos - " + tLayer.title);
@@ -2522,7 +2555,6 @@ async function generateDataChart(tLayer) {
 
     current_reportes = arrayRemove(current_reportes, "chart");
     reporteUso("chart", tLayer.id, "load");
-
   } catch (error) {
     console.log(error);
   }
@@ -2530,14 +2562,14 @@ async function generateDataChart(tLayer) {
 
 function processDataGroupVGV(dataVGV, field, vgvList) {
   let dataGroupVGV = [];
-  dataVGV.forEach(data => {
+  dataVGV.forEach((data) => {
     dataGroupVGV.push(data.attributes);
   });
-  for (let idxList = 0; idxList < vgvList.length; idxList++) {
-    for (let idxData = 0; idxData < dataGroupVGV.length; idxData++) {
-      if (vgvList[idxList].code == dataGroupVGV[idxData][field]) {
-        dataGroupVGV[idxData].VAR_AGRUPACION = vgvList[idxList].name;
-        delete dataGroupVGV[idxData][field];
+  for (const element of vgvList) {
+    for (const data of dataGroupVGV) {
+      if (element.code == data[field]) {
+        data.VAR_AGRUPACION = element.name;
+        delete data[field];
       }
     }
   }
@@ -2549,19 +2581,23 @@ function groupDataVGV(strWhere, fieldGroup) {
   query.where = strWhere;
   query.returnGeometry = false;
   query.outFields = ["*"];
-  query.outStatistics = [{
-    onStatisticField: "RUV_NDECLARACION",
-    outStatisticFieldName: "PER_DECLA",
-    statisticType: "sum"
-  }, {
-    onStatisticField: "RUV_NEVENTOS",
-    outStatisticFieldName: "EVENTOS",
-    statisticType: "sum"
-  }, {
-    onStatisticField: "RUV_NOCURRENCIA",
-    outStatisticFieldName: "PER_OCU",
-    statisticType: "sum"
-  }];
+  query.outStatistics = [
+    {
+      onStatisticField: "RUV_NDECLARACION",
+      outStatisticFieldName: "PER_DECLA",
+      statisticType: "sum",
+    },
+    {
+      onStatisticField: "RUV_NEVENTOS",
+      outStatisticFieldName: "EVENTOS",
+      statisticType: "sum",
+    },
+    {
+      onStatisticField: "RUV_NOCURRENCIA",
+      outStatisticFieldName: "PER_OCU",
+      statisticType: "sum",
+    },
+  ];
   query.groupByFieldsForStatistics = [fieldGroup];
   return query;
 }
@@ -2573,11 +2609,6 @@ function generateVisualChart() {
   let parametro1ValueChart = $("#settingsParametro1Chart").val();
   let parametro1TextChart = $(
     "#settingsParametro1Chart option:selected"
-  ).text();
-
-  let parametro2ValueChart = $("#settingsParametro2Chart").val();
-  let parametro2TextChart = $(
-    "#settingsParametro2Chart option:selected"
   ).text();
 
   let tipoValueChart = $("#settingsTipoChart").val();
@@ -2599,13 +2630,15 @@ function generateVisualChart() {
   let dataChart, layoutChart;
 
   if (tipoValueChart == "Pie" || tipoValueChart == "Donut") {
-    dataChart = [{
-      labels: labelsGroupChart,
-      values: variableGroupChart,
-      textposition: "inside",
-      automargin: true,
-      type: "pie",
-    }, ];
+    dataChart = [
+      {
+        labels: labelsGroupChart,
+        values: variableGroupChart,
+        textposition: "inside",
+        automargin: true,
+        type: "pie",
+      },
+    ];
 
     if (tipoValueChart == "Donut") {
       dataChart[0].hole = 0.4;
@@ -2629,13 +2662,6 @@ function generateVisualChart() {
         l: 0,
         r: 50,
       },
-      // margin: {
-      //   l: 50,
-      //   r: 50,
-      //   b: 100,
-      //   t: 50,
-      //   pad: 4
-      // },
       showlegend: true,
       legend: {
         orientation: orientationLeyend,
@@ -2645,20 +2671,20 @@ function generateVisualChart() {
     let d3colors = Plotly.d3.scale.category20();
     let listColors = [];
 
-    for (
-      let idxLabels = 0; idxLabels < labelsGroupChart.length; idxLabels++
-    ) {
+    for (let idxLabels = 0; idxLabels < labelsGroupChart.length; idxLabels++) {
       listColors.push(d3colors(idxLabels));
     }
 
-    dataChart = [{
-      x: labelsGroupChart,
-      y: variableGroupChart,
-      marker: {
-        color: listColors,
+    dataChart = [
+      {
+        x: labelsGroupChart,
+        y: variableGroupChart,
+        marker: {
+          color: listColors,
+        },
+        type: "bar",
       },
-      type: "bar",
-    }, ];
+    ];
 
     layoutChart = {
       title: {
@@ -2714,17 +2740,16 @@ function maxTabla() {
 }
 
 function generateTableMapServer(tLayer) {
-  if (tLayer.id.startsWith('Results_')) {
+  if (tLayer.id.startsWith("Results_")) {
     const subLayer = tLayer.sublayers.find(function (sublayer) {
       return sublayer.id === 0;
     });
 
-    generateTableFeature(subLayer)
+    generateTableFeature(subLayer);
   }
 }
 
 function generateTableFeature(tLayer) {
-
   const query = new _Query();
   query.where = "1=1";
   query.returnGeometry = false;
@@ -2760,9 +2785,9 @@ function generateTableFeature(tLayer) {
       TableFields = jsonCopy(tableDef_PDET);
     }
 
-    for (let idxField = 0; idxField < TableFields.length; idxField++) {
-      if (TableFields[idxField].field == "VGV_NVALOR") {
-        TableFields[idxField].topCalc = function (values, data, calcParams) {
+    for (const tableField of TableFields) {
+      if (tableField.field == "VGV_NVALOR") {
+        tableField.topCalc = function (values, data, calcParams) {
           if (values && values.length) {
             var total = values.reduce((sum, x) => sum + (parseInt(x) || 0));
             return "Total: " + formatNumber(total);
@@ -2772,12 +2797,12 @@ function generateTableFeature(tLayer) {
     }
 
     let widthTable = 0;
-    for (let indexField = 0; indexField < TableFields.length; indexField++) {
-      if (TableFields[indexField].field == "VGV_NVALOR") {
-        TableFields[indexField].title = tituloResultados;
+    for (const tableField of TableFields) {
+      if (tableField.field == "VGV_NVALOR") {
+        tableField.title = tituloResultados;
       }
-      if (TableFields[indexField].hasOwnProperty("width")) {
-        widthTable += TableFields[indexField].width;
+      if (tableField.hasOwnProperty("width")) {
+        widthTable += tableField.width;
       }
     }
 
@@ -2832,22 +2857,22 @@ function generateTableDefault(tLayer) {
     let dateFields = [];
     let widthTable = 0;
 
-    for (let idxField = 0; idxField < fieldsLayer.length; idxField++) {
+    for (let field of fieldsLayer) {
       if (
-        fieldsLayer[idxField].name == "OBJECTID" ||
-        fieldsLayer[idxField].name == "Shape__Length" ||
-        fieldsLayer[idxField].name == "Shape.LEN" ||
-        fieldsLayer[idxField].name == "Shape__Area" ||
-        fieldsLayer[idxField].name == "Shape.AREA"
+        field.name == "OBJECTID" ||
+        field.name == "Shape__Length" ||
+        field.name == "Shape.LEN" ||
+        field.name == "Shape__Area" ||
+        field.name == "Shape.AREA"
       ) {
         // pass
-      } else if (fieldsLayer[idxField].name == "OBJECTID") {
+      } else if (field.name == "OBJECTID") {
         TableFields.push({
           field: "OBJECTID",
           visible: false,
         });
       } else {
-        let widthField = fieldsLayer[idxField].length;
+        let widthField = field.length;
         if (widthField < 30) {
           widthField = 150;
         } else {
@@ -2857,21 +2882,20 @@ function generateTableDefault(tLayer) {
         widthTable += widthField;
 
         let fieldDefinition = {
-          field: fieldsLayer[idxField].name,
-          title: fieldsLayer[idxField].alias,
+          field: field.name,
+          title: field.alias,
           sorter: "string",
           visible: true,
           width: widthField,
         };
 
-        if (fieldsLayer[idxField].type == "string") {
+        if (field.type == "string") {
           fieldDefinition.headerFilter = "input";
-          fieldDefinition.headerFilterPlaceholder =
-            "Buscar " + fieldsLayer[idxField].alias;
+          fieldDefinition.headerFilterPlaceholder = "Buscar " + field.alias;
         }
 
-        if (fieldsLayer[idxField].type == "date") {
-          dateFields.push(fieldsLayer[idxField].name);
+        if (field.type == "date") {
+          dateFields.push(field.name);
         }
 
         TableFields.push(fieldDefinition);
@@ -2891,10 +2915,8 @@ function generateTableDefault(tLayer) {
     response.features.forEach((feature) => {
       let attributeFeature = feature.attributes;
       if (dateFields.length > 0) {
-        for (let idxField = 0; idxField < dateFields.length; idxField++) {
-          attributeFeature[dateFields[idxField]] = getDateText(
-            attributeFeature[dateFields[idxField]]
-          );
+        for (let field of dateFields) {
+          attributeFeature[field] = getDateText(attributeFeature[field]);
         }
       }
       TableFeatures.push(attributeFeature);
@@ -2943,11 +2965,11 @@ function selectTableFeatures(idLayer, OBJECTID) {
       returnGeometry: true,
     };
 
-    if (tLayer.type == 'map-image' && tLayer.id.startsWith('Results_')) {
+    if (tLayer.type == "map-image" && tLayer.id.startsWith("Results_")) {
       tLayer = tLayer.sublayers.find(function (sublayer) {
         return sublayer.id === 0;
       });
-    } else if (tLayer.type == 'feature') {
+    } else if (tLayer.type == "feature") {
       //
     } else {
       return;
@@ -3089,15 +3111,15 @@ function removeOptionSwipe(tLayer) {
     let izqLayers = swipeMapa.leadingLayers.items;
     let derLayers = swipeMapa.trailingLayers.items;
 
-    for (let idxLayer = 0; idxLayer < izqLayers.length; idxLayer++) {
-      if (izqLayers[idxLayer].id == tLayer.id) {
+    for (let layer of izqLayers) {
+      if (layer.id == tLayer.id) {
         removeSwipe();
         return;
       }
     }
 
-    for (let idxLayer = 0; idxLayer < derLayers.length; idxLayer++) {
-      if (derLayers[idxLayer].id == tLayer.id) {
+    for (let layer of derLayers) {
+      if (layer.id == tLayer.id) {
         removeSwipe();
         return;
       }
@@ -3110,9 +3132,9 @@ function activeFirstLegend() {
     "esri-legend--card__carousel-indicator"
   );
 
-  for (let idxCard = 0; idxCard < cardsLegend.length; idxCard++) {
-    if (cardsLegend[idxCard].title.startsWith("1 ")) {
-      cardsLegend[idxCard].click();
+  for (const card of cardsLegend) {
+    if (card.title.startsWith("1 ")) {
+      card.click();
     }
   }
 }
@@ -3126,26 +3148,26 @@ function gotoAgregar() {
     let currentSubCategoria = null;
     let currentSubCategoriaCount = 0;
 
-    for (let i = 0; i < config_layers.length; i++) {
-      if (currentCategoria != config_layers[i].ID_CATEGORIA) {
+    for (const layer of config_layers) {
+      if (currentCategoria != layer.ID_CATEGORIA) {
         if (currentCategoria != null) {
           $(
             "[data-categoria-group='" + currentCategoria + "'] > div > a > span"
           ).html("&nbsp;(" + (currentCategoriaCount + 1) + ")");
         }
-        currentCategoria = config_layers[i].ID_CATEGORIA;
+        currentCategoria = layer.ID_CATEGORIA;
         currentCategoriaCount = 0;
         let strCatHTML = "";
         strCatHTML =
           strCatHTML +
           "<li data-categoria-group='" +
-          config_layers[i].ID_CATEGORIA +
+          layer.ID_CATEGORIA +
           "' class='list-group-item activec'>";
         strCatHTML = strCatHTML + "<div class='media-left'>";
         strCatHTML =
           strCatHTML +
           "<a href='#' class='linkVGV' style='font-weight: bold;' onclick='showCategory(" +
-          config_layers[i].ID_CATEGORIA +
+          layer.ID_CATEGORIA +
           ");'></a>";
         strCatHTML = strCatHTML + "</div>";
         strCatHTML =
@@ -3154,9 +3176,9 @@ function gotoAgregar() {
         strCatHTML =
           strCatHTML +
           "<a href='#' class='linkVGV' style='font-weight: bold;' onclick='showCategory(" +
-          config_layers[i].ID_CATEGORIA +
+          layer.ID_CATEGORIA +
           ");'>" +
-          config_layers[i].CATEGORIA +
+          layer.CATEGORIA +
           "<span>&nbsp;</span></a>";
         strCatHTML = strCatHTML + "</div>";
         strCatHTML = strCatHTML + "</li>";
@@ -3164,27 +3186,24 @@ function gotoAgregar() {
       } else {
         currentCategoriaCount = currentCategoriaCount + 1;
       }
-      if (
-        config_layers[i].ID_SUBCATEGORIA != undefined ||
-        config_layers[i].ID_SUBCATEGORIA != null
-      ) {
-        if (currentSubCategoria != config_layers[i].ID_SUBCATEGORIA) {
+      if (layer.ID_SUBCATEGORIA != undefined || layer.ID_SUBCATEGORIA != null) {
+        if (currentSubCategoria != layer.ID_SUBCATEGORIA) {
           if (currentSubCategoria != null) {
             $(
               "[data-subcategoria-group='" +
-              currentSubCategoria +
-              "'] > div > a > span"
+                currentSubCategoria +
+                "'] > div > a > span"
             ).html("&nbsp;(" + (currentSubCategoriaCount + 1) + ")");
           }
-          currentSubCategoria = config_layers[i].ID_SUBCATEGORIA;
+          currentSubCategoria = layer.ID_SUBCATEGORIA;
           currentSubCategoriaCount = 0;
           let strSubCatHTML = "";
           strSubCatHTML =
             strSubCatHTML +
             "<li  data-categoria='" +
-            config_layers[i].ID_CATEGORIA +
+            layer.ID_CATEGORIA +
             "' data-subcategoria-group='" +
-            config_layers[i].ID_SUBCATEGORIA +
+            layer.ID_SUBCATEGORIA +
             "' class='list-group-item' style='display: none;'>";
           strSubCatHTML =
             strSubCatHTML +
@@ -3192,20 +3211,20 @@ function gotoAgregar() {
           strSubCatHTML =
             strSubCatHTML +
             "<a href='#' class='linkVGV' style='font-weight: bold;' onclick='showSubCategory(" +
-            config_layers[i].ID_CATEGORIA +
+            layer.ID_CATEGORIA +
             "," +
-            config_layers[i].ID_SUBCATEGORIA +
+            layer.ID_SUBCATEGORIA +
             ");'>" +
-            config_layers[i].SUBCATEGORIA +
+            layer.SUBCATEGORIA +
             "<span>&nbsp;</span></a>";
           strSubCatHTML = strSubCatHTML + "</div>";
           strSubCatHTML = strSubCatHTML + "<div class='media-right'>";
           strSubCatHTML =
             strSubCatHTML +
             "<button type='button' style='width: 32px;height: 25px;' data-toggle='tooltip' data-placement='bottom' title='Expandir subcategoria' class='btn btn-xs btn-default' onclick='showSubCategory(" +
-            config_layers[i].ID_CATEGORIA +
+            layer.ID_CATEGORIA +
             "," +
-            config_layers[i].ID_SUBCATEGORIA +
+            layer.ID_SUBCATEGORIA +
             ");'>";
           strSubCatHTML =
             strSubCatHTML +
@@ -3220,8 +3239,8 @@ function gotoAgregar() {
         if (currentSubCategoria != null) {
           $(
             "[data-subcategoria-group='" +
-            currentSubCategoria +
-            "'] > div > a > span"
+              currentSubCategoria +
+              "'] > div > a > span"
           ).html("&nbsp;(" + (currentSubCategoriaCount + 1) + ")");
         }
       } else {
@@ -3230,14 +3249,14 @@ function gotoAgregar() {
       }
 
       let strHTMLSubCategoria =
-        currentSubCategoria == null ?
-        "" :
-        "' data-subcategoria='" + config_layers[i].ID_SUBCATEGORIA;
+        currentSubCategoria == null
+          ? ""
+          : "' data-subcategoria='" + layer.ID_SUBCATEGORIA;
       let strHTML =
         "<li data-layer='" +
-        config_layers[i].ID_SERVICIO +
+        layer.ID_SERVICIO +
         "' data-categoria='" +
-        config_layers[i].ID_CATEGORIA +
+        layer.ID_CATEGORIA +
         strHTMLSubCategoria +
         "' class='list-group-item' style='display: none;'>";
 
@@ -3245,86 +3264,65 @@ function gotoAgregar() {
       strHTML =
         strHTML +
         "<a href='#' class='media-heading' style='font-size: small;color: black;' onclick='showDetail(" +
-        config_layers[i].ID_SERVICIO +
+        layer.ID_SERVICIO +
         ");'>" +
-        config_layers[i].NOMBRE +
+        layer.NOMBRE +
         "</a>";
 
-      if (config_layers[i].ID_SUBCATEGORIA == null) {
+      if (layer.ID_SUBCATEGORIA) {
         strHTML =
           strHTML +
           "<div id='extra-data-" +
-          config_layers[i].ID_SERVICIO +
-          "' class='extra-data collapse'>";
-      } else {
-        strHTML =
-          strHTML +
-          "<div id='extra-data-" +
-          config_layers[i].ID_SERVICIO +
+          layer.ID_SERVICIO +
           "' class='extra-data collapse' style='margin-left: 5px;'>";
-      }
-
-      if (config_layers[i].RESUMEN != null) {
-        if (config_layers[i].RESUMEN != "") {
-          // if (config_layers[i].RESUMEN.length > 165) {
-          //   strHTML = strHTML + "<p style='margin: 0px'>" + config_layers[i].RESUMEN.trim().substring(0, 165) + "…" + "</p>";
-          // } else {
-          strHTML =
-            strHTML +
-            "<p style='margin: 0px'>" +
-            config_layers[i].RESUMEN +
-            "</p>";
-          // }
-        }
-      }
-      if (config_layers[i].ENTIDAD != null) {
-        if (config_layers[i].ENTIDAD != "") {
-          strHTML =
-            strHTML +
-            "<p style='margin: 0px'><b>Entidad:</b> " +
-            config_layers[i].ENTIDAD +
-            "</p>";
-        }
-      }
-      if (config_layers[i].FECHA != null) {
-        if (config_layers[i].FECHA != "") {
-          strHTML =
-            strHTML +
-            "<p style='margin: 0px'><b>Fecha de actualizaci&oacute;n:</b> " +
-            config_layers[i].FECHA +
-            "</p>";
-        }
-      }
-      if (config_layers[i].LICENCIA != null) {
-        if (config_layers[i].LICENCIA != "") {
-          strHTML =
-            strHTML +
-            "<p style='margin: 0px'><b>Licencia:</b> " +
-            config_layers[i].LICENCIA +
-            "</p>";
-        }
-      }
-      if (
-        config_layers[i].hasOwnProperty("URL2") &&
-        config_layers[i].URL2 != null
-      ) {
-        if (config_layers[i].URL2 != "") {
-          let URLShow = config_layers[i].URL2;
-          let n = URLShow.lastIndexOf("/");
-          n = URLShow.lastIndexOf("/", n - 1);
-          n = URLShow.lastIndexOf("/", n - 1);
-          n = URLShow.lastIndexOf("/", n - 1);
-
-          strHTML =
-            strHTML +
-            "<p style='margin: 0px'><b>URL: </b><a class='linkVGV' href='" +
-            URLShow +
-            "' target='_blank' rel='noopener'>" +
-            URLShow +
-            "</a></p>";
-        }
       } else {
-        let URLShow = config_layers[i].URL;
+        strHTML =
+          strHTML +
+          "<div id='extra-data-" +
+          layer.ID_SERVICIO +
+          "' class='extra-data collapse'>";
+      }
+
+      if (layer.RESUMEN) {
+        strHTML = strHTML + "<p style='margin: 0px'>" + layer.RESUMEN + "</p>";
+      }
+      if (layer.ENTIDAD) {
+        strHTML =
+          strHTML +
+          "<p style='margin: 0px'><b>Entidad:</b> " +
+          layer.ENTIDAD +
+          "</p>";
+      }
+      if (layer.FECHA) {
+        strHTML =
+          strHTML +
+          "<p style='margin: 0px'><b>Fecha de actualizaci&oacute;n:</b> " +
+          layer.FECHA +
+          "</p>";
+      }
+      if (layer.LICENCIA) {
+        strHTML =
+          strHTML +
+          "<p style='margin: 0px'><b>Licencia:</b> " +
+          layer.LICENCIA +
+          "</p>";
+      }
+      if (layer.URL2) {
+        let URLShow = layer.URL2;
+        let n = URLShow.lastIndexOf("/");
+        n = URLShow.lastIndexOf("/", n - 1);
+        n = URLShow.lastIndexOf("/", n - 1);
+        n = URLShow.lastIndexOf("/", n - 1);
+
+        strHTML =
+          strHTML +
+          "<p style='margin: 0px'><b>URL: </b><a class='linkVGV' href='" +
+          URLShow +
+          "' target='_blank' rel='noopener'>" +
+          URLShow +
+          "</a></p>";
+      } else {
+        let URLShow = layer.URL;
         let n = URLShow.lastIndexOf("/");
         n = URLShow.lastIndexOf("/", n - 1);
         n = URLShow.lastIndexOf("/", n - 1);
@@ -3338,17 +3336,17 @@ function gotoAgregar() {
           URLShow +
           "</a></p>";
       }
-      if (config_layers[i].URL4 != null && config_layers[i].URL4 != "") {
+      if (layer.URL4) {
         strHTML =
           strHTML +
           "<a href='#' onclick='openMetadataURL(\"" +
-          config_layers[i].URL4 +
+          layer.URL4 +
           "\");'>M&aacute;s informaci&oacute;n</a>";
-      } else if (config_layers[i].ID_METADATO != null) {
+      } else if (layer.ID_METADATO) {
         strHTML =
           strHTML +
           "<a href='#' onclick='openMetadata(\"" +
-          config_layers[i].ID_METADATO +
+          layer.ID_METADATO +
           "\");'>M&aacute;s informaci&oacute;n</a>";
       }
 
@@ -3358,9 +3356,9 @@ function gotoAgregar() {
       strHTML =
         strHTML +
         "<button data-layer='" +
-        config_layers[i].ID_SERVICIO +
+        layer.ID_SERVICIO +
         "-Btn' type='button' data-toggle='tooltip' data-placement='bottom' title='Agregar al mapa' class='btn btn-xs btn-default' onclick='showLayer(\"" +
-        config_layers[i].ID_SERVICIO +
+        layer.ID_SERVICIO +
         "\");'>";
       strHTML =
         strHTML +
@@ -3371,7 +3369,7 @@ function gotoAgregar() {
       strHTML = strHTML + "</li>";
       $("#servicesList").append(strHTML);
     }
-    if (currentCategoria != null) {
+    if (currentCategoria) {
       $(
         "[data-categoria-group='" + currentCategoria + "'] > div > a > span"
       ).html("&nbsp;(" + (currentCategoriaCount + 1) + ")");
@@ -3400,22 +3398,21 @@ function showCategory(id) {
 function showSubCategory(idCategoria, idSubCategoria) {
   if (
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']:visible")
-    .length > 0
+      .length > 0
   ) {
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']").hide();
   } else {
     $("#servicesList > :not(.activec)").hide();
     $(
       "#servicesList > [data-categoria='" +
-      idCategoria +
-      "']:not([data-subcategoria])"
+        idCategoria +
+        "']:not([data-subcategoria])"
     ).show();
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']").show();
   }
 }
 
 function showLayer(id) {
-  // map.infoWindow.hide();
   $("[data-layer='" + id + "']").addClass("disabled");
   $("[data-layer='" + id + "-Btn']").hide();
   for (let i = 0; i < config_layers.length; i++) {
@@ -3428,10 +3425,6 @@ function showLayer(id) {
 
 function showLayerId(i) {
   if (config_layers[i].TIPO == "FeatureLayer") {
-    // let infoTemplate = new esri.InfoTemplate();
-    // infoTemplate.setTitle(config_layers[i].NOMBRE);
-    // infoTemplate.setContent(getTextContent);
-
     let tLayer = new _FeatureLayer({
       url: config_layers[i].URL,
       title: config_layers[i].NOMBRE,
@@ -3441,7 +3434,7 @@ function showLayerId(i) {
       legendEnabled: true,
     });
     tLayer.when(function () {
-      reportLoad(this.id);
+      reportLoad(tLayer.id);
       $("#panelLoadLayers").removeClass("in");
 
       addOptionSwipe(tLayer);
@@ -3465,13 +3458,16 @@ function showLayerId(i) {
     let tLayer;
     if (config_layers[i].SUBLAYER) {
       tLayer = new _MapImageLayer({
-        url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",
-        sublayers: [{
-          id: config_layers[i].SUBLAYER,
-          visible: true
-        }],
+        url:
+          "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",
+        sublayers: [
+          {
+            id: config_layers[i].SUBLAYER,
+            visible: true,
+          },
+        ],
         title: config_layers[i].NOMBRE,
-        id: config_layers[i].ID_SERVICIO
+        id: config_layers[i].ID_SERVICIO,
       });
     } else {
       tLayer = new _MapImageLayer({
@@ -3484,8 +3480,6 @@ function showLayerId(i) {
     tLayer.when(function () {
       reportLoad(this.id);
       $("#panelLoadLayers").removeClass("in");
-
-      // addOptionSwipe(tLayer);
 
       let ext = tLayer.fullExtent;
       let cloneExt = ext.clone();
@@ -3503,7 +3497,6 @@ function showLayerId(i) {
     map.add(tLayer);
     current_layers.push(tLayer.id);
   }
-
 }
 
 function showDetail(id) {
@@ -3512,7 +3505,6 @@ function showDetail(id) {
 }
 
 function hideLayer(id) {
-  // map.infoWindow.hide();
   $("[data-layer='" + id + "']").removeClass("disabled");
   $("[data-layer='" + id + "-Btn']").show();
   $("[data-layer-map='" + id + "']").remove();
@@ -3529,9 +3521,9 @@ function hideLayer(id) {
 }
 
 function reportLoad(id) {
-  for (let i = 0; i < config_layers.length; i++) {
-    if (id == config_layers[i].ID_SERVICIO) {
-      if (config_layers[i].ES_SERVICIO_PROPIO == null) {
+  for (let layer of config_layers) {
+    if (id == layer.ID_SERVICIO) {
+      if (layer.ES_SERVICIO_PROPIO == null) {
         current_reportes = arrayRemove(current_reportes, "servicios");
         reporteUso("servicios", id, "load");
       }
@@ -3574,8 +3566,8 @@ function uploadCSV(evt) {
     ) {
       alerta(
         "El archivo  " +
-        file.fileName +
-        " no tiene los campos esperados según el modelo disponible"
+          file.fileName +
+          " no tiene los campos esperados según el modelo disponible"
       );
       dataLoadCSV = null;
       current_reportes = arrayRemove(current_reportes, "CSV");
@@ -3688,7 +3680,8 @@ function loadFileCSV() {
 
 function asignarCSVGeografico(lstDatosCSV, lstParametros) {
   if (lstDatosCSV.length > 0) {
-    let settingsTitleCSV = $("#settingsTitleCSV").val() + " - Datos cargados por el usuario";
+    let settingsTitleCSV =
+      $("#settingsTitleCSV").val() + " - Datos cargados por el usuario";
     let settingsVariableCSV = $("#settingsVariableCSV").val();
 
     const tLayer = map.findLayerById(lstParametros.tLayerBase);
@@ -3702,11 +3695,9 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
       for (let indexGeo = 0; indexGeo < results.features.length; indexGeo++) {
         results.features[indexGeo].attributes.OBJECTID = indexGeo;
         results.features[indexGeo].attributes.VGV_NVALOR = null;
-        for (
-          let indexValor = 0; indexValor < lstDatosCSV.length; indexValor++
-        ) {
+        for (let datoCSV of lstDatosCSV) {
           if (
-            parseInt(lstDatosCSV[indexValor][lstParametros.campoGeografico]) ==
+            parseInt(datoCSV[lstParametros.campoGeografico]) ==
             parseInt(
               results.features[indexGeo].attributes[
                 lstParametros.campoGeografico
@@ -3714,7 +3705,7 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
             )
           ) {
             results.features[indexGeo].attributes.VGV_NVALOR = parseFloat(
-              lstDatosCSV[indexValor].VGV_NVALOR
+              datoCSV.VGV_NVALOR
             );
             break;
           }
@@ -3722,7 +3713,9 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
       }
 
       for (
-        let indexGeo = results.features.length - 1; indexGeo >= 0; indexGeo--
+        let indexGeo = results.features.length - 1;
+        indexGeo >= 0;
+        indexGeo--
       ) {
         if (results.features[indexGeo].attributes.VGV_NVALOR == null) {
           results.features.splice(indexGeo, 1);
@@ -3746,13 +3739,15 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
         popupTemplate: {
           title: "<b>" + settingsVariableCSV + "</b>",
           content: varContent,
-          fieldInfos: [{
-            fieldName: "VGV_NVALOR",
-            format: {
-              digitSeparator: true,
-              places: 0,
+          fieldInfos: [
+            {
+              fieldName: "VGV_NVALOR",
+              format: {
+                digitSeparator: true,
+                places: 0,
+              },
             },
-          }, ],
+          ],
         },
         copyright: "Unidad para las Víctimas",
         visible: true,
@@ -3764,7 +3759,6 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
 
       createRendererCSV(layerResults);
       map.add(layerResults);
-      //generateSimbology(layerResults);
 
       layerResults.when(function () {
         current_reportes = arrayRemove(current_reportes, "CSV");
@@ -3804,45 +3798,13 @@ function clearFileCSV() {
   $("#settingsVariableCSV").val("");
 }
 
-function getSchemeCSV(numClasses) {
-  let noDataColor = '#cccccc';
-  let color_1 = $("#styleRampColor1-CSV").val();
-  let color_2 = $("#styleRampColor2-CSV").val();
-  let color_3 = $("#styleRampColor3-CSV").val();
-  let rainbow = new Rainbow();
-  rainbow.setNumberRange(1, numClasses);
-  rainbow.setSpectrum(color_1, color_2, color_3);
-  let colorsArray = [];
-  for (let i = 1; i <= numClasses; i++) {
-    let hexColour = rainbow.colourAt(i);
-    colorsArray.push(new _Color('#' + hexColour));
-  }
-  const schemesCSV = {
-    "id": "rampColorCSV",
-    "colors": [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
-    "noDataColor": new _Color(noDataColor),
-    "colorsForClassBreaks": [{
-      "colors": colorsArray,
-      "numClasses": numClasses
-    }],
-    "outline": {
-      "color": {
-        "r": 153,
-        "g": 153,
-        "b": 153,
-        "a": 0.25
-      },
-      "width": "0.25px"
-    },
-    "opacity": 0.8
-  };
-  return schemesCSV;
-}
-
 function createRendererCSV(tLayer) {
   let classificationMethod = $("#class-select-CSV").val();
   let numClasses = parseInt($("#num-classes-CSV").val());
-  const schemesCSV = getSchemeVGV(numClasses);
+  let color_1 = $("#styleRampColor1-CSV").val();
+  let color_2 = $("#styleRampColor2-CSV").val();
+  let color_3 = $("#styleRampColor3-CSV").val();
+  const schemesCSV = getScheme(color_1, color_2, color_3);
 
   const params = {
     layer: tLayer,
@@ -3850,7 +3812,7 @@ function createRendererCSV(tLayer) {
     view: view,
     classificationMethod: classificationMethod,
     numClasses: numClasses,
-    colorScheme: schemesCSV
+    colorScheme: schemesCSV,
   };
 
   _colorRendererCreator
@@ -3867,7 +3829,6 @@ function createRendererCSV(tLayer) {
       if (loading.isOpen()) {
         loading.close();
       }
-
     })
     .catch(function (error) {
       console.log(error);
@@ -3888,7 +3849,8 @@ function imprimirMapa() {
   });
 
   let tituloMapa = $("#tituloImpresion").val();
-  tituloMapa = tituloMapa == undefined || tituloMapa == "" ? "SinTitulo" : tituloMapa;
+  tituloMapa =
+    tituloMapa == undefined || tituloMapa == "" ? "SinTitulo" : tituloMapa;
 
   let scaleImpresion = $("#escalaImpresion").val();
   scaleImpresion = replaceAll(scaleImpresion, ",", "");
@@ -3910,9 +3872,11 @@ function imprimirMapa() {
       titleText: tituloMapa,
       authorText: "UARIV",
       scalebarUnit: "Kilometers",
-      customTextElements: [{
-        FechaCorte: fechaCorteString
-      }],
+      customTextElements: [
+        {
+          FechaCorte: fechaCorteString,
+        },
+      ],
     },
     outScale: scaleImpresion,
     scalePreserved: true,
@@ -3927,10 +3891,14 @@ function imprimirMapa() {
     function (printResult) {
       $("#listImpresion").append(
         '<a href="' +
-        printResult.url +
-        '" target="_blank" class="list-group-item linkVGV no-border" style="padding: 5px !important;"><span class="esri-icon-download" aria-hidden="true"></span><span class="panel-label" style="font-size: x-small;">' +
-        tituloMapa + "_" + $("#plantillaImpresion").val() + "." + $("#formatoImpresion").val() +
-        "</span></a>"
+          printResult.url +
+          '" target="_blank" class="list-group-item linkVGV no-border" style="padding: 5px !important;"><span class="esri-icon-download" aria-hidden="true"></span><span class="panel-label" style="font-size: x-small;">' +
+          tituloMapa +
+          "_" +
+          $("#plantillaImpresion").val() +
+          "." +
+          $("#formatoImpresion").val() +
+          "</span></a>"
       );
       console.log(printResult);
       reporteUso("print", "", "print-complete");
@@ -3961,15 +3929,15 @@ function reporteUso(caracteristica, labelEvento, accionEvento) {
   labelEvento =
     typeof labelEvento !== "undefined" &&
     labelEvento !== null &&
-    labelEvento !== "" ?
-    labelEvento :
-    "uso";
+    labelEvento !== ""
+      ? labelEvento
+      : "uso";
   accionEvento =
     typeof accionEvento !== "undefined" &&
     accionEvento !== null &&
-    accionEvento !== "" ?
-    accionEvento :
-    "uso";
+    accionEvento !== ""
+      ? accionEvento
+      : "uso";
   if (current_reportes.indexOf(caracteristica) == -1) {
     current_reportes.push(caracteristica);
     gtag("event", caracteristica, {
@@ -3999,11 +3967,11 @@ function splitDataUncompress(data) {
         initDataPako,
         initDataPako + avancePako
       );
-      let charData = String.fromCharCode.apply(
+      let charDataPako = String.fromCharCode.apply(
         null,
         new Uint16Array(sliceDataPako)
       );
-      strDataPako = strDataPako + charData;
+      strDataPako = strDataPako + charDataPako;
       initDataPako += avancePako;
     } catch (error) {
       avancePako = 65000;
@@ -4011,27 +3979,16 @@ function splitDataUncompress(data) {
         initDataPako,
         initDataPako + avancePako
       );
-      let charData = String.fromCharCode.apply(
+      let charDataFault = String.fromCharCode.apply(
         null,
         new Uint16Array(sliceDataPako)
       );
-      strDataPako = strDataPako + charData;
+      strDataPako = strDataPako + charDataFault;
       initDataPako += avancePako;
     }
   }
 
-  let dataPakoJSON = JSON.parse(strDataPako);
-
-  return dataPakoJSON;
-}
-
-function convertToCSV(objArray) {
-  let csv = "";
-  let header = Object.keys(objArray[0]).join(";");
-  let values = objArray.map((o) => Object.values(o).join(";")).join("\n");
-
-  csv += header + "\n" + values;
-  return csv;
+  return JSON.parse(strDataPako);
 }
 
 function buildSelectSingle(domSelect, arrayDatos) {
@@ -4056,13 +4013,9 @@ function buildSelectImpresion(domSelect, arrayDatos) {
   $("#" + domSelect).hide();
 
   let strHTML = '<select id="' + domSelect + '">';
-  for (let index = 0; index < arrayDatos.length; index++) {
+  for (let value of arrayDatos) {
     strHTML +=
-      "<option value='" +
-      arrayDatos[index].nombre +
-      "'>" +
-      arrayDatos[index].titulo +
-      "</option>";
+      "<option value='" + value.nombre + "'>" + value.titulo + "</option>";
   }
   strHTML += "</select>";
 
@@ -4070,56 +4023,48 @@ function buildSelectImpresion(domSelect, arrayDatos) {
   $("#" + domSelect).show();
 }
 
-function buildSelectMultiple(
-  domSelect,
-  arrayDatos,
-  indexValue,
-  indexText,
-  strTodos,
-  indexText2
-) {
-  $("#" + domSelect).multiselect("destroy");
-  $("#" + domSelect).hide();
+function buildSelectMultiple(objSelect) {
+  $("#" + objSelect.domElement).multiselect("destroy");
+  $("#" + objSelect.domElement).hide();
 
   let strHTML =
     '<select id="' +
-    domSelect +
+    objSelect.domElement +
     '" multiple="multiple" data-placeholder="' +
-    strTodos +
+    objSelect.defaultText +
     '">';
-  strHTML += '<optgroup label="' + strTodos + '">';
-  for (let index = 0; index < arrayDatos.length; index++) {
-    const element = arrayDatos[index];
-    if (indexText == indexValue) {
+  strHTML += '<optgroup label="' + objSelect.defaultText + '">';
+  for (let element of objSelect.valueList) {
+    if (objSelect.descList == objSelect.codeList) {
       strHTML +=
         "<option value='" +
         element +
         "' selected='selected'>" +
         element +
         "</option>";
-    } else if (indexText2 != null) {
+    } else if (objSelect.subText != null) {
       strHTML +=
         "<option value='" +
-        element[indexValue] +
+        element[objSelect.codeList] +
         "' selected='selected'>" +
-        element[indexText2] +
+        element[objSelect.subText] +
         " - " +
-        element[indexText] +
+        element[objSelect.descList] +
         "</option>";
-    } else if (indexText2 == null) {
+    } else if (objSelect.subText == null) {
       strHTML +=
         "<option value='" +
-        element[indexValue] +
+        element[objSelect.codeList] +
         "' selected='selected'>" +
-        element[indexText] +
+        element[objSelect.descList] +
         "</option>";
     }
   }
   strHTML += "</optgroup>";
   strHTML += "</select>";
 
-  $("#" + domSelect).html(strHTML);
-  $("#" + domSelect).multiselect({
+  $("#" + objSelect.domElement).html(strHTML);
+  $("#" + objSelect.domElement).multiselect({
     buttonWidth: $("#selectFiltro_Geografico").css("width"),
     enableClickableOptGroups: true,
     enableCollapsibleOptGroups: true,
@@ -4129,19 +4074,19 @@ function buildSelectMultiple(
     enableFiltering: true,
     filterPlaceholder: "Filtrar...",
     enableCaseInsensitiveFiltering: true,
-    allSelectedText: strTodos + "...",
+    allSelectedText: objSelect.defaultText + "...",
     checkboxName: function (_option) {
       return "multiselect[]";
     },
     onChange: function (options, checked) {
-      _this = this;
+      let _this = this;
       getOptionsSelected(_this);
     },
   });
 
   // Ajusta los anchos de los select multiples
   // $("ul.multiselect-container > li").css("width", $("#selectFiltro_Geografico").width() + 30);
-  $("#" + domSelect).show();
+  $("#" + objSelect.domElement).show();
 }
 
 function getOptionsSelected(selectData) {
@@ -4152,7 +4097,7 @@ function getOptionsSelected(selectData) {
 
   let filtroGeografico = $("#selectFiltro_Geografico").val();
 
-  if (filtroGeografico == "filtroDepartamento") {} else if (filtroGeografico == "filtroMunicipal") {
+  if (filtroGeografico == "filtroMunicipal") {
     if ($selectId == "selectFiltro_Departamento") {
       if ($lenSelectAll == $lenSelect) {
         $("#selectFiltro_Municipios").multiselect("selectAll", false);
@@ -4164,20 +4109,12 @@ function getOptionsSelected(selectData) {
         $("#selectFiltro_Municipios").multiselect("deselectAll", false);
         $("#selectFiltro_Municipios").multiselect("updateButtonText");
         let municipiosSelected = [];
-        for (
-          let indexSelected = 0; indexSelected < $selectOptions.length; indexSelected++
-        ) {
-          let nombreDepartamento = $selectOptions[indexSelected].text + " - ";
+        for (let valueDpto of $selectOptions) {
+          let nombreDepartamento = valueDpto.text + " - ";
           const optionsMunicipios = $("#selectFiltro_Municipios")[0].options;
-          for (
-            let indexMunicipios = 0; indexMunicipios < optionsMunicipios.length; indexMunicipios++
-          ) {
-            if (
-              optionsMunicipios[indexMunicipios].text.startsWith(
-                nombreDepartamento
-              )
-            ) {
-              municipiosSelected.push(optionsMunicipios[indexMunicipios].value);
+          for (let valueMpio of optionsMunicipios) {
+            if (valueMpio.text.startsWith(nombreDepartamento)) {
+              municipiosSelected.push(valueMpio.value);
             }
           }
         }
@@ -4192,10 +4129,15 @@ function getOptionsSelected(selectData) {
         $("#selectFiltro_Departamento").multiselect("updateButtonText");
       }
     }
-  } else if (filtroGeografico == "filtroDT") {} else if (filtroGeografico == "filtroPDET") {} else {
+  } else if (
+    filtroGeografico == "filtroDepartamento" ||
+    filtroGeografico == "filtroDT" ||
+    filtroGeografico == "filtroPDET"
+  ) {
+    // Valida
+  } else {
     alerta("Debe seleccionar un tipo de selección espacial");
   }
-  return;
 }
 
 function dynamicSort(property) {
@@ -4205,12 +4147,13 @@ function dynamicSort(property) {
     property = property.substr(1);
   }
   return function (a, b) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
-    var result =
-      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
+    if (a[property] < b[property]) {
+      return -1 * sortOrder;
+    } else if (a[property] > b[property]) {
+      return sortOrder;
+    } else {
+      return 0;
+    }
   };
 }
 
@@ -4234,355 +4177,6 @@ function dynamicSortMultiple() {
     }
     return result;
   };
-}
-
-function removeDiacritics(str) {
-  var defaultDiacriticsRemovalMap = [{
-      base: "A",
-      letters: /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g,
-    },
-    {
-      base: "AA",
-      letters: /[\uA732]/g,
-    },
-    {
-      base: "AE",
-      letters: /[\u00C6\u01FC\u01E2]/g,
-    },
-    {
-      base: "AO",
-      letters: /[\uA734]/g,
-    },
-    {
-      base: "AU",
-      letters: /[\uA736]/g,
-    },
-    {
-      base: "AV",
-      letters: /[\uA738\uA73A]/g,
-    },
-    {
-      base: "AY",
-      letters: /[\uA73C]/g,
-    },
-    {
-      base: "B",
-      letters: /[\u0042\u24B7\uFF22\u1E02\u1E04\u1E06\u0243\u0182\u0181]/g,
-    },
-    {
-      base: "C",
-      letters: /[\u0043\u24B8\uFF23\u0106\u0108\u010A\u010C\u00C7\u1E08\u0187\u023B\uA73E]/g,
-    },
-    {
-      base: "D",
-      letters: /[\u0044\u24B9\uFF24\u1E0A\u010E\u1E0C\u1E10\u1E12\u1E0E\u0110\u018B\u018A\u0189\uA779]/g,
-    },
-    {
-      base: "DZ",
-      letters: /[\u01F1\u01C4]/g,
-    },
-    {
-      base: "Dz",
-      letters: /[\u01F2\u01C5]/g,
-    },
-    {
-      base: "E",
-      letters: /[\u0045\u24BA\uFF25\u00C8\u00C9\u00CA\u1EC0\u1EBE\u1EC4\u1EC2\u1EBC\u0112\u1E14\u1E16\u0114\u0116\u00CB\u1EBA\u011A\u0204\u0206\u1EB8\u1EC6\u0228\u1E1C\u0118\u1E18\u1E1A\u0190\u018E]/g,
-    },
-    {
-      base: "F",
-      letters: /[\u0046\u24BB\uFF26\u1E1E\u0191\uA77B]/g,
-    },
-    {
-      base: "G",
-      letters: /[\u0047\u24BC\uFF27\u01F4\u011C\u1E20\u011E\u0120\u01E6\u0122\u01E4\u0193\uA7A0\uA77D\uA77E]/g,
-    },
-    {
-      base: "H",
-      letters: /[\u0048\u24BD\uFF28\u0124\u1E22\u1E26\u021E\u1E24\u1E28\u1E2A\u0126\u2C67\u2C75\uA78D]/g,
-    },
-    {
-      base: "I",
-      letters: /[\u0049\u24BE\uFF29\u00CC\u00CD\u00CE\u0128\u012A\u012C\u0130\u00CF\u1E2E\u1EC8\u01CF\u0208\u020A\u1ECA\u012E\u1E2C\u0197]/g,
-    },
-    {
-      base: "J",
-      letters: /[\u004A\u24BF\uFF2A\u0134\u0248]/g,
-    },
-    {
-      base: "K",
-      letters: /[\u004B\u24C0\uFF2B\u1E30\u01E8\u1E32\u0136\u1E34\u0198\u2C69\uA740\uA742\uA744\uA7A2]/g,
-    },
-    {
-      base: "L",
-      letters: /[\u004C\u24C1\uFF2C\u013F\u0139\u013D\u1E36\u1E38\u013B\u1E3C\u1E3A\u0141\u023D\u2C62\u2C60\uA748\uA746\uA780]/g,
-    },
-    {
-      base: "LJ",
-      letters: /[\u01C7]/g,
-    },
-    {
-      base: "Lj",
-      letters: /[\u01C8]/g,
-    },
-    {
-      base: "M",
-      letters: /[\u004D\u24C2\uFF2D\u1E3E\u1E40\u1E42\u2C6E\u019C]/g,
-    },
-    {
-      base: "N",
-      letters: /[\u004E\u24C3\uFF2E\u01F8\u0143\u00D1\u1E44\u0147\u1E46\u0145\u1E4A\u1E48\u0220\u019D\uA790\uA7A4]/g,
-    },
-    {
-      base: "NJ",
-      letters: /[\u01CA]/g,
-    },
-    {
-      base: "Nj",
-      letters: /[\u01CB]/g,
-    },
-    {
-      base: "O",
-      letters: /[\u004F\u24C4\uFF2F\u00D2\u00D3\u00D4\u1ED2\u1ED0\u1ED6\u1ED4\u00D5\u1E4C\u022C\u1E4E\u014C\u1E50\u1E52\u014E\u022E\u0230\u00D6\u022A\u1ECE\u0150\u01D1\u020C\u020E\u01A0\u1EDC\u1EDA\u1EE0\u1EDE\u1EE2\u1ECC\u1ED8\u01EA\u01EC\u00D8\u01FE\u0186\u019F\uA74A\uA74C]/g,
-    },
-    {
-      base: "OI",
-      letters: /[\u01A2]/g,
-    },
-    {
-      base: "OO",
-      letters: /[\uA74E]/g,
-    },
-    {
-      base: "OU",
-      letters: /[\u0222]/g,
-    },
-    {
-      base: "P",
-      letters: /[\u0050\u24C5\uFF30\u1E54\u1E56\u01A4\u2C63\uA750\uA752\uA754]/g,
-    },
-    {
-      base: "Q",
-      letters: /[\u0051\u24C6\uFF31\uA756\uA758\u024A]/g,
-    },
-    {
-      base: "R",
-      letters: /[\u0052\u24C7\uFF32\u0154\u1E58\u0158\u0210\u0212\u1E5A\u1E5C\u0156\u1E5E\u024C\u2C64\uA75A\uA7A6\uA782]/g,
-    },
-    {
-      base: "S",
-      letters: /[\u0053\u24C8\uFF33\u1E9E\u015A\u1E64\u015C\u1E60\u0160\u1E66\u1E62\u1E68\u0218\u015E\u2C7E\uA7A8\uA784]/g,
-    },
-    {
-      base: "T",
-      letters: /[\u0054\u24C9\uFF34\u1E6A\u0164\u1E6C\u021A\u0162\u1E70\u1E6E\u0166\u01AC\u01AE\u023E\uA786]/g,
-    },
-    {
-      base: "TZ",
-      letters: /[\uA728]/g,
-    },
-    {
-      base: "U",
-      letters: /[\u0055\u24CA\uFF35\u00D9\u00DA\u00DB\u0168\u1E78\u016A\u1E7A\u016C\u00DC\u01DB\u01D7\u01D5\u01D9\u1EE6\u016E\u0170\u01D3\u0214\u0216\u01AF\u1EEA\u1EE8\u1EEE\u1EEC\u1EF0\u1EE4\u1E72\u0172\u1E76\u1E74\u0244]/g,
-    },
-    {
-      base: "V",
-      letters: /[\u0056\u24CB\uFF36\u1E7C\u1E7E\u01B2\uA75E\u0245]/g,
-    },
-    {
-      base: "VY",
-      letters: /[\uA760]/g,
-    },
-    {
-      base: "W",
-      letters: /[\u0057\u24CC\uFF37\u1E80\u1E82\u0174\u1E86\u1E84\u1E88\u2C72]/g,
-    },
-    {
-      base: "X",
-      letters: /[\u0058\u24CD\uFF38\u1E8A\u1E8C]/g,
-    },
-    {
-      base: "Y",
-      letters: /[\u0059\u24CE\uFF39\u1EF2\u00DD\u0176\u1EF8\u0232\u1E8E\u0178\u1EF6\u1EF4\u01B3\u024E\u1EFE]/g,
-    },
-    {
-      base: "Z",
-      letters: /[\u005A\u24CF\uFF3A\u0179\u1E90\u017B\u017D\u1E92\u1E94\u01B5\u0224\u2C7F\u2C6B\uA762]/g,
-    },
-    {
-      base: "a",
-      letters: /[\u0061\u24D0\uFF41\u1E9A\u00E0\u00E1\u00E2\u1EA7\u1EA5\u1EAB\u1EA9\u00E3\u0101\u0103\u1EB1\u1EAF\u1EB5\u1EB3\u0227\u01E1\u00E4\u01DF\u1EA3\u00E5\u01FB\u01CE\u0201\u0203\u1EA1\u1EAD\u1EB7\u1E01\u0105\u2C65\u0250]/g,
-    },
-    {
-      base: "aa",
-      letters: /[\uA733]/g,
-    },
-    {
-      base: "ae",
-      letters: /[\u00E6\u01FD\u01E3]/g,
-    },
-    {
-      base: "ao",
-      letters: /[\uA735]/g,
-    },
-    {
-      base: "au",
-      letters: /[\uA737]/g,
-    },
-    {
-      base: "av",
-      letters: /[\uA739\uA73B]/g,
-    },
-    {
-      base: "ay",
-      letters: /[\uA73D]/g,
-    },
-    {
-      base: "b",
-      letters: /[\u0062\u24D1\uFF42\u1E03\u1E05\u1E07\u0180\u0183\u0253]/g,
-    },
-    {
-      base: "c",
-      letters: /[\u0063\u24D2\uFF43\u0107\u0109\u010B\u010D\u00E7\u1E09\u0188\u023C\uA73F\u2184]/g,
-    },
-    {
-      base: "d",
-      letters: /[\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A]/g,
-    },
-    {
-      base: "dz",
-      letters: /[\u01F3\u01C6]/g,
-    },
-    {
-      base: "e",
-      letters: /[\u0065\u24D4\uFF45\u00E8\u00E9\u00EA\u1EC1\u1EBF\u1EC5\u1EC3\u1EBD\u0113\u1E15\u1E17\u0115\u0117\u00EB\u1EBB\u011B\u0205\u0207\u1EB9\u1EC7\u0229\u1E1D\u0119\u1E19\u1E1B\u0247\u025B\u01DD]/g,
-    },
-    {
-      base: "f",
-      letters: /[\u0066\u24D5\uFF46\u1E1F\u0192\uA77C]/g,
-    },
-    {
-      base: "g",
-      letters: /[\u0067\u24D6\uFF47\u01F5\u011D\u1E21\u011F\u0121\u01E7\u0123\u01E5\u0260\uA7A1\u1D79\uA77F]/g,
-    },
-    {
-      base: "h",
-      letters: /[\u0068\u24D7\uFF48\u0125\u1E23\u1E27\u021F\u1E25\u1E29\u1E2B\u1E96\u0127\u2C68\u2C76\u0265]/g,
-    },
-    {
-      base: "hv",
-      letters: /[\u0195]/g,
-    },
-    {
-      base: "i",
-      letters: /[\u0069\u24D8\uFF49\u00EC\u00ED\u00EE\u0129\u012B\u012D\u00EF\u1E2F\u1EC9\u01D0\u0209\u020B\u1ECB\u012F\u1E2D\u0268\u0131]/g,
-    },
-    {
-      base: "j",
-      letters: /[\u006A\u24D9\uFF4A\u0135\u01F0\u0249]/g,
-    },
-    {
-      base: "k",
-      letters: /[\u006B\u24DA\uFF4B\u1E31\u01E9\u1E33\u0137\u1E35\u0199\u2C6A\uA741\uA743\uA745\uA7A3]/g,
-    },
-    {
-      base: "l",
-      letters: /[\u006C\u24DB\uFF4C\u0140\u013A\u013E\u1E37\u1E39\u013C\u1E3D\u1E3B\u017F\u0142\u019A\u026B\u2C61\uA749\uA781\uA747]/g,
-    },
-    {
-      base: "lj",
-      letters: /[\u01C9]/g,
-    },
-    {
-      base: "m",
-      letters: /[\u006D\u24DC\uFF4D\u1E3F\u1E41\u1E43\u0271\u026F]/g,
-    },
-    {
-      base: "n",
-      letters: /[\u006E\u24DD\uFF4E\u01F9\u0144\u00F1\u1E45\u0148\u1E47\u0146\u1E4B\u1E49\u019E\u0272\u0149\uA791\uA7A5]/g,
-    },
-    {
-      base: "nj",
-      letters: /[\u01CC]/g,
-    },
-    {
-      base: "o",
-      letters: /[\u006F\u24DE\uFF4F\u00F2\u00F3\u00F4\u1ED3\u1ED1\u1ED7\u1ED5\u00F5\u1E4D\u022D\u1E4F\u014D\u1E51\u1E53\u014F\u022F\u0231\u00F6\u022B\u1ECF\u0151\u01D2\u020D\u020F\u01A1\u1EDD\u1EDB\u1EE1\u1EDF\u1EE3\u1ECD\u1ED9\u01EB\u01ED\u00F8\u01FF\u0254\uA74B\uA74D\u0275]/g,
-    },
-    {
-      base: "oi",
-      letters: /[\u01A3]/g,
-    },
-    {
-      base: "ou",
-      letters: /[\u0223]/g,
-    },
-    {
-      base: "oo",
-      letters: /[\uA74F]/g,
-    },
-    {
-      base: "p",
-      letters: /[\u0070\u24DF\uFF50\u1E55\u1E57\u01A5\u1D7D\uA751\uA753\uA755]/g,
-    },
-    {
-      base: "q",
-      letters: /[\u0071\u24E0\uFF51\u024B\uA757\uA759]/g,
-    },
-    {
-      base: "r",
-      letters: /[\u0072\u24E1\uFF52\u0155\u1E59\u0159\u0211\u0213\u1E5B\u1E5D\u0157\u1E5F\u024D\u027D\uA75B\uA7A7\uA783]/g,
-    },
-    {
-      base: "s",
-      letters: /[\u0073\u24E2\uFF53\u00DF\u015B\u1E65\u015D\u1E61\u0161\u1E67\u1E63\u1E69\u0219\u015F\u023F\uA7A9\uA785\u1E9B]/g,
-    },
-    {
-      base: "t",
-      letters: /[\u0074\u24E3\uFF54\u1E6B\u1E97\u0165\u1E6D\u021B\u0163\u1E71\u1E6F\u0167\u01AD\u0288\u2C66\uA787]/g,
-    },
-    {
-      base: "tz",
-      letters: /[\uA729]/g,
-    },
-    {
-      base: "u",
-      letters: /[\u0075\u24E4\uFF55\u00F9\u00FA\u00FB\u0169\u1E79\u016B\u1E7B\u016D\u00FC\u01DC\u01D8\u01D6\u01DA\u1EE7\u016F\u0171\u01D4\u0215\u0217\u01B0\u1EEB\u1EE9\u1EEF\u1EED\u1EF1\u1EE5\u1E73\u0173\u1E77\u1E75\u0289]/g,
-    },
-    {
-      base: "v",
-      letters: /[\u0076\u24E5\uFF56\u1E7D\u1E7F\u028B\uA75F\u028C]/g,
-    },
-    {
-      base: "vy",
-      letters: /[\uA761]/g,
-    },
-    {
-      base: "w",
-      letters: /[\u0077\u24E6\uFF57\u1E81\u1E83\u0175\u1E87\u1E85\u1E98\u1E89\u2C73]/g,
-    },
-    {
-      base: "x",
-      letters: /[\u0078\u24E7\uFF58\u1E8B\u1E8D]/g,
-    },
-    {
-      base: "y",
-      letters: /[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g,
-    },
-    {
-      base: "z",
-      letters: /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g,
-    },
-  ];
-
-  for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
-    str = str.replace(
-      defaultDiacriticsRemovalMap[i].letters,
-      defaultDiacriticsRemovalMap[i].base
-    );
-  }
-
-  return str;
 }
 
 function getParameterByName(name, url) {
@@ -4609,24 +4203,12 @@ function getDateText(date) {
   }
 
   let d = new Date(date);
-  let dformat =
+  return (
     d.getFullYear() +
     "/" +
     ("00" + (d.getMonth() + 1)).slice(-2) +
     "/" +
-    ("00" + d.getDate()).slice(-2);
-  return dformat;
-}
-
-function orderSelect(select) {
-  $(select).html(
-    $(select + " option").sort(function (a, b) {
-      return removeDiacritics(a.text) == removeDiacritics(b.text) ?
-        0 :
-        removeDiacritics(a.text) < removeDiacritics(b.text) ?
-        -1 :
-        1;
-    })
+    ("00" + d.getDate()).slice(-2)
   );
 }
 
@@ -4649,12 +4231,73 @@ function irTabPanel(strPanel) {
   $("a[href='#" + strPanel + "']")[0].click();
 }
 
+function getScheme(color_1, color_2, color_3) {
+  let numClasses = 11;
+  let noDataColor = "#cccccc";
+  let colorsForClassBreaks = [];
+
+  colorsForClassBreaks.push({
+    colors: [new _Color(color_3)],
+    numClasses: 1,
+  });
+  colorsForClassBreaks.push({
+    colors: [new _Color(color_1), new _Color(color_3)],
+    numClasses: 2,
+  });
+  colorsForClassBreaks.push({
+    colors: [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
+    numClasses: 3,
+  });
+
+  for (let numClass = 4; numClass <= numClasses; numClass++) {
+    let colorsArray = [];
+
+    let rainbow = new Rainbow();
+    rainbow.setNumberRange(1, numClass);
+    rainbow.setSpectrum(color_1, color_2, color_3);
+    for (let i = 1; i <= numClass; i++) {
+      let hexColour = rainbow.colourAt(i);
+      colorsArray.push(new _Color("#" + hexColour));
+    }
+    colorsForClassBreaks.push({
+      colors: colorsArray,
+      numClasses: numClass,
+    });
+  }
+
+  return {
+    id: "rampColorVGV",
+    colors: [new _Color(color_1), new _Color(color_2), new _Color(color_3)],
+    noDataColor: new _Color(noDataColor),
+    colorsForClassBreaks: colorsForClassBreaks,
+    outline: {
+      color: {
+        r: 153,
+        g: 153,
+        b: 153,
+        a: 0.25,
+      },
+      width: "0.25px",
+    },
+    opacity: 0.8,
+  };
+}
+
 function ajustarRampVGV() {
   let color_1 = $("#styleRampColor1-VGV").val();
   let color_2 = $("#styleRampColor2-VGV").val();
   let color_3 = $("#styleRampColor3-VGV").val();
 
-  $("#styleColorRamp-VGV").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
+  $("#styleColorRamp-VGV").css(
+    "background",
+    "linear-gradient(to right, " +
+      color_1 +
+      " 20%, " +
+      color_2 +
+      " 50%, " +
+      color_3 +
+      " 80%)"
+  );
 }
 
 function ajustarRampCSV() {
@@ -4662,7 +4305,16 @@ function ajustarRampCSV() {
   let color_2 = $("#styleRampColor2-CSV").val();
   let color_3 = $("#styleRampColor3-CSV").val();
 
-  $("#styleColorRamp-CSV").css("background", "linear-gradient(to right, " + color_1 + " 20%, " + color_2 + " 50%, " + color_3 + " 80%)");
+  $("#styleColorRamp-CSV").css(
+    "background",
+    "linear-gradient(to right, " +
+      color_1 +
+      " 20%, " +
+      color_2 +
+      " 50%, " +
+      color_3 +
+      " 80%)"
+  );
 }
 
 function removeLayer(tLayer) {
@@ -4670,47 +4322,3 @@ function removeLayer(tLayer) {
     map.remove(map.findLayerById(tLayer));
   }
 }
-
-window.Clipboard = (function (window, document, navigator) {
-  var textArea, copy;
-
-  function isOS() {
-    return navigator.userAgent.match(/ipad|iphone/i);
-  }
-
-  function createTextArea(text) {
-    textArea = document.createElement("textArea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-  }
-
-  function selectText() {
-    var range, selection;
-
-    if (isOS()) {
-      range = document.createRange();
-      range.selectNodeContents(textArea);
-      selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-      textArea.setSelectionRange(0, 999999);
-    } else {
-      textArea.select();
-    }
-  }
-
-  function copyToClipboard() {
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-  }
-
-  copy = function (text) {
-    createTextArea(text);
-    selectText();
-    copyToClipboard();
-  };
-
-  return {
-    copy: copy,
-  };
-})(window, document, navigator);

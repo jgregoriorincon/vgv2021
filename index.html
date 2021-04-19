@@ -47,7 +47,6 @@
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/css/main.css">
 
-  <!-- <link rel="stylesheet" href="dist/css/bootstrap.min.css">-->
   <link rel="stylesheet" href="dist/css/jquery-confirm.min.css">
   <link rel="stylesheet" href="dist/css/bootstrap-multiselect.css" />
   <link rel="stylesheet" href="dist/css/tabulator.min.css">
@@ -104,7 +103,6 @@
         <li><a role="menuitem" tabindex="0" href="#" aria-haspopup="true"
             onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=8tlkWbau2UilPXq1yx0H6MxmE4t8jlNLoaWknfMn48FURTRSQzY1VE9HN041WjQ0QkxCNEVDVkRGMS4u', '_blank');"><span
               class="esri-icon-chat"></span> Comentarios</a></li>
-        <!-- <li><a role="menuitem" tabindex="0" href="#" aria-haspopup="true" onclick="window.open('./ayuda/', '_blank');"><span class="esri-icon-lightbulb"></span> Ayuda</a></li> -->
       </ul>
     </div>
     <!-- Title -->
@@ -112,7 +110,6 @@
       <span>
         <img src="images/LogoUnidadVictimas.png" id="logoUARIV" alt="Unidad para las víctimas" />
       </span>
-      <!-- <span class="calcite-title-divider hidden-xs"></span> -->
       <span class="calcite-title-divider"></span>
       <span class="calcite-title-main" id="titleVGV1">Visor Geográfico de Víctimas</span>
       <span class="calcite-title-main" id="titleVGV2">VGV</span>
@@ -129,7 +126,7 @@
 
   <div class="calcite-map calcite-map-absolute VGV_Background initVGV" id="initVGV">
     <div class="col-xs-12" style="position: absolute; top: 10%;">
-      <img data-src="./images/bg-header.jpg" class="lazyload" />
+      <img data-src="./images/bg-header.jpg" class="lazyload" alt="UARIV" />
     </div>
     <div class="col-xs-6 col-xs-offset-3" style="position: absolute; top: 60%;">
       <div class="loaderVGV"></div>
@@ -173,7 +170,6 @@
             <li>Consulta de mapas dinámicos a través del tiempo con los hechos victimizantes de la Ley de Víctimas.</li>
             <li>Generación de mapas personalizados a partir de archivos en Excel, bitácoras o datos propios.</li>
             <li>Exportación de resultados en formato de imagen, PDF, CSV y Excel.</li>
-            <!-- <li>Herramientas de medición y generación de áreas de influencia.</li> -->
           </ul>
           <p style="font-weight: bold;">Recomendaciones para utilizar el Visor Geográfico de Víctimas:</p>
           <ul>
@@ -276,7 +272,7 @@
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#loadCSV" aria-controls="loadCSV" role="tab"
                 data-toggle="tab">Subir CSV</a></li>
-            <li role="presentation"><a href="#simbologiaCSV" aria-controls="simbologiaVGV" role="tab"
+            <li role="presentation"><a href="#simbologiaCSV" aria-controls="simbologiaCSV" role="tab"
                 data-toggle="tab">Simbología</a></li>
             <li role="presentation"><a href="#modelCSV" aria-controls="modelCSV" role="tab" data-toggle="tab">Modelos
                 CSV</a></li>
@@ -337,7 +333,7 @@
             <!-- Tab-Simbologia -->
             <div role="tabpanel" class="tab-pane" id="simbologiaCSV">
               <div class="calcite-form-title">
-                <b style="text-align: justify;">Carga el CSV con la simbología definida.</b>
+                <strong style="text-align: justify;">Carga el CSV con la simbología definida.</strong>
               </div>
               <div class="form-horizontal calcite-form-padding no-padding-top">
                 <div class="form-group">
@@ -499,9 +495,11 @@
             <!-- Tab-Params -->
             <div role="tabpanel" class="tab-pane active" id="paramsVGV">
               <div class="calcite-form-title">
-                <b style="text-align: justify;">Permite seleccionar los parámetros espaciales, género, hecho
+                <strong style="text-align: justify;">Permite seleccionar los parámetros espaciales, género, hecho
                   victimizante, pertenencia étnica, ciclo vital, discapacidad, año de interés y el tipo de variable a
-                  visualizar.</b></div>
+                  visualizar.
+                </strong>
+              </div>
               <div class="form-horizontal calcite-form-padding no-padding-top">
                 <div class="form-group">
                   <label for="selectFiltro_Geografico" class="col-xs-4 control-label no-padding-top">Filtro
@@ -619,7 +617,7 @@
             <!-- Tab-Simbologia -->
             <div role="tabpanel" class="tab-pane" id="simbologiaVGV">
               <div class="calcite-form-title">
-                <b style="text-align: justify;">Aplica los parámetros seleccionados con la simbología definida.</b>
+                <strong style="text-align: justify;">Aplica los parámetros seleccionados con la simbología definida.</strong>
               </div>
               <div class="form-horizontal calcite-form-padding no-padding-top">
                 <div class="form-group">
@@ -940,7 +938,6 @@
       <div class="panel-collapse" role="tabpanel" aria-labelledby="headingChart"
         style="height: 100%;padding-bottom: 40px;">
         <div class="panel-body" style="width: 100%;height: 100%; overflow: auto; max-height: unset;">
-          <!-- <div class="calcite-form-title" style="padding-top: 10px !important;">Permite graficar los datos filtrados para la generación de la capa geográfica</div> -->
           <div class="form-horizontal calcite-form-padding">
             <div class="form-group">
               <label for="settingsTipoChart" class="col-xs-3 col-md-1 control-label">Tipo</label>
@@ -1007,7 +1004,6 @@
   </script>
 
   <script type="text/javascript" src="dist/js/jquery.min.js"></script>
-  <!-- <script type="text/javascript" src="dist/js/bootstrap.min.js"></script> -->
 
   <script type="text/javascript" src="dist/js/lazysizes.min.js" async></script>
 
@@ -1017,7 +1013,6 @@
   <script type="text/javascript" src="dist/js/pako.min.js"></script>
   <script type="text/javascript" src="dist/js/jquery-confirm.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap-multiselect.min.js"></script>
-  <!-- <script type="text/javascript" src="dist/js/calcite-web.min.js" async></script> -->
 
   <script type="text/javascript" src="dist/js/papaparse.min.js"></script>
   <script type="text/javascript" src="dist/js/tabulator.min.js"></script>
