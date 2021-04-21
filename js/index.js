@@ -1727,12 +1727,13 @@ function loadDomainsVGV() {
 }
 
 function loadLabelsGeo() {
-  for (const layer of base_layers) {
-    if (layer.CATEGORIA == "Base" && element.TIPO == "MapImageLayer") {
+  for (let index = 0; index < base_layers.length; index++) {
+    const element = base_layers[index];
+    if (element.CATEGORIA == "Base" && element.TIPO == "MapImageLayer") {
       const tLayer = new _MapImageLayer({
-        url: layer.URL,
-        title: layer.CATEGORIA + "_" + layer.NOMBRE,
-        id: layer.CATEGORIA + "_" + layer.NOMBRE,
+        url: element.URL,
+        title: element.CATEGORIA + "_" + element.NOMBRE,
+        id: element.CATEGORIA + "_" + element.NOMBRE,
         visible: false,
         legendEnabled: false,
         listMode: "hide",
