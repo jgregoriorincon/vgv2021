@@ -2095,163 +2095,173 @@ function createTimeVGV() {
     alerta(
       "El año de inicio y fin del deslizador del tiempo no pueden ser el mismo"
     );
-  } else {
-    let filtroGeografico = $("#selectFiltro_Geografico").val();
+    return;
+  }
+  let filtroGeografico = $("#selectFiltro_Geografico").val();
 
-    if (filtroGeografico == "filtroDepartamento") {
-      if ($("#selectFiltro_Departamento option:selected").length == 0) {
-        alerta("Debe seleccionar al menos un departamento");
-        return;
-      }
-    } else if (filtroGeografico == "filtroMunicipal") {
-      if ($("#selectFiltro_Municipios option:selected").length == 0) {
-        alerta("Debe seleccionar al menos un municipio");
-        return;
-      }
-    } else if (filtroGeografico == "filtroDT") {
-      if ($("#selectFiltro_DT option:selected").length == 0) {
-        alerta("Debe seleccionar al menos una dirección territorial");
-        return;
-      }
-    } else if (filtroGeografico == "filtroPDET") {
-      if ($("#selectFiltro_PDET option:selected").length == 0) {
-        alerta("Debe seleccionar al menos un PDET");
-        return;
-      }
-    }
+  if (
+    filtroGeografico == "filtroDepartamento" &&
+    $("#selectFiltro_Departamento option:selected").length == 0
+  ) {
+    alerta("Debe seleccionar al menos un departamento");
+    return;
+  }
 
-    loading = $.dialog({
-      title: "",
-      content: "",
-      onContentReady: function () {
-        this.showLoading(false);
-      },
-    });
+  if (
+    filtroGeografico == "filtroMunicipal" &&
+    i$("#selectFiltro_Municipios option:selected").length == 0
+  ) {
+    alerta("Debe seleccionar al menos un municipio");
+    return;
+  }
 
-    // obtiene el anio inicial y final
-    sliderTime.min = sliderTimeRange.values[0];
-    sliderTime.max = sliderTimeRange.values[1];
+  if (
+    filtroGeografico == "filtroDT" &&
+    $("#selectFiltro_DT option:selected").length == 0
+  ) {
+    alerta("Debe seleccionar al menos una dirección territorial");
+    return;
+  }
 
-    // Oculta el botón para que no ejecuten de nuevo el comando
-    $("#createTimeVGV").hide();
+  if (
+    filtroGeografico == "filtroPDET" &&
+    $("#selectFiltro_PDET option:selected").length == 0
+  ) {
+    alerta("Debe seleccionar al menos un PDET");
+    return;
+  }
 
-    current_reportes = arrayRemove(current_reportes, "TimeSlider");
-    reporteUso(
-      "TimeSlider",
-      sliderTimeRange.values[0] + " - " + sliderTimeRange.values[1],
-      "create"
-    );
+  loading = $.dialog({
+    title: "",
+    content: "",
+    onContentReady: function () {
+      this.showLoading(false);
+    },
+  });
 
-    let variableRUV = $("#selectFiltro_Variable option:selected").text();
-    let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
+  // obtiene el anio inicial y final
+  sliderTime.min = sliderTimeRange.values[0];
+  sliderTime.max = sliderTimeRange.values[1];
 
-    ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
-      sliderTime.min,
-      filtroGeografico,
-      variableRUV
-    ));
+  // Oculta el botón para que no ejecuten de nuevo el comando
+  $("#createTimeVGV").hide();
 
-    idLayerRUV = idLayerRUV.replace("_YYYY", "");
-    idLayerRUV = idLayerRUV.replace("Results_", "Time_");
-    removeLayer(idLayerRUV);
+  current_reportes = arrayRemove(current_reportes, "TimeSlider");
+  reporteUso(
+    "TimeSlider",
+    sliderTimeRange.values[0] + " - " + sliderTimeRange.values[1],
+    "create"
+  );
 
-    const layerTime = new _MapImageLayer({
-      url: URL_RUV,
-      title: titleRUV.replace(" para el año YYYY", ""),
-      id: idLayerRUV,
-      visible: true,
-      listMode: "hide",
-      sublayers: [],
-    });
+  let variableRUV = $("#selectFiltro_Variable option:selected").text();
+  let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
 
-    let color_1 = $("#styleRampColor1-VGV").val();
-    let color_2 = $("#styleRampColor2-VGV").val();
-    let color_3 = $("#styleRampColor3-VGV").val();
-    const schemesTime = getScheme(color_1, color_2, color_3);
+  ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
+    sliderTime.min,
+    filtroGeografico,
+    variableRUV
+  ));
 
-    for (const idxAnio of vgv_lstAnios) {
-      if (
-        idxAnio >= sliderTimeRange.values[0] &&
-        idxAnio <= sliderTimeRange.values[1]
-      ) {
-        let Anio = idxAnio;
-        let titleAnio = titleRUV.replace("YYYY", Anio);
-        let strSqlAnio = strSqlVGV.replace("YYYY", Anio);
+  idLayerRUV = idLayerRUV.replace("_YYYY", "");
+  idLayerRUV = idLayerRUV.replace("Results_", "Time_");
+  removeLayer(idLayerRUV);
 
-        let defineSubLayer = {
-          title: titleAnio,
-          id: Anio,
-          idRUV: idLayerRUV,
-          layerOrigen: tableRUV,
-          variableOrigen: variableRUV,
-          opacity: 0.8,
-          listMode: "hide",
-          visible: false,
-          source: {
-            type: "data-layer",
-            dataSource: {
-              type: "query-table",
-              workspaceId: "CONSULTA_RUV",
-              query: strSqlAnio,
-              geometryType: "polygon",
-              spatialReference: {
-                wkid: 4326,
-              },
-              oidFields: "objectid",
+  const layerTime = new _MapImageLayer({
+    url: URL_RUV,
+    title: titleRUV.replace(" para el año YYYY", ""),
+    id: idLayerRUV,
+    visible: true,
+    listMode: "hide",
+    sublayers: [],
+  });
+
+  let color_1 = $("#styleRampColor1-VGV").val();
+  let color_2 = $("#styleRampColor2-VGV").val();
+  let color_3 = $("#styleRampColor3-VGV").val();
+  const schemesTime = getScheme(color_1, color_2, color_3);
+
+  for (const idxAnio of vgv_lstAnios) {
+    if (
+      idxAnio >= sliderTimeRange.values[0] &&
+      idxAnio <= sliderTimeRange.values[1]
+    ) {
+      let Anio = idxAnio;
+      let titleAnio = titleRUV.replace("YYYY", Anio);
+      let strSqlAnio = strSqlVGV.replace("YYYY", Anio);
+
+      let defineSubLayer = {
+        title: titleAnio,
+        id: Anio,
+        idRUV: idLayerRUV,
+        layerOrigen: tableRUV,
+        variableOrigen: variableRUV,
+        opacity: 0.8,
+        listMode: "hide",
+        visible: false,
+        source: {
+          type: "data-layer",
+          dataSource: {
+            type: "query-table",
+            workspaceId: "CONSULTA_RUV",
+            query: strSqlAnio,
+            geometryType: "polygon",
+            spatialReference: {
+              wkid: 4326,
+            },
+            oidFields: "objectid",
+          },
+        },
+      };
+
+      layerTime.sublayers.push(defineSubLayer);
+
+      const subLayerTime = layerTime.sublayers.find(function (sublayer) {
+        return sublayer.id === Anio;
+      });
+
+      subLayerTime.popupTemplate = {
+        title: "<b>" + titleAnio + "</b>",
+        content: popupContent,
+        fieldInfos: [
+          {
+            fieldName: "VGV_NVALOR",
+            format: {
+              digitSeparator: true,
+              places: 0,
             },
           },
-        };
+          {
+            fieldName: "VGV_CNMBR",
+          },
+        ],
+      };
 
-        layerTime.sublayers.push(defineSubLayer);
-
-        const subLayerTime = layerTime.sublayers.find(function (sublayer) {
-          return sublayer.id === Anio;
+      subLayerTime
+        .createFeatureLayer()
+        .then(function (eventosFeatureLayer) {
+          return eventosFeatureLayer.load();
+        })
+        .then(function (featureLayer) {
+          createRendererTime(featureLayer, schemesTime, subLayerTime);
         });
-
-        subLayerTime.popupTemplate = {
-          title: "<b>" + titleAnio + "</b>",
-          content: popupContent,
-          fieldInfos: [
-            {
-              fieldName: "VGV_NVALOR",
-              format: {
-                digitSeparator: true,
-                places: 0,
-              },
-            },
-            {
-              fieldName: "VGV_CNMBR",
-            },
-          ],
-        };
-
-        subLayerTime
-          .createFeatureLayer()
-          .then(function (eventosFeatureLayer) {
-            return eventosFeatureLayer.load();
-          })
-          .then(function (featureLayer) {
-            createRendererTime(featureLayer, schemesTime, subLayerTime);
-          });
-      }
     }
-
-    idLayerTime = idLayerRUV;
-    map.add(layerTime);
-
-    const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
-    map.reorder(tLayerLabels, map.layers.items.length);
-    tLayerLabels.visible = true;
-
-    view
-      .whenLayerView(layerTime)
-      .then(function (layerView) {
-        displayTimeVGV();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
+
+  idLayerTime = idLayerRUV;
+  map.add(layerTime);
+
+  const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+  map.reorder(tLayerLabels, map.layers.items.length);
+  tLayerLabels.visible = true;
+
+  view
+    .whenLayerView(layerTime)
+    .then(function (layerView) {
+      displayTimeVGV();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 function createRendererTime(featureLayer, schemesTime, subLayer) {
@@ -2859,47 +2869,48 @@ function generateTableDefault(tLayer) {
     let widthTable = 0;
 
     for (let field of fieldsLayer) {
-      if (
-        field.name == "OBJECTID" ||
-        field.name == "Shape__Length" ||
-        field.name == "Shape.LEN" ||
-        field.name == "Shape__Area" ||
-        field.name == "Shape.AREA"
-      ) {
-        // pass
-      } else if (field.name == "OBJECTID") {
-        TableFields.push({
-          field: "OBJECTID",
-          visible: false,
-        });
-      } else {
-        let widthField = field.length;
-        if (widthField < 30) {
-          widthField = 150;
-        } else {
-          widthField = widthField * 3;
-        }
+      switch (field.name) {
+        case "OBJECTID":
+          TableFields.push({
+            field: "OBJECTID",
+            visible: false,
+          });
+          break;
 
-        widthTable += widthField;
+        case "Shape__Length":
+        case "Shape.LEN":
+        case "Shape__Area":
+        case "Shape.AREA":
+          break;
+        default:
+          let widthField = field.length;
+          if (widthField < 30) {
+            widthField = 150;
+          } else {
+            widthField = widthField * 3;
+          }
 
-        let fieldDefinition = {
-          field: field.name,
-          title: field.alias,
-          sorter: "string",
-          visible: true,
-          width: widthField,
-        };
+          widthTable += widthField;
 
-        if (field.type == "string") {
-          fieldDefinition.headerFilter = "input";
-          fieldDefinition.headerFilterPlaceholder = "Buscar " + field.alias;
-        }
+          let fieldDefinition = {
+            field: field.name,
+            title: field.alias,
+            sorter: "string",
+            visible: true,
+            width: widthField,
+          };
 
-        if (field.type == "date") {
-          dateFields.push(field.name);
-        }
+          if (field.type == "string") {
+            fieldDefinition.headerFilter = "input";
+            fieldDefinition.headerFilterPlaceholder = "Buscar " + field.alias;
+          }
 
-        TableFields.push(fieldDefinition);
+          if (field.type == "date") {
+            dateFields.push(field.name);
+          }
+
+          TableFields.push(fieldDefinition);
+          break;
       }
     }
 
@@ -3588,27 +3599,25 @@ function uploadCSV(evt) {
 function loadFileCSV() {
   let settingsTitleCSV = $("#settingsTitleCSV").val();
   let settingsVariableCSV = $("#settingsVariableCSV").val();
+  let filtroGeografico = $("#settingsTipoCSV").val();
 
-  if (
-    settingsTitleCSV == undefined ||
-    settingsTitleCSV == null ||
-    settingsTitleCSV == ""
-  ) {
+  if (!settingsTitleCSV) {
     alerta("Se debe indicar el nombre del mapa a crear");
     return;
   }
 
-  if (
-    settingsVariableCSV == undefined ||
-    settingsVariableCSV == null ||
-    settingsVariableCSV == ""
-  ) {
+  if (!settingsVariableCSV) {
     alerta("Se debe indicar el nombre de la variable a mapear");
     return;
   }
 
-  if (dataLoadCSV == null) {
+  if (!dataLoadCSV) {
     alerta("Se debe adjuntar un archivo CSV");
+    return;
+  }
+
+  if (!filtroGeografico) {
+    alerta("Debe seleccionar un tipo de selección espacial");
     return;
   }
 
@@ -3621,57 +3630,22 @@ function loadFileCSV() {
   });
 
   // Recupera el tipo de CSV a procesar
-  let filtroGeografico = $("#settingsTipoCSV").val();
-  let parametros;
-  if (filtroGeografico == "csvDepartamento") {
-    // parametros de visualización
-    parametros = {
-      tLayerBase: nameLayerDepartamentos,
-      nivelGeografico: "Departamento",
-      campoGeografico: "DPTO_NCDGO",
-      nombreGeografico: "DPTO_CNMBR",
-      adjNombreGeografico: null,
-    };
-  } else if (filtroGeografico == "csvMunicipal") {
-    // parametros de visualización
-    parametros = {
-      tLayerBase: nameLayerMunicipios,
-      nivelGeografico: "Municipio",
-      campoGeografico: "MPIO_NCDGO",
-      nombreGeografico: "MPIO_CNMBR",
-      adjNombreGeografico: "DPTO_CNMBR",
-    };
-  } else if (filtroGeografico == "csvDT") {
-    // parametros de visualización
-    parametros = {
-      tLayerBase: nameLayerDT,
-      nivelGeografico: "Dirección Territorial",
-      campoGeografico: "DT_NCDGO",
-      nombreGeografico: "DT_CNMBR",
-      adjNombreGeografico: null,
-    };
-  } else if (filtroGeografico == "csvPDET") {
-    // parametros de visualización
-    parametros = {
-      tLayerBase: nameLayerPDET,
-      nivelGeografico: "PDET",
-      campoGeografico: "PDET_NCDGO",
-      nombreGeografico: "PDET_CNMBR",
-      adjNombreGeografico: null,
-    };
-  } else {
-    alerta("Debe seleccionar un tipo de selección espacial");
-  }
+
+  let parametros = parametersFileCSV(filtroGeografico);
 
   // Obtención de los datos finales
   if (map.findLayerById(parametros.tLayerBase) == undefined) {
     loadBaseGeografica(parametros.tLayerBase);
     let tLayer = map.findLayerById(parametros.tLayerBase);
     tLayer.when(function () {
-      asignarCSVGeografico(dataLoadCSV.data, parametros);
+      if (dataLoadCSV.data) {
+        asignarCSVGeografico(dataLoadCSV.data, parametros);
+      }
     });
   } else {
-    asignarCSVGeografico(dataLoadCSV.data, parametros);
+    if (dataLoadCSV.data) {
+      asignarCSVGeografico(dataLoadCSV.data, parametros);
+    }
   }
 
   if (loading.isOpen()) {
@@ -3679,118 +3653,147 @@ function loadFileCSV() {
   }
 }
 
-function asignarCSVGeografico(lstDatosCSV, lstParametros) {
-  if (lstDatosCSV.length > 0) {
-    let settingsTitleCSV =
-      $("#settingsTitleCSV").val() + " - Datos cargados por el usuario";
-    let settingsVariableCSV = $("#settingsVariableCSV").val();
-
-    const tLayer = map.findLayerById(lstParametros.tLayerBase);
-
-    removeLayer(settingsTitleCSV);
-
-    let query = tLayer.createQuery();
-    query.where = "1=1";
-
-    tLayer.queryFeatures(query).then(function (results) {
-      for (let indexGeo = 0; indexGeo < results.features.length; indexGeo++) {
-        results.features[indexGeo].attributes.OBJECTID = indexGeo;
-        results.features[indexGeo].attributes.VGV_NVALOR = null;
-        for (let datoCSV of lstDatosCSV) {
-          if (
-            parseInt(datoCSV[lstParametros.campoGeografico]) ==
-            parseInt(
-              results.features[indexGeo].attributes[
-                lstParametros.campoGeografico
-              ]
-            )
-          ) {
-            results.features[indexGeo].attributes.VGV_NVALOR = parseFloat(
-              datoCSV.VGV_NVALOR
-            );
-            break;
-          }
-        }
-      }
-
-      for (
-        let indexGeo = results.features.length - 1;
-        indexGeo >= 0;
-        indexGeo--
-      ) {
-        if (results.features[indexGeo].attributes.VGV_NVALOR == null) {
-          results.features.splice(indexGeo, 1);
-        }
-      }
-
-      let varContent = "";
-      if (lstParametros.adjNombreGeografico != null) {
-        varContent = `En el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}} ({${lstParametros.adjNombreGeografico}})</b>, se presentaron <b>{VGV_NVALOR} ${settingsVariableCSV}</b> `;
-      } else {
-        varContent = `En el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}}</b>, se presentaron <b>{VGV_NVALOR} ${settingsVariableCSV}</b>.`;
-      }
-
-      const layerResults = new _FeatureLayer({
-        source: results.features,
-        fields: tLayer.fields,
-        objectIdField: "OBJECTID",
-        opacity: 0.8,
-        title: settingsTitleCSV,
-        id: settingsTitleCSV,
-        popupTemplate: {
-          title: "<b>" + settingsVariableCSV + "</b>",
-          content: varContent,
-          fieldInfos: [
-            {
-              fieldName: "VGV_NVALOR",
-              format: {
-                digitSeparator: true,
-                places: 0,
-              },
-            },
-          ],
-        },
-        copyright: "Unidad para las Víctimas",
-        visible: true,
-        legendEnabled: true,
-        listMode: "show",
-        layerOrigen: tLayer.id.split("_")[1],
-        variableOrigen: capitalizeFirstLetter(settingsVariableCSV),
-      });
-
-      createRendererCSV(layerResults);
-      map.add(layerResults);
-
-      layerResults.when(function () {
-        current_reportes = arrayRemove(current_reportes, "CSV");
-        reporteUso(
-          "CSV",
-          layerResults.layerOrigen + " - " + layerResults.variableOrigen,
-          "complete"
-        );
-
-        let ext = layerResults.fullExtent;
-        let cloneExt = ext.clone();
-        view
-          .goTo({
-            target: layerResults.fullExtent,
-            extent: cloneExt.expand(1.25),
-          })
-          .then(function () {
-            if (!LegendExpand.expanded) {
-              LegendExpand.expand();
-            }
-          });
-        addOptionSwipe(layerResults);
-        clearFileCSV();
-        $("#panelLoadCSV").removeClass("in");
-      });
-
-      const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
-      map.reorder(tLayerLabels, map.layers.items.length);
-      tLayerLabels.visible = true;
-    });
+function parametersFileCSV(filtroGeografico) {
+  switch (filtroGeografico) {
+    case "csvDepartamento":
+      return {
+        tLayerBase: nameLayerDepartamentos,
+        nivelGeografico: "Departamento",
+        campoGeografico: "DPTO_NCDGO",
+        nombreGeografico: "DPTO_CNMBR",
+        adjNombreGeografico: null,
+      };
+    case "csvMunicipal":
+      return {
+        tLayerBase: nameLayerMunicipios,
+        nivelGeografico: "Municipio",
+        campoGeografico: "MPIO_NCDGO",
+        nombreGeografico: "MPIO_CNMBR",
+        adjNombreGeografico: "DPTO_CNMBR",
+      };
+    case "csvDT":
+      return {
+        tLayerBase: nameLayerDT,
+        nivelGeografico: "Dirección Territorial",
+        campoGeografico: "DT_NCDGO",
+        nombreGeografico: "DT_CNMBR",
+        adjNombreGeografico: null,
+      };
+    case "csvPDET":
+      return {
+        tLayerBase: nameLayerPDET,
+        nivelGeografico: "PDET",
+        campoGeografico: "PDET_NCDGO",
+        nombreGeografico: "PDET_CNMBR",
+        adjNombreGeografico: null,
+      };
   }
+}
+
+function asignarCSVGeografico(lstDatosCSV, lstParametros) {
+  let settingsTitleCSV =
+    $("#settingsTitleCSV").val() + " - Datos cargados por el usuario";
+  let settingsVariableCSV = $("#settingsVariableCSV").val();
+
+  const tLayer = map.findLayerById(lstParametros.tLayerBase);
+
+  removeLayer(settingsTitleCSV);
+
+  let query = tLayer.createQuery();
+  query.where = "1=1";
+
+  tLayer.queryFeatures(query).then(function (results) {
+    for (const feature of results.features) {
+      feature.attributes.OBJECTID = indexGeo;
+      feature.attributes.VGV_NVALOR = null;
+      for (let datoCSV of lstDatosCSV) {
+        if (
+          parseInt(datoCSV[lstParametros.campoGeografico]) ==
+          parseInt(feature.attributes[lstParametros.campoGeografico])
+        ) {
+          feature.attributes.VGV_NVALOR = parseFloat(datoCSV.VGV_NVALOR);
+          break;
+        }
+      }
+    }
+
+    for (
+      let indexGeo = results.features.length - 1;
+      indexGeo >= 0;
+      indexGeo--
+    ) {
+      if (results.features[indexGeo].attributes.VGV_NVALOR == null) {
+        results.features.splice(indexGeo, 1);
+      }
+    }
+
+    let varContent = "";
+    if (lstParametros.adjNombreGeografico != null) {
+      varContent = `En el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}} ({${lstParametros.adjNombreGeografico}})</b>, se presentaron <b>{VGV_NVALOR} ${settingsVariableCSV}</b> `;
+    } else {
+      varContent = `En el ${lstParametros.nivelGeografico} de <b>{${lstParametros.nombreGeografico}}</b>, se presentaron <b>{VGV_NVALOR} ${settingsVariableCSV}</b>.`;
+    }
+
+    const layerResults = new _FeatureLayer({
+      source: results.features,
+      fields: tLayer.fields,
+      objectIdField: "OBJECTID",
+      opacity: 0.8,
+      title: settingsTitleCSV,
+      id: settingsTitleCSV,
+      popupTemplate: {
+        title: "<b>" + settingsVariableCSV + "</b>",
+        content: varContent,
+        fieldInfos: [
+          {
+            fieldName: "VGV_NVALOR",
+            format: {
+              digitSeparator: true,
+              places: 0,
+            },
+          },
+        ],
+      },
+      copyright: "Unidad para las Víctimas",
+      visible: true,
+      legendEnabled: true,
+      listMode: "show",
+      layerOrigen: tLayer.id.split("_")[1],
+      variableOrigen: capitalizeFirstLetter(settingsVariableCSV),
+    });
+
+    createRendererCSV(layerResults);
+    map.add(layerResults);
+
+    layerResults.when(function () {
+      current_reportes = arrayRemove(current_reportes, "CSV");
+      reporteUso(
+        "CSV",
+        layerResults.layerOrigen + " - " + layerResults.variableOrigen,
+        "complete"
+      );
+
+      let ext = layerResults.fullExtent;
+      let cloneExt = ext.clone();
+      view
+        .goTo({
+          target: layerResults.fullExtent,
+          extent: cloneExt.expand(1.25),
+        })
+        .then(function () {
+          if (!LegendExpand.expanded) {
+            LegendExpand.expand();
+          }
+        });
+      addOptionSwipe(layerResults);
+      clearFileCSV();
+      $("#panelLoadCSV").removeClass("in");
+    });
+
+    const tLayerLabels = map.findLayerById(tLayerBaseLabelsId);
+    map.reorder(tLayerLabels, map.layers.items.length);
+    tLayerLabels.visible = true;
+  });
 }
 
 function clearFileCSV() {
@@ -4098,46 +4101,56 @@ function getOptionsSelected(selectData) {
 
   let filtroGeografico = $("#selectFiltro_Geografico").val();
 
-  if (filtroGeografico == "filtroMunicipal") {
-    if ($selectId == "selectFiltro_Departamento") {
-      if ($lenSelectAll == $lenSelect) {
-        $("#selectFiltro_Municipios").multiselect("selectAll", false);
-        $("#selectFiltro_Municipios").multiselect("updateButtonText");
-      } else if ($lenSelect == 0) {
-        $("#selectFiltro_Municipios").multiselect("deselectAll", false);
-        $("#selectFiltro_Municipios").multiselect("updateButtonText");
-      } else {
-        $("#selectFiltro_Municipios").multiselect("deselectAll", false);
-        $("#selectFiltro_Municipios").multiselect("updateButtonText");
-        let municipiosSelected = [];
-        for (let valueDpto of $selectOptions) {
-          let nombreDepartamento = valueDpto.text + " - ";
-          const optionsMunicipios = $("#selectFiltro_Municipios")[0].options;
-          for (let valueMpio of optionsMunicipios) {
-            if (valueMpio.text.startsWith(nombreDepartamento)) {
-              municipiosSelected.push(valueMpio.value);
-            }
-          }
-        }
-        $("#selectFiltro_Municipios").multiselect("select", municipiosSelected);
+  switch (filtroGeografico) {
+    case "filtroMunicipal":
+      if ($selectId == "selectFiltro_Departamento") {
+        getOptionSelectedMpioDpto($lenSelectAll, $lenSelect, $selectOptions);
+      } else if ($selectId == "selectFiltro_Municipios") {
+        getOptionSelectedMpioMpio($lenSelectAll, $lenSelect);
       }
-    } else if ($selectId == "selectFiltro_Municipios") {
-      if ($lenSelectAll == $lenSelect) {
-        $("#selectFiltro_Departamento").multiselect("selectAll", false);
-        $("#selectFiltro_Departamento").multiselect("updateButtonText");
-      } else if ($lenSelect == 0) {
-        $("#selectFiltro_Departamento").multiselect("deselectAll", false);
-        $("#selectFiltro_Departamento").multiselect("updateButtonText");
+      break;
+
+    case "filtroDepartamento":
+    case "filtroDT":
+    case "filtroPDET":
+      break;
+    default:
+      alerta("Debe seleccionar un tipo de selección espacial");
+      break;
+  }
+}
+
+function getOptionSelectedMpioMpio($lenSelectAll, $lenSelect) {
+  if ($lenSelectAll == $lenSelect) {
+    $("#selectFiltro_Departamento").multiselect("selectAll", false);
+    $("#selectFiltro_Departamento").multiselect("updateButtonText");
+  } else if ($lenSelect == 0) {
+    $("#selectFiltro_Departamento").multiselect("deselectAll", false);
+    $("#selectFiltro_Departamento").multiselect("updateButtonText");
+  }
+}
+
+function getOptionSelectedMpioDpto($lenSelectAll, $lenSelect, $selectOptions) {
+  if ($lenSelectAll == $lenSelect) {
+    $("#selectFiltro_Municipios").multiselect("selectAll", false);
+    $("#selectFiltro_Municipios").multiselect("updateButtonText");
+  } else if ($lenSelect == 0) {
+    $("#selectFiltro_Municipios").multiselect("deselectAll", false);
+    $("#selectFiltro_Municipios").multiselect("updateButtonText");
+  } else {
+    $("#selectFiltro_Municipios").multiselect("deselectAll", false);
+    $("#selectFiltro_Municipios").multiselect("updateButtonText");
+    let municipiosSelected = [];
+    for (let valueDpto of $selectOptions) {
+      let nombreDepartamento = valueDpto.text + " - ";
+      const optionsMunicipios = $("#selectFiltro_Municipios")[0].options;
+      for (let valueMpio of optionsMunicipios) {
+        if (valueMpio.text.startsWith(nombreDepartamento)) {
+          municipiosSelected.push(valueMpio.value);
+        }
       }
     }
-  } else if (
-    filtroGeografico == "filtroDepartamento" ||
-    filtroGeografico == "filtroDT" ||
-    filtroGeografico == "filtroPDET"
-  ) {
-    // Valida
-  } else {
-    alerta("Debe seleccionar un tipo de selección espacial");
+    $("#selectFiltro_Municipios").multiselect("select", municipiosSelected);
   }
 }
 
