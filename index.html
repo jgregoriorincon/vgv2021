@@ -1,412 +1,817 @@
 <!DOCTYPE html>
 <html lang="es-ES">
+  <head>
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-100690200-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
 
-<head>
-  <!-- Global Site Tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100690200-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
+      gtag("config", "UA-100690200-1");
+    </script>
 
-    gtag('config', 'UA-100690200-1');
-  </script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <meta name="description" content="Visor Geográfico de Víctimas" />
+    <meta name="keywords" content="Visor Geográfico de Víctimas, UARIV" />
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <meta name="description" content="Visor Geográfico de Víctimas">
-  <meta name="keywords" content="Visor Geográfico de Víctimas, UARIV">
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="./images/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="./images/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="./images/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="./images/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./images/apple-icon-180x180.png"
+    />
 
-  <link rel="apple-touch-icon" sizes="114x114" href="./images/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./images/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./images/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-icon-180x180.png">
+    <link rel="manifest" href="./images/manifest.json" />
+    <meta name="theme-color" content="#0066CE" />
 
-  <link rel="manifest" href="./images/manifest.json">
-  <meta name="theme-color" content="#0066CE">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./images/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="./images/favicon-96x96.png"
+    />
 
-  <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="./images/favicon-96x96.png">
+    <meta
+      name="author"
+      content="Jose Gregorio Rincon https://github.com/jgregoriorincon"
+    />
+    <link rel="canonical" href="https://vgv.unidadvictimas.gov.co" />
 
-  <meta name="author" content="Jose Gregorio Rincon https://github.com/jgregoriorincon" />
-  <link rel="canonical" href="https://vgv.unidadvictimas.gov.co" />
+    <link
+      rel="shortcut icon"
+      href="./images/favicon.ico"
+      type="image/vnd.microsoft.icon"
+    />
 
-  <link rel="shortcut icon" href="./images/favicon.ico" type="image/vnd.microsoft.icon">
+    <title>Visor Geográfico de Víctimas</title>
 
-  <title>Visor Geográfico de Víctimas</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap"
+    />
+    <link rel="stylesheet" href="dist/css/calcite-web.min.css" />
+    <link
+      rel="stylesheet"
+      href="dist/css/calcite-maps-bootstrap.min-v0.10.css"
+    />
+    <link
+      rel="stylesheet"
+      href="dist/css/calcite-maps-arcgis-4.x.min-v0.10.css"
+    />
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" />
-  <link rel="stylesheet" href="dist/css/calcite-web.min.css">
-  <link rel="stylesheet" href="dist/css/calcite-maps-bootstrap.min-v0.10.css">
-  <link rel="stylesheet" href="dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.18/esri/css/main.css"
+    />
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/css/main.css">
+    <link rel="stylesheet" href="dist/css/jquery-confirm.min.css" />
+    <link rel="stylesheet" href="dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="dist/css/tabulator.min.css" />
 
-  <link rel="stylesheet" href="dist/css/jquery-confirm.min.css">
-  <link rel="stylesheet" href="dist/css/bootstrap-multiselect.css" />
-  <link rel="stylesheet" href="dist/css/tabulator.min.css">
+    <!-- Estilos Propios -->
+    <link rel="stylesheet" href="css/stylesInit.css" />
 
-  <!-- Estilos Propios -->
-  <link rel="stylesheet" href="css/stylesInit.css">
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        font-family: "Work Sans", sans-serif !important;
+        font-size: 13px !important;
+      }
+    </style>
+  </head>
 
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      font-family: 'Work Sans', sans-serif !important;
-      font-size: 13px !important;
-    }
-  </style>
+  <body class="calcite-maps calcite-nav-top">
+    <!-- Navbar -->
 
-</head>
-
-<body class="calcite-maps calcite-nav-top">
-  <!-- Navbar -->
-
-  <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-custom VGV_Background initVGV2">
-    <!-- Menu -->
-    <div class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light" role="presentation">
-      <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" tabindex="0">
-        <div class="calcite-dropdown-toggle">
-          <span class="sr-only">Toggle dropdown menu</span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span
-              class="esri-icon-question"></span> Acerca del VGV</a></li>
-        <li><a role="menuitem" tabindex="0" data-target="#panelCifras" aria-haspopup="true"><span
-              class="esri-icon-dashboard"></span> Cifras en el VGV</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLoadCSV" aria-haspopup="true"><span
-              class="esri-icon-upload"></span> Cargar archivos CSV</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelSwipe" aria-haspopup="true"><span
-              class="esri-icon-swap"></span> Comparar capas</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelFilterVGV" aria-haspopup="true"><span
-              class="esri-icon-review"></span> Consulta tem&aacute;tica </a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelPrint" aria-haspopup="true"><span
-              class="esri-icon-printer"></span> Imprimir</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelMeasure" aria-haspopup="true"><span
-              class="esri-icon-measure-line"></span> Medir</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLoadLayers" aria-haspopup="true"><span
-              class="esri-icon-collection"></span> Servicios geográficos</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" aria-haspopup="true"
-            onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=8tlkWbau2UilPXq1yx0H6MxmE4t8jlNLoaWknfMn48FURTRSQzY1VE9HN041WjQ0QkxCNEVDVkRGMS4u', '_blank');"><span
-              class="esri-icon-chat"></span> Comentarios</a></li>
+    <nav
+      class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-custom VGV_Background initVGV2"
+    >
+      <!-- Menu -->
+      <div
+        class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light"
+        role="presentation"
+      >
+        <a
+          class="dropdown-toggle"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          tabindex="0"
+        >
+          <div class="calcite-dropdown-toggle">
+            <span class="sr-only">Toggle dropdown menu</span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              data-target="#panelInfo"
+              aria-haspopup="true"
+              ><span class="esri-icon-question"></span> Acerca del VGV</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              data-target="#panelCifras"
+              aria-haspopup="true"
+              ><span class="esri-icon-dashboard"></span> Cifras en el VGV</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelLoadCSV"
+              aria-haspopup="true"
+              ><span class="esri-icon-upload"></span> Cargar archivos CSV</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelSwipe"
+              aria-haspopup="true"
+              ><span class="esri-icon-swap"></span> Comparar capas</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelFilterVGV"
+              aria-haspopup="true"
+              ><span class="esri-icon-review"></span> Consulta tem&aacute;tica
+            </a>
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelPrint"
+              aria-haspopup="true"
+              ><span class="esri-icon-printer"></span> Imprimir</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelMeasure"
+              aria-haspopup="true"
+              ><span class="esri-icon-measure-line"></span> Medir</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              data-target="#panelLoadLayers"
+              aria-haspopup="true"
+              ><span class="esri-icon-collection"></span> Servicios
+              geográficos</a
+            >
+          </li>
+          <li>
+            <a
+              role="menuitem"
+              tabindex="0"
+              href="#"
+              aria-haspopup="true"
+              onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=8tlkWbau2UilPXq1yx0H6MxmE4t8jlNLoaWknfMn48FURTRSQzY1VE9HN041WjQ0QkxCNEVDVkRGMS4u', '_blank');"
+              ><span class="esri-icon-chat"></span> Comentarios</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- Title -->
+      <div class="calcite-title calcite-overflow-hidden">
+        <span>
+          <img
+            src="images/LogoUnidadVictimas.png"
+            id="logoUARIV"
+            alt="Unidad para las víctimas"
+          />
+        </span>
+        <span class="calcite-title-divider"></span>
+        <span class="calcite-title-main" id="titleVGV1"
+          >Visor Geográfico de Víctimas</span
+        >
+        <span class="calcite-title-main" id="titleVGV2">VGV</span>
+      </div>
+      <!-- Nav -->
+      <ul class="nav navbar-nav calcite-nav hidden-xs">
+        <li>
+          <div class="calcite-navbar-search calcite-search-expander">
+            <div id="searchWidgetDiv"></div>
+          </div>
+        </li>
       </ul>
-    </div>
-    <!-- Title -->
-    <div class="calcite-title calcite-overflow-hidden">
-      <span>
-        <img src="images/LogoUnidadVictimas.png" id="logoUARIV" alt="Unidad para las víctimas" />
-      </span>
-      <span class="calcite-title-divider"></span>
-      <span class="calcite-title-main" id="titleVGV1">Visor Geográfico de Víctimas</span>
-      <span class="calcite-title-main" id="titleVGV2">VGV</span>
-    </div>
-    <!-- Nav -->
-    <ul class="nav navbar-nav calcite-nav hidden-xs">
-      <li>
-        <div class="calcite-navbar-search calcite-search-expander">
-          <div id="searchWidgetDiv"></div>
-        </div>
-      </li>
-    </ul>
-  </nav>
+    </nav>
 
-  <div class="calcite-map calcite-map-absolute VGV_Background initVGV" id="initVGV">
-    <div class="col-xs-12" style="position: absolute; top: 10%;">
-      <img data-src="./images/bg-header.jpg" class="lazyload" alt="UARIV" />
-    </div>
-    <div class="col-xs-6 col-xs-offset-3" style="position: absolute; top: 60%;">
-      <div class="loaderVGV"></div>
-    </div>
-  </div>
-  <!--/.calcite-navbar -->
-
-  <!-- Map  -->
-
-  <div class="calcite-map calcite-map-absolute" style="width: 100%; height: 100%;">
-    <div id="mapViewDiv"></div>
-  </div>
-
-  <!-- /.calcite-map -->
-
-  <!-- Panels -->
-
-  <div class="calcite-panels calcite-panels-left calcite-text-light calcite-bg-custom panel-group VGV_Background">
-
-    <!-- Panel - Acerca de -->
-
-    <div id="panelInfo" class="panel collapse">
-      <div id="headingInfo" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInfo" aria-expanded="true"
-            aria-controls="collapseInfo"><span class="esri-icon-question" aria-hidden="true"></span><span
-              class="panel-label">Visor Geogr&aacute;fico de V&iacute;ctimas</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelInfo"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
-        </div>
+    <div
+      class="calcite-map calcite-map-absolute VGV_Background initVGV"
+      id="initVGV"
+    >
+      <div class="col-xs-12" style="position: absolute; top: 10%">
+        <img data-src="./images/bg-header.jpg" class="lazyload" alt="UARIV" />
       </div>
-      <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
-        <div class="panel-body">
-          <p style="text-align: justify;">El Visor Geográfico de Víctimas permite además de consultar el Registro Único
-            de Víctimas, complementar las consultas con información de resguardos indígenas, comunidades negras,
-            reservas campesinas y el Índice de Riesgo de Victimización.</p>
-          <p style="font-weight: bold;">Funcionalidades:</p>
-          <ul>
-            <li>Consulta de la información y datos de hechos victimizantes con enfoque diferencial por departamentos o
-              Municipios en todo el país.</li>
-            <li>Consulta de mapas dinámicos a través del tiempo con los hechos victimizantes de la Ley de Víctimas.</li>
-            <li>Generación de mapas personalizados a partir de archivos en Excel, bitácoras o datos propios.</li>
-            <li>Exportación de resultados en formato de imagen, PDF, CSV y Excel.</li>
-          </ul>
-          <p style="font-weight: bold;">Recomendaciones para utilizar el Visor Geográfico de Víctimas:</p>
-          <ul>
-            <li>Habilitar las ventanas emergentes (pop-up). Se requiere que se encuentren activas para que se generen
-              las vistas para imprimir o para la función de ubicación.</li>
-            <li>Por favor borrar el cache del navegador si ha visitado anteriormente el visor.</li>
-            <li>Se recomienda utilizar una versión reciente del navegador web. Los más recomendados son:
-              <ul>
-                <li>
-                  Google Chrome versión 55 o superior
-                </li>
-                <li>
-                  Firefox versión 52 o superior
-                </li>
-                <li>
-                  Opera versión 42 o superior
-                </li>
-                <li>
-                  Safari versión 10.1 o superior
-                </li>
-                <li>
-                  Microsoft Edge versión 14 o superior
-                </li>
-                <li>
-                  Google Chrome Android 55 o superior
-                </li>
-                <li>
-                  Safario iOS 10.3 o superior
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+      <div
+        class="col-xs-6 col-xs-offset-3"
+        style="position: absolute; top: 60%"
+      >
+        <div class="loaderVGV"></div>
       </div>
     </div>
+    <!--/.calcite-navbar -->
 
-    <!-- Panel - Cifras -->
+    <!-- Map  -->
 
-    <div id="panelCifras" class="panel collapse">
-      <div id="headingCifras" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseCifras" aria-expanded="true"
-            aria-controls="collapseCifras"><span class="esri-icon-dashboard" aria-hidden="true"></span><span
-              class="panel-label">Cifras en el VGV</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelCifras"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
-        </div>
-      </div>
-      <div id="collapseCifras" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCifras">
-        <div class="panel-body">
-          <p id="FechaCorteVGV">FECHA DE CORTE:</p>
-          <p id="CountPersonasVGV">VÍCTIMAS CONFLICTO ARMADO:</p>
-          <p id="DefinitionPersonasVGV" style="font-size: x-small;"></p>
-          <p id="CountSujetosVGV">SUJETOS DE ATENCIÓN:</p>
-          <p id="DefinitionSujetosVGV" style="font-size: x-small;"></p>
-          <p id="CountEventosVGV">EVENTOS:</p>
-          <p id="DefinitionEventosVGV" style="font-size: x-small;"></p>
-          <p style="text-align: justify; font-size: small; font-style: italic; color: #0066CE;">Estimado usuario, tenga
-            en cuenta que por la naturaleza dinámica del Registro Único de Víctimas y debido a los procesos de
-            depuración de la información, se generan cambios en las cifras presentadas a través del tiempo.</p>
-          <br>
-        </div>
-      </div>
+    <div
+      class="calcite-map calcite-map-absolute"
+      style="width: 100%; height: 100%"
+    >
+      <div id="mapViewDiv"></div>
     </div>
 
-    <!-- Panel - Activar servicios geográficos -->
+    <!-- /.calcite-map -->
 
-    <div id="panelLoadLayers" class="panel collapse">
-      <div id="headingLoadLayers" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLoadlayers" aria-expanded="false"
-            aria-controls="collapseLoadlayers"><span class="esri-icon-collection" aria-hidden="true"></span><span
-              class="panel-label">Activar servicios geogr&aacute;ficos</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLoadLayers"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+    <!-- Panels -->
+
+    <div
+      class="calcite-panels calcite-panels-left calcite-text-light calcite-bg-custom panel-group VGV_Background"
+    >
+      <!-- Panel - Acerca de -->
+
+      <div id="panelInfo" class="panel collapse">
+        <div id="headingInfo" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseInfo"
+              aria-expanded="true"
+              aria-controls="collapseInfo"
+              ><span class="esri-icon-question" aria-hidden="true"></span
+              ><span class="panel-label"
+                >Visor Geogr&aacute;fico de V&iacute;ctimas</span
+              ></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelInfo"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
+        </div>
+        <div
+          id="collapseInfo"
+          class="panel-collapse collapse in"
+          role="tabpanel"
+          aria-labelledby="headingInfo"
+        >
+          <div class="panel-body">
+            <p style="text-align: justify">
+              El Visor Geográfico de Víctimas permite además de consultar el
+              Registro Único de Víctimas, complementar las consultas con
+              información de resguardos indígenas, comunidades negras, reservas
+              campesinas y el Índice de Riesgo de Victimización.
+            </p>
+            <p style="font-weight: bold">Funcionalidades:</p>
+            <ul>
+              <li>
+                Consulta de la información y datos de hechos victimizantes con
+                enfoque diferencial por departamentos o Municipios en todo el
+                país.
+              </li>
+              <li>
+                Consulta de mapas dinámicos a través del tiempo con los hechos
+                victimizantes de la Ley de Víctimas.
+              </li>
+              <li>
+                Generación de mapas personalizados a partir de archivos en
+                Excel, bitácoras o datos propios.
+              </li>
+              <li>
+                Exportación de resultados en formato de imagen, PDF, CSV y
+                Excel.
+              </li>
+            </ul>
+            <p style="font-weight: bold">
+              Recomendaciones para utilizar el Visor Geográfico de Víctimas:
+            </p>
+            <ul>
+              <li>
+                Habilitar las ventanas emergentes (pop-up). Se requiere que se
+                encuentren activas para que se generen las vistas para imprimir
+                o para la función de ubicación.
+              </li>
+              <li>
+                Por favor borrar el cache del navegador si ha visitado
+                anteriormente el visor.
+              </li>
+              <li>
+                Se recomienda utilizar una versión reciente del navegador web.
+                Los más recomendados son:
+                <ul>
+                  <li>Google Chrome versión 55 o superior</li>
+                  <li>Firefox versión 52 o superior</li>
+                  <li>Opera versión 42 o superior</li>
+                  <li>Safari versión 10.1 o superior</li>
+                  <li>Microsoft Edge versión 14 o superior</li>
+                  <li>Google Chrome Android 55 o superior</li>
+                  <li>Safario iOS 10.3 o superior</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div id="collapseLoadlayers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLoadLayers">
-        <div class="panel-body panel-500w">
-          <div class="calcite-form-title">Permite agregar capas geográficas disponibles</div>
-          <div id="servicesList" class="list-group"></div>
+
+      <!-- Panel - Cifras -->
+
+      <div id="panelCifras" class="panel collapse">
+        <div id="headingCifras" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseCifras"
+              aria-expanded="true"
+              aria-controls="collapseCifras"
+              ><span class="esri-icon-dashboard" aria-hidden="true"></span
+              ><span class="panel-label">Cifras en el VGV</span></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelCifras"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
+        </div>
+        <div
+          id="collapseCifras"
+          class="panel-collapse collapse in"
+          role="tabpanel"
+          aria-labelledby="headingCifras"
+        >
+          <div class="panel-body">
+            <p id="FechaCorteVGV">FECHA DE CORTE:</p>
+            <p id="CountPersonasVGV">VÍCTIMAS CONFLICTO ARMADO:</p>
+            <p id="DefinitionPersonasVGV" style="font-size: x-small"></p>
+            <p id="CountSujetosVGV">SUJETOS DE ATENCIÓN:</p>
+            <p id="DefinitionSujetosVGV" style="font-size: x-small"></p>
+            <p id="CountEventosVGV">EVENTOS:</p>
+            <p id="DefinitionEventosVGV" style="font-size: x-small"></p>
+            <p
+              style="
+                text-align: justify;
+                font-size: small;
+                font-style: italic;
+                color: #0066ce;
+              "
+            >
+              Estimado usuario, tenga en cuenta que por la naturaleza dinámica
+              del Registro Único de Víctimas y debido a los procesos de
+              depuración de la información, se generan cambios en las cifras
+              presentadas a través del tiempo.
+            </p>
+            <br />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Panel - Cargar CSV -->
+      <!-- Panel - Activar servicios geográficos -->
 
-    <div id="panelLoadCSV" class="panel collapse">
-      <div id="headingLoadCSV" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLoadCSV" aria-expanded="false"
-            aria-controls="collapseLoadCSV"><span class="esri-icon-upload" aria-hidden="true"></span><span
-              class="panel-label">Cargar CSV</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLoadCSV"
-            onclick="clearFileCSV();"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      <div id="panelLoadLayers" class="panel collapse">
+        <div id="headingLoadLayers" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseLoadlayers"
+              aria-expanded="false"
+              aria-controls="collapseLoadlayers"
+              ><span class="esri-icon-collection" aria-hidden="true"></span
+              ><span class="panel-label"
+                >Activar servicios geogr&aacute;ficos</span
+              ></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelLoadLayers"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
+        </div>
+        <div
+          id="collapseLoadlayers"
+          class="panel-collapse collapse"
+          role="tabpanel"
+          aria-labelledby="headingLoadLayers"
+        >
+          <div class="panel-body panel-500w">
+            <div class="calcite-form-title">
+              Permite agregar capas geográficas disponibles
+            </div>
+            <div id="servicesList" class="list-group"></div>
+          </div>
         </div>
       </div>
-      <div id="collapseLoadCSV" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLoadCSV">
-        <div class="panel-body panel-500w">
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#loadCSV" aria-controls="loadCSV" role="tab"
-                data-toggle="tab">Subir CSV</a></li>
-            <li role="presentation"><a href="#simbologiaCSV" aria-controls="simbologiaCSV" role="tab"
-                data-toggle="tab">Simbología</a></li>
-            <li role="presentation"><a href="#modelCSV" aria-controls="modelCSV" role="tab" data-toggle="tab">Modelos
-                CSV</a></li>
-          </ul>
-          <div class="tab-content">
 
-            <!-- Tab-Load -->
+      <!-- Panel - Cargar CSV -->
 
-            <div role="tabpanel" class="tab-pane active" id="loadCSV">
-              <div class="calcite-form-title" style="padding-top: 10px !important; text-align: justify;">Esta
-                herramienta permite subir archivos CSV que cumplan la estructura de campo que estan disponibles en la
-                pestaña "Modelos CSV", la cual contiene la estructura para datos Departamentales, Municipales, PDETs y
-                Direcciones Territoriales. Se debe ingresar el título del mapa a crear y el nombre de la variable que se
-                desea mapear.</div>
-              <div class="form-horizontal calcite-form-padding">
-                <form id="settingsCSV">
+      <div id="panelLoadCSV" class="panel collapse">
+        <div id="headingLoadCSV" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseLoadCSV"
+              aria-expanded="false"
+              aria-controls="collapseLoadCSV"
+              ><span class="esri-icon-upload" aria-hidden="true"></span
+              ><span class="panel-label">Cargar CSV</span></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelLoadCSV"
+              onclick="clearFileCSV();"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
+        </div>
+        <div
+          id="collapseLoadCSV"
+          class="panel-collapse collapse in"
+          role="tabpanel"
+          aria-labelledby="headingLoadCSV"
+        >
+          <div class="panel-body panel-500w">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a
+                  href="#loadCSV"
+                  aria-controls="loadCSV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Subir CSV</a
+                >
+              </li>
+              <li role="presentation">
+                <a
+                  href="#simbologiaCSV"
+                  aria-controls="simbologiaCSV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Simbología</a
+                >
+              </li>
+              <li role="presentation">
+                <a
+                  href="#modelCSV"
+                  aria-controls="modelCSV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Modelos CSV</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <!-- Tab-Load -->
+
+              <div role="tabpanel" class="tab-pane active" id="loadCSV">
+                <div
+                  class="calcite-form-title"
+                  style="padding-top: 10px !important; text-align: justify"
+                >
+                  Esta herramienta permite subir archivos CSV que cumplan la
+                  estructura de campo que estan disponibles en la pestaña
+                  "Modelos CSV", la cual contiene la estructura para datos
+                  Departamentales, Municipales, PDETs y Direcciones
+                  Territoriales. Se debe ingresar el título del mapa a crear y
+                  el nombre de la variable que se desea mapear.
+                </div>
+                <div class="form-horizontal calcite-form-padding">
+                  <form id="settingsCSV">
+                    <div class="form-group">
+                      <label
+                        for="settingsTipoCSV"
+                        class="col-xs-3 control-label"
+                        >Tipo CSV</label
+                      >
+                      <div class="col-xs-9">
+                        <select id="settingsTipoCSV" class="form-control">
+                          <option value="csvDepartamento" selected="selected">
+                            Departamental
+                          </option>
+                          <option value="csvMunicipal">Municipal</option>
+                          <option value="csvDT">
+                            Direcci&oacute;n territorial
+                          </option>
+                          <option value="csvPDET">PDET</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        for="settingsTitleCSV"
+                        class="col-xs-3 control-label"
+                        >Titulo</label
+                      >
+                      <div class="col-xs-9">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="settingsTitleCSV"
+                          placeholder="{Nombre del mapa}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        for="settingsVariableCSV"
+                        class="col-xs-3 control-label"
+                        >Variable</label
+                      >
+                      <div class="col-xs-9">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="settingsVariableCSV"
+                          placeholder="{Nombre de la variable}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        for="settingsFileCSV"
+                        class="col-xs-3 control-label"
+                        >Archivo</label
+                      >
+                      <div class="col-xs-9">
+                        <input
+                          type="file"
+                          class="form-control"
+                          id="settingsFileCSV"
+                          accept=".csv"
+                          style="height: 45px !important"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-xs-4 col-xs-offset-8 no-padding-left">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-block"
+                          onclick="irTabPanel('simbologiaCSV');"
+                        >
+                          Siguiente
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Tab-Simbologia -->
+              <div role="tabpanel" class="tab-pane" id="simbologiaCSV">
+                <div class="calcite-form-title">
+                  <strong style="text-align: justify"
+                    >Carga el CSV con la simbología definida.</strong
+                  >
+                </div>
+                <div
+                  class="form-horizontal calcite-form-padding no-padding-top"
+                >
                   <div class="form-group">
-                    <label for="settingsTipoCSV" class="col-xs-3 control-label">Tipo CSV</label>
+                    <label for="class-select-CSV" class="col-xs-3 control-label"
+                      >Clasificación</label
+                    >
                     <div class="col-xs-9">
-                      <select id="settingsTipoCSV" class="form-control">
-                        <option value="csvDepartamento" selected='selected'>Departamental</option>
-                        <option value="csvMunicipal">Municipal</option>
-                        <option value="csvDT">Direcci&oacute;n territorial</option>
-                        <option value="csvPDET">PDET</option>
+                      <select id="class-select-CSV" class="form-control">
+                        <option value="equal-interval">
+                          Intervalos iguales
+                        </option>
+                        <option value="quantile" selected>Quantiles</option>
+                        <option value="natural-breaks">Rangos naturales</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="settingsTitleCSV" class="col-xs-3 control-label">Titulo</label>
+                    <label
+                      for="styleRampColors-CSV"
+                      class="col-xs-3 control-label"
+                      >Gama de colores</label
+                    >
                     <div class="col-xs-9">
-                      <input type="text" class="form-control" id="settingsTitleCSV" placeholder="{Nombre del mapa}">
+                      <div
+                        id="styleRampColors-CSV"
+                        class="row col-xs-12"
+                        style="position: relative"
+                      >
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor1-CSV"
+                          value="#ffefdc"
+                          style="position: absolute"
+                        />
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor2-CSV"
+                          value="#d15e3d"
+                          style="position: absolute"
+                        />
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor3-CSV"
+                          value="#660202"
+                          style="position: absolute"
+                        />
+                        <div
+                          id="styleColorRamp-CSV"
+                          style="
+                            border: 1px gray solid;
+                            height: 35px;
+                            width: 100%;
+                            position: absolute;
+                          "
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" style="padding-bottom: 20px">
+                    <label
+                      for="num-classes-CSV"
+                      class="col-xs-3 control-label"
+                      id="label-num-classes-CSV"
+                      >Clases (5)</label
+                    >
+                    <div class="col-xs-9">
+                      <input
+                        type="range"
+                        id="num-classes-CSV"
+                        min="3"
+                        max="10"
+                        value="5"
+                        step="1"
+                        aria-valuemin="3"
+                        aria-valuemax="10"
+                        aria-valuenow="5"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-xs-9 col-xs-offset-3">
+                      <a
+                        href="#"
+                        class="btn btn-primary btn-block"
+                        onclick="loadFileCSV();"
+                        style="color: white"
+                        >Visualizar CSV</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab-Model -->
+
+              <div role="tabpanel" class="tab-pane" id="modelCSV">
+                <div
+                  class="calcite-form-title"
+                  style="padding-top: 10px !important; text-align: justify"
+                >
+                  Archivos CSV modelo con la estructura para datos
+                  Departamentales, Municipales, PDETs y Direcciones
+                  Territoriales.
+                </div>
+                <div class="form-horizontal calcite-form-padding">
+                  <div class="form-group">
+                    <div class="col-xs-9">
+                      <a class="linkVGV" href="files/csv/Dptos.csv"
+                        ><span
+                          class="esri-icon-download"
+                          aria-hidden="true"
+                        ></span
+                        ><span class="panel-label">Departamental</span></a
+                      >
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="settingsVariableCSV" class="col-xs-3 control-label">Variable</label>
                     <div class="col-xs-9">
-                      <input type="text" class="form-control" id="settingsVariableCSV"
-                        placeholder="{Nombre de la variable}">
+                      <a class="linkVGV" href="files/csv/Mpios.csv"
+                        ><span
+                          class="esri-icon-download"
+                          aria-hidden="true"
+                        ></span
+                        ><span class="panel-label">Municipal</span></a
+                      >
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="settingsFileCSV" class="col-xs-3 control-label">Archivo</label>
                     <div class="col-xs-9">
-                      <input type="file" class="form-control" id="settingsFileCSV" accept=".csv"
-                        style="height: 45px !important;">
+                      <a class="linkVGV" href="files/csv/DT.csv"
+                        ><span
+                          class="esri-icon-download"
+                          aria-hidden="true"
+                        ></span
+                        ><span class="panel-label"
+                          >Direcci&oacute;n territorial</span
+                        ></a
+                      >
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-xs-4 col-xs-offset-8 no-padding-left">
-                      <button type="button" class="btn btn-primary btn-block"
-                        onclick="irTabPanel('simbologiaCSV');">Siguiente</button>
+                    <div class="col-xs-9">
+                      <a class="linkVGV" href="files/csv/PDET.csv"
+                        ><span
+                          class="esri-icon-download"
+                          aria-hidden="true"
+                        ></span
+                        ><span class="panel-label">PDET</span></a
+                      >
                     </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <!-- Tab-Simbologia -->
-            <div role="tabpanel" class="tab-pane" id="simbologiaCSV">
-              <div class="calcite-form-title">
-                <strong style="text-align: justify;">Carga el CSV con la simbología definida.</strong>
-              </div>
-              <div class="form-horizontal calcite-form-padding no-padding-top">
-                <div class="form-group">
-                  <label for="class-select-CSV" class="col-xs-3 control-label">Clasificación</label>
-                  <div class="col-xs-9">
-                    <select id="class-select-CSV" class="form-control">
-                      <option value="equal-interval">Intervalos iguales</option>
-                      <option value="quantile" selected>Quantiles</option>
-                      <option value="natural-breaks">Rangos naturales</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="styleRampColors-CSV" class="col-xs-3 control-label">Gama de colores</label>
-                  <div class="col-xs-9">
-                    <div id="styleRampColors-CSV" class="row col-xs-12" style="position: relative;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor1-CSV" value="#ffefdc"
-                        style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor2-CSV" value="#d15e3d"
-                        style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor3-CSV" value="#660202"
-                        style="position: absolute;">
-                      <div id="styleColorRamp-CSV"
-                        style="border: 1px gray solid; height: 35px; width: 100%; position: absolute;"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group" style="padding-bottom: 20px;">
-                  <label for="num-classes-CSV" class="col-xs-3 control-label" id="label-num-classes-CSV">Clases (5)</label>
-                  <div class="col-xs-9">
-                    <input type="range" id="num-classes-CSV" min="3" max="10" value="5" step="1" aria-valuemin="3"
-                      aria-valuemax="10" aria-valuenow="5">
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <div class="col-xs-9 col-xs-offset-3">
-                    <a href="#" class="btn btn-primary btn-block" onclick="loadFileCSV();"
-                      style="color: white;">Visualizar CSV</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tab-Model -->
-
-            <div role="tabpanel" class="tab-pane" id="modelCSV">
-              <div class="calcite-form-title" style="padding-top: 10px !important; text-align: justify;">Archivos CSV
-                modelo con la estructura para datos Departamentales, Municipales, PDETs y Direcciones Territoriales.
-              </div>
-              <div class="form-horizontal calcite-form-padding">
-                <div class="form-group">
-                  <div class="col-xs-9">
-                    <a class="linkVGV" href="files/csv/Dptos.csv"><span class="esri-icon-download"
-                        aria-hidden="true"></span><span class="panel-label">Departamental</span></a>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-9">
-                    <a class="linkVGV" href="files/csv/Mpios.csv"><span class="esri-icon-download"
-                        aria-hidden="true"></span><span class="panel-label">Municipal</span></a>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-9">
-                    <a class="linkVGV" href="files/csv/DT.csv"><span class="esri-icon-download"
-                        aria-hidden="true"></span><span class="panel-label">Direcci&oacute;n territorial</span></a>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-9">
-                    <a class="linkVGV" href="files/csv/PDET.csv"><span class="esri-icon-download"
-                        aria-hidden="true"></span><span class="panel-label">PDET</span></a>
                   </div>
                 </div>
               </div>
@@ -414,340 +819,650 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Panel - Comparar capas -->
+      <!-- Panel - Comparar capas -->
 
-    <div id="panelSwipe" class="panel collapse">
-      <div id="headingSwipe" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseSwipe" aria-expanded="false"
-            aria-controls="collapseSwipe"><span class="esri-icon-swap" aria-hidden="true"></span><span
-              class="panel-label">Comparar capas</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelSwipe"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      <div id="panelSwipe" class="panel collapse">
+        <div id="headingSwipe" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseSwipe"
+              aria-expanded="false"
+              aria-controls="collapseSwipe"
+              ><span class="esri-icon-swap" aria-hidden="true"></span
+              ><span class="panel-label">Comparar capas</span></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelSwipe"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
         </div>
-      </div>
-      <div id="collapseSwipe" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSwipe">
-        <div class="panel-body">
-          <div class="calcite-form-title" style="text-align: justify;">Esta herramienta permite comparar dos capas
-            cargadas en el sistema y visualizarlas, una a la izquierda y la otra a la derecha del mapa.</div>
-          <div class="form-horizontal calcite-form-padding">
-            <div class="form-group">
-              <label for="selectSwipe_Izquierda" class="col-xs-3 control-label">Izquierda</label>
-              <div class="col-xs-9">
-                <select id="selectSwipe_Izquierda" class="form-control">
-                  <option value="-1" selected="selected">Seleccionar capa</option>
-                </select>
-              </div>
-              <div class="col-xs-9" id="layer_Izquierda" style="display: none;"></div>
+        <div
+          id="collapseSwipe"
+          class="panel-collapse collapse in"
+          role="tabpanel"
+          aria-labelledby="headingSwipe"
+        >
+          <div class="panel-body">
+            <div class="calcite-form-title" style="text-align: justify">
+              Esta herramienta permite comparar dos capas cargadas en el sistema
+              y visualizarlas, una a la izquierda y la otra a la derecha del
+              mapa.
             </div>
-            <div class="form-group">
-              <label for="selectSwipe_Derecha" class="col-xs-3 control-label">Derecha</label>
-              <div class="col-xs-9">
-                <select id="selectSwipe_Derecha" class="form-control">
-                  <option value="-1" selected="selected">Seleccionar capa</option>
-                </select>
+            <div class="form-horizontal calcite-form-padding">
+              <div class="form-group">
+                <label
+                  for="selectSwipe_Izquierda"
+                  class="col-xs-3 control-label"
+                  >Izquierda</label
+                >
+                <div class="col-xs-9">
+                  <select id="selectSwipe_Izquierda" class="form-control">
+                    <option value="-1" selected="selected">
+                      Seleccionar capa
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="col-xs-9"
+                  id="layer_Izquierda"
+                  style="display: none"
+                ></div>
               </div>
-              <div class="col-xs-9" id="layer_Derecha" style="display: none;"></div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-9 col-xs-offset-3">
-                <button id="viewSwipe" onclick="viewSwipe();" type="button" class="btn btn-primary btn-block">Ver
-                  comparaci&oacute;n</button>
+              <div class="form-group">
+                <label for="selectSwipe_Derecha" class="col-xs-3 control-label"
+                  >Derecha</label
+                >
+                <div class="col-xs-9">
+                  <select id="selectSwipe_Derecha" class="form-control">
+                    <option value="-1" selected="selected">
+                      Seleccionar capa
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="col-xs-9"
+                  id="layer_Derecha"
+                  style="display: none"
+                ></div>
               </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-9 col-xs-offset-3">
-                <button id="removeSwipe" onclick="removeSwipe();" type="button" class="btn btn-primary btn-block">Quitar
-                  comparaci&oacute;n</button>
+              <div class="form-group">
+                <div class="col-xs-9 col-xs-offset-3">
+                  <button
+                    id="viewSwipe"
+                    onclick="viewSwipe();"
+                    type="button"
+                    class="btn btn-primary btn-block"
+                  >
+                    Ver comparaci&oacute;n
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-9 col-xs-offset-3">
+                  <button
+                    id="removeSwipe"
+                    onclick="removeSwipe();"
+                    type="button"
+                    class="btn btn-primary btn-block"
+                  >
+                    Quitar comparaci&oacute;n
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Panel - Consulta temática -->
+      <!-- Panel - Consulta temática -->
 
-    <div id="panelFilterVGV" class="panel collapse">
-      <div id="headingFilterVGV" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseFilterVGV" aria-expanded="false"
-            aria-controls="collapseFilterVGV"><span class="esri-icon-review" aria-hidden="true"></span><span
-              class="panel-label" id="panelFilterVGV_title">Consulta tem&aacute;tica</span></a>
-          <a class="panel-close" id="panelFilterVGV_close" role="button" data-toggle="collapse" tabindex="0"
-            href="#panelFilterVGV"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      <div id="panelFilterVGV" class="panel collapse">
+        <div id="headingFilterVGV" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseFilterVGV"
+              aria-expanded="false"
+              aria-controls="collapseFilterVGV"
+              ><span class="esri-icon-review" aria-hidden="true"></span
+              ><span class="panel-label" id="panelFilterVGV_title"
+                >Consulta tem&aacute;tica</span
+              ></a
+            >
+            <a
+              class="panel-close"
+              id="panelFilterVGV_close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelFilterVGV"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
         </div>
-      </div>
-      <div id="collapseFilterVGV" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFilterVGV">
-        <div class="panel-body panel-500w">
-
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#paramsVGV" aria-controls="paramsVGV" role="tab"
-                data-toggle="tab">Parámetros</a></li>
-            <li role="presentation"><a href="#simbologiaVGV" aria-controls="simbologiaVGV" role="tab"
-                data-toggle="tab">Simbología</a></li>
-            <li role="presentation"><a href="#timeVGV" aria-controls="timeVGV" role="tab" data-toggle="tab">Deslizador
-                del Tiempo</a></li>
-          </ul>
-          <div class="tab-content">
-            <!-- Tab-Params -->
-            <div role="tabpanel" class="tab-pane active" id="paramsVGV">
-              <div class="calcite-form-title">
-                <strong style="text-align: justify;">Permite seleccionar los parámetros espaciales, género, hecho
-                  victimizante, pertenencia étnica, ciclo vital, discapacidad, año de interés y el tipo de variable a
-                  visualizar.
-                </strong>
-              </div>
-              <div class="form-horizontal calcite-form-padding no-padding-top">
-                <div class="form-group">
-                  <label for="selectFiltro_Geografico" class="col-xs-4 control-label no-padding-top">Filtro
-                    espacial</label>
-                  <div class="col-xs-8 no-padding-left">
-                    <select id="selectFiltro_Geografico" class="form-control" onchange="cambioFiltroGeografico();">
-                      <option value="filtroDepartamento" selected='selected'>Departamental</option>
-                      <option value="filtroMunicipal">Municipal</option>
-                      <option value="filtroDT">Direcci&oacute;n territorial</option>
-                      <option value="filtroPDET">PDET</option>
-                    </select>
-                  </div>
+        <div
+          id="collapseFilterVGV"
+          class="panel-collapse collapse in"
+          role="tabpanel"
+          aria-labelledby="headingFilterVGV"
+        >
+          <div class="panel-body panel-500w">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a
+                  href="#paramsVGV"
+                  aria-controls="paramsVGV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Parámetros</a
+                >
+              </li>
+              <li role="presentation">
+                <a
+                  href="#simbologiaVGV"
+                  aria-controls="simbologiaVGV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Simbología</a
+                >
+              </li>
+              <li role="presentation">
+                <a
+                  href="#timeVGV"
+                  aria-controls="timeVGV"
+                  role="tab"
+                  data-toggle="tab"
+                  >Deslizador del Tiempo</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <!-- Tab-Params -->
+              <div role="tabpanel" class="tab-pane active" id="paramsVGV">
+                <div class="calcite-form-title">
+                  <strong style="text-align: justify"
+                    >Permite seleccionar los parámetros espaciales, género,
+                    hecho victimizante, pertenencia étnica, ciclo vital,
+                    discapacidad, año de interés y el tipo de variable a
+                    visualizar.
+                  </strong>
                 </div>
-                <div id="divFiltroGeografico">
-                  <div id="divFiltroGeograficoDT" style="display: none">
-                    <div class="form-group">
-                      <label for="selectFiltro_DT" class="col-xs-4 control-label no-padding-top">Direcci&oacute;n
-                        territorial</label>
-                      <div class="col-xs-8 no-padding-left">
-                        <select id="selectFiltro_DT" class="form-control" multiple="multiple">
-                        </select>
+                <div
+                  class="form-horizontal calcite-form-padding no-padding-top"
+                >
+                  <div class="form-group">
+                    <label
+                      for="selectFiltro_Geografico"
+                      class="col-xs-4 control-label no-padding-top"
+                      >Filtro espacial</label
+                    >
+                    <div class="col-xs-8 no-padding-left">
+                      <select
+                        id="selectFiltro_Geografico"
+                        class="form-control"
+                        onchange="cambioFiltroGeografico();"
+                      >
+                        <option value="filtroDepartamento" selected="selected">
+                          Departamental
+                        </option>
+                        <option value="filtroMunicipal">Municipal</option>
+                        <option value="filtroDT">
+                          Direcci&oacute;n territorial
+                        </option>
+                        <option value="filtroPDET">PDET</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div id="divFiltroGeografico">
+                    <div id="divFiltroGeograficoDT" style="display: none">
+                      <div class="form-group">
+                        <label
+                          for="selectFiltro_DT"
+                          class="col-xs-4 control-label no-padding-top"
+                          >Direcci&oacute;n territorial</label
+                        >
+                        <div class="col-xs-8 no-padding-left">
+                          <select
+                            id="selectFiltro_DT"
+                            class="form-control"
+                            multiple="multiple"
+                          ></select>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="divFiltroGeograficoPDET" style="display: none">
+                      <div class="form-group">
+                        <label
+                          for="selectFiltro_PDET"
+                          class="col-xs-4 control-label"
+                          >PDET</label
+                        >
+                        <div class="col-xs-8 no-padding-left">
+                          <select
+                            id="selectFiltro_PDET"
+                            class="form-control"
+                            multiple="multiple"
+                          ></select>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="divFiltroGeograficoDepartamento">
+                      <div class="form-group">
+                        <label
+                          for="selectFiltro_Departamento"
+                          class="col-xs-4 control-label"
+                          >Departamento</label
+                        >
+                        <div class="col-xs-8 no-padding-left">
+                          <select
+                            id="selectFiltro_Departamento"
+                            class="form-control"
+                            multiple="multiple"
+                          ></select>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      id="divFiltroGeograficoMunicipio"
+                      style="display: none"
+                    >
+                      <div class="form-group">
+                        <label
+                          for="selectFiltro_Municipios"
+                          class="col-xs-4 control-label"
+                          >Municipio</label
+                        >
+                        <div class="col-xs-8 no-padding-left">
+                          <select
+                            id="selectFiltro_Municipios"
+                            class="form-control"
+                            multiple="multiple"
+                          ></select>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div id="divFiltroGeograficoPDET" style="display: none">
+                  <div id="divFiltroFijo">
                     <div class="form-group">
-                      <label for="selectFiltro_PDET" class="col-xs-4 control-label">PDET</label>
+                      <label
+                        for="selectFiltro_Hecho"
+                        class="col-xs-4 control-label no-padding-top"
+                        >Hecho victimizante</label
+                      >
                       <div class="col-xs-8 no-padding-left">
-                        <select id="selectFiltro_PDET" class="form-control" multiple="multiple">
-                        </select>
+                        <select
+                          id="selectFiltro_Hecho"
+                          class="form-control"
+                          multiple="multiple"
+                        ></select>
                       </div>
                     </div>
-                  </div>
-                  <div id="divFiltroGeograficoDepartamento">
                     <div class="form-group">
-                      <label for="selectFiltro_Departamento" class="col-xs-4 control-label">Departamento</label>
+                      <label
+                        for="selectFiltro_Genero"
+                        class="col-xs-4 control-label"
+                        >Genero</label
+                      >
                       <div class="col-xs-8 no-padding-left">
-                        <select id="selectFiltro_Departamento" class="form-control" multiple="multiple">
-                        </select>
+                        <select
+                          id="selectFiltro_Genero"
+                          class="form-control"
+                          multiple="multiple"
+                        ></select>
                       </div>
                     </div>
-                  </div>
-                  <div id="divFiltroGeograficoMunicipio" style="display: none">
                     <div class="form-group">
-                      <label for="selectFiltro_Municipios" class="col-xs-4 control-label">Municipio</label>
+                      <label
+                        for="selectFiltro_Etnia"
+                        class="col-xs-4 control-label no-padding-top"
+                        >Pertenencia &eacute;tnica</label
+                      >
                       <div class="col-xs-8 no-padding-left">
-                        <select id="selectFiltro_Municipios" class="form-control" multiple="multiple">
-                        </select>
+                        <select
+                          id="selectFiltro_Etnia"
+                          class="form-control"
+                          multiple="multiple"
+                        ></select>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div id="divFiltroFijo">
-                  <div class="form-group">
-                    <label for="selectFiltro_Hecho" class="col-xs-4 control-label no-padding-top">Hecho
-                      victimizante</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Hecho" class="form-control" multiple="multiple">
-                      </select>
+                    <div class="form-group">
+                      <label
+                        for="selectFiltro_CicloVital"
+                        class="col-xs-4 control-label"
+                        >Ciclo vital</label
+                      >
+                      <div class="col-xs-8 no-padding-left">
+                        <select
+                          id="selectFiltro_CicloVital"
+                          class="form-control"
+                          multiple="multiple"
+                        ></select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_Genero" class="col-xs-4 control-label">Genero</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Genero" class="form-control" multiple="multiple">
-                      </select>
+                    <div class="form-group">
+                      <label
+                        for="selectFiltro_Discapacidad"
+                        class="col-xs-4 control-label"
+                        >Discapacidad</label
+                      >
+                      <div class="col-xs-8 no-padding-left">
+                        <select
+                          id="selectFiltro_Discapacidad"
+                          class="form-control"
+                          multiple="multiple"
+                        ></select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_Etnia" class="col-xs-4 control-label no-padding-top">Pertenencia
-                      &eacute;tnica</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Etnia" class="form-control" multiple="multiple">
-                      </select>
+                    <div class="form-group">
+                      <label
+                        for="selectFiltro_Anio"
+                        class="col-xs-4 control-label no-padding-top"
+                        >Año de interés</label
+                      >
+                      <div class="col-xs-8 no-padding-left">
+                        <select
+                          id="selectFiltro_Anio"
+                          class="form-control"
+                        ></select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_CicloVital" class="col-xs-4 control-label">Ciclo vital</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_CicloVital" class="form-control" multiple="multiple">
-                      </select>
+                    <div class="form-group">
+                      <label
+                        for="selectFiltro_Variable"
+                        class="col-xs-4 control-label"
+                        >Variable</label
+                      >
+                      <div class="col-xs-8 no-padding-left">
+                        <select
+                          id="selectFiltro_Variable"
+                          class="form-control"
+                        ></select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_Discapacidad" class="col-xs-4 control-label">Discapacidad</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Discapacidad" class="form-control" multiple="multiple">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_Anio" class="col-xs-4 control-label no-padding-top">Año de
-                      interés</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Anio" class="form-control">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="selectFiltro_Variable" class="col-xs-4 control-label">Variable</label>
-                    <div class="col-xs-8 no-padding-left">
-                      <select id="selectFiltro_Variable" class="form-control">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-xs-4 col-xs-offset-8 no-padding-left">
-                      <button type="button" class="btn btn-primary btn-block"
-                        onclick="irTabPanel('simbologiaVGV');">Siguiente</button>
+                    <div class="form-group">
+                      <div class="col-xs-4 col-xs-offset-8 no-padding-left">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-block"
+                          onclick="irTabPanel('simbologiaVGV');"
+                        >
+                          Siguiente
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- Tab-Simbologia -->
-            <div role="tabpanel" class="tab-pane" id="simbologiaVGV">
-              <div class="calcite-form-title">
-                <strong style="text-align: justify;">Aplica los parámetros seleccionados con la simbología definida.</strong>
-              </div>
-              <div class="form-horizontal calcite-form-padding no-padding-top">
-                <div class="form-group">
-                  <label for="class-select-VGV" class="col-xs-4 control-label">Clasificación</label>
-                  <div class="col-xs-8 no-padding-left">
-                    <select id="class-select-VGV" class="form-control">
-                      <option value="equal-interval">Intervalos iguales</option>
-                      <option value="quantile" selected>Quantiles</option>
-                      <option value="natural-breaks">Rangos naturales</option>
-                    </select>
-                  </div>
+              <!-- Tab-Simbologia -->
+              <div role="tabpanel" class="tab-pane" id="simbologiaVGV">
+                <div class="calcite-form-title">
+                  <strong style="text-align: justify"
+                    >Aplica los parámetros seleccionados con la simbología
+                    definida.</strong
+                  >
                 </div>
-                <div class="form-group">
-                  <label for="styleRampColors-VGV" class="col-xs-4 control-label">Gama de colores</label>
-                  <div class="col-xs-8 no-padding-left">
-                    <div id="styleRampColors-VGV" class="row col-xs-12" style="position: relative;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor1-VGV" value="#ffefdc"
-                        style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor2-VGV" value="#d15e3d"
-                        style="position: absolute;">
-                      <input class="form-control col-xs-4" type="color" id="styleRampColor3-VGV" value="#660202"
-                        style="position: absolute;">
-                      <div id="styleColorRamp-VGV"
-                        style="border: 1px gray solid; height: 35px; width: 100%; position: absolute;"></div>
+                <div
+                  class="form-horizontal calcite-form-padding no-padding-top"
+                >
+                  <div class="form-group">
+                    <label for="class-select-VGV" class="col-xs-4 control-label"
+                      >Clasificación</label
+                    >
+                    <div class="col-xs-8 no-padding-left">
+                      <select id="class-select-VGV" class="form-control">
+                        <option value="equal-interval">
+                          Intervalos iguales
+                        </option>
+                        <option value="quantile" selected>Quantiles</option>
+                        <option value="natural-breaks">Rangos naturales</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label
+                      for="styleRampColors-VGV"
+                      class="col-xs-4 control-label"
+                      >Gama de colores</label
+                    >
+                    <div class="col-xs-8 no-padding-left">
+                      <div
+                        id="styleRampColors-VGV"
+                        class="row col-xs-12"
+                        style="position: relative"
+                      >
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor1-VGV"
+                          value="#ffefdc"
+                          style="position: absolute"
+                        />
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor2-VGV"
+                          value="#d15e3d"
+                          style="position: absolute"
+                        />
+                        <input
+                          class="form-control col-xs-4"
+                          type="color"
+                          id="styleRampColor3-VGV"
+                          value="#660202"
+                          style="position: absolute"
+                        />
+                        <div
+                          id="styleColorRamp-VGV"
+                          style="
+                            border: 1px gray solid;
+                            height: 35px;
+                            width: 100%;
+                            position: absolute;
+                          "
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" style="padding-bottom: 20px">
+                    <label
+                      for="num-classes-VGV"
+                      class="col-xs-4 control-label"
+                      id="label-num-classes-VGV"
+                      >Clases (5)</label
+                    >
+                    <div class="col-xs-8 no-padding-left">
+                      <input
+                        type="range"
+                        id="num-classes-VGV"
+                        min="3"
+                        max="10"
+                        value="5"
+                        step="1"
+                        aria-valuemin="3"
+                        aria-valuemax="10"
+                        aria-valuenow="5"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-block"
+                        onclick="aplicarParametrosVGV();"
+                      >
+                        Aplicar par&aacute;metros
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                      <button
+                        id="limpiarhechos"
+                        type="button"
+                        class="btn btn-primary btn-block"
+                        onclick="limpiarParametrosVGV()"
+                      >
+                        Limpiar par&aacute;metros
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div class="form-group" style="padding-bottom: 20px;">
-                  <label for="num-classes-VGV" class="col-xs-4 control-label" id="label-num-classes-VGV">Clases (5)</label>
-                  <div class="col-xs-8 no-padding-left">
-                    <input type="range" id="num-classes-VGV" min="3" max="10" value="5" step="1" aria-valuemin="3"
-                      aria-valuemax="10" aria-valuenow="5">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                    <button type="button" class="btn btn-primary btn-block"
-                      onclick="aplicarParametrosVGV();">Aplicar par&aacute;metros</button>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                    <button id="limpiarhechos" type="button" class="btn btn-primary btn-block"
-                      onclick="limpiarParametrosVGV()">Limpiar
-                      par&aacute;metros</button>
-                  </div>
-                </div>
               </div>
-            </div>
-            <!-- Tab-Time -->
-            <div role="tabpanel" class="tab-pane" id="timeVGV">
-              <br />
-              <a data-toggle="collapse" class="linkVGV" href="#helpTimeVGV" aria-expanded="false"
-                aria-controls="helpTimeVGV">Recomendaciones de Uso</a>
-              <div class="collapse in" id="helpTimeVGV">
-                <p>El deslizador del tiempo procesa los datos existentes sobre la consulta temática realizada con los
-                  parametros definidos.
-                  <br />
-                  <br />
-                  Se debe tener en cuenta que este proceso requiere un alto nivel de procesamiento y puede consumir
-                  bastante memoria RAM de su navegador.
-                  <br />
-                  <br />
-                  Este proceso puede demorar entre 30 segundos y un minuto.
-                </p>
+              <!-- Tab-Time -->
+              <div role="tabpanel" class="tab-pane" id="timeVGV">
                 <br />
-                <div class="form-horizontal calcite-form-padding no-padding-top">
+                <a
+                  data-toggle="collapse"
+                  class="linkVGV"
+                  href="#helpTimeVGV"
+                  aria-expanded="false"
+                  aria-controls="helpTimeVGV"
+                  >Recomendaciones de Uso</a
+                >
+                <div class="collapse in" id="helpTimeVGV">
+                  <p>
+                    El deslizador del tiempo procesa los datos existentes sobre
+                    la consulta temática realizada con los parametros definidos.
+                    <br />
+                    <br />
+                    Se debe tener en cuenta que este proceso requiere un alto
+                    nivel de procesamiento y puede consumir bastante memoria RAM
+                    de su navegador.
+                    <br />
+                    <br />
+                    Este proceso puede demorar entre 30 segundos y un minuto.
+                  </p>
+                  <br />
+                  <div
+                    class="form-horizontal calcite-form-padding no-padding-top"
+                  >
+                    <div class="form-group">
+                      <div class="col-xs-10 col-xs-offset-1">
+                        <p id="textSliderTimeRange">Rango de años a calcular</p>
+                        <br />
+                        <div id="sliderTimeRange"></div>
+                        <br /><br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div id="settingsTime" style="display: none">
+                  <a
+                    data-toggle="collapse"
+                    class="linkVGV"
+                    href="#settingsTimeVGV"
+                    aria-expanded="false"
+                    aria-controls="settingsTimeVGV"
+                    >Ajustes</a
+                  >
+                  <div class="collapse col-xs-12" id="settingsTimeVGV">
+                    <div
+                      class="form-horizontal calcite-form-padding no-padding-top"
+                    >
+                      <br />
+                      <div class="form-group">
+                        <label class="col-xs-12" id="label-speed-time"
+                          >Velocidad de reproducción (1)</label
+                        >
+                        <input
+                          class="col-xs-12"
+                          type="range"
+                          id="speed-time"
+                          min="1"
+                          max="30"
+                          value="1"
+                          step="1"
+                          aria-valuemin="1"
+                          aria-valuemax="30"
+                          aria-valuenow="1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div
+                  class="form-horizontal calcite-form-padding no-padding-top"
+                >
                   <div class="form-group">
                     <div class="col-xs-10 col-xs-offset-1">
-                      <p id="textSliderTimeRange">Rango de años a calcular</p>
-                      <br>
-                      <div id="sliderTimeRange"></div>
-                      <br><br>
+                      <button
+                        id="createTimeVGV"
+                        type="button"
+                        class="btn btn-primary btn-block"
+                        onclick="createTimeVGV();"
+                      >
+                        Crear Deslizador del Tiempo
+                      </button>
                     </div>
                   </div>
-                </div>
-              </div>
-              <br />
-              <br />
-              <div id="settingsTime" style="display: none;">
-                <a data-toggle="collapse" class="linkVGV" href="#settingsTimeVGV" aria-expanded="false"
-                  aria-controls="settingsTimeVGV">Ajustes</a>
-                <div class="collapse col-xs-12" id="settingsTimeVGV">
-                  <div class="form-horizontal calcite-form-padding no-padding-top">
-                    <br />
-                    <div class="form-group">
-                      <label class="col-xs-12" id="label-speed-time">Velocidad de reproducción (1)</label>
-                      <input class="col-xs-12" type="range" id="speed-time" min="1" max="30" value="1" step="1"
-                        aria-valuemin="1" aria-valuemax="30" aria-valuenow="1">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div class="form-horizontal calcite-form-padding no-padding-top">
-                <div class="form-group">
-                  <div class="col-xs-10 col-xs-offset-1">
-                    <button id="createTimeVGV" type="button" class="btn btn-primary btn-block"
-                      onclick="createTimeVGV();">Crear Deslizador del Tiempo</button>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-12">
-                    <div id="sliderContainerTime" class="esri-widget" style="display: none;">
-                      <span id="sliderValue"></span>
-                      <div id="sliderInnerContainer">
-                        <div id="sliderTime" style="display: none;"></div>
-                      </div>
-                      <div id="playButton" class="esri-widget esri-widget--button toggle-button">
-                        <div>
-                          <span class="toggle-button-icon esri-icon-play" aria-label="play icon"></span>
-                          Ejecutar
+                  <div class="form-group">
+                    <div class="col-xs-12">
+                      <div
+                        id="sliderContainerTime"
+                        class="esri-widget"
+                        style="display: none"
+                      >
+                        <span id="sliderValue"></span>
+                        <div id="sliderInnerContainer">
+                          <div id="sliderTime" style="display: none"></div>
                         </div>
-                        <div>
-                          <span class="toggle-button-icon esri-icon-pause" aria-label="pause icon"></span>
-                          Pausa
+                        <div
+                          id="playButton"
+                          class="esri-widget esri-widget--button toggle-button"
+                        >
+                          <div>
+                            <span
+                              class="toggle-button-icon esri-icon-play"
+                              aria-label="play icon"
+                            ></span>
+                            Ejecutar
+                          </div>
+                          <div>
+                            <span
+                              class="toggle-button-icon esri-icon-pause"
+                              aria-label="pause icon"
+                            ></span>
+                            Pausa
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-10 col-xs-offset-1">
-                    <button id="deleteTimeVGV" type="button" class="btn btn-primary btn-block" style="display: none;"
-                      onclick="deleteTimeVGV()">Eliminar Deslizador del Tiempo</button>
+                  <div class="form-group">
+                    <div class="col-xs-10 col-xs-offset-1">
+                      <button
+                        id="deleteTimeVGV"
+                        type="button"
+                        class="btn btn-primary btn-block"
+                        style="display: none"
+                        onclick="deleteTimeVGV()"
+                      >
+                        Eliminar Deslizador del Tiempo
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-12">
-                    <div class="esri-widget" id="legendTimeVGV" style="display: none;">
+                  <div class="form-group">
+                    <div class="col-xs-12">
+                      <div
+                        class="esri-widget"
+                        id="legendTimeVGV"
+                        style="display: none"
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -756,280 +1471,495 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Panel - Imprimir -->
+      <!-- Panel - Imprimir -->
 
-    <div id="panelPrint" class="panel collapse">
-      <div id="headingPrint" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapsePrint" aria-expanded="false"
-            aria-controls="collapsePrint"><span class="esri-icon-printer" aria-hidden="true"></span><span
-              class="panel-label">Imprimir</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelPrint"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
-        </div>
-      </div>
-      <div id="collapsePrint" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrint">
-        <div class="panel-body">
-          <div id="printDiv"></div>
-          <div class="calcite-form-title" style="text-align: justify;">
-            Permite generar un archivo de impresión de la vista actual.
-            <br>
-            <br>
-            Si requiere mayor detalle en su mapa o tiene problemas al generar dicho mapa, por favor escribanos un correo
-            electrónico a la <a href="mailto:rni@unidadvictimas.gov.co" class="linkVGV">Red Nacional de Información</a>.
-            <br>
+      <div id="panelPrint" class="panel collapse">
+        <div id="headingPrint" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapsePrint"
+              aria-expanded="false"
+              aria-controls="collapsePrint"
+              ><span class="esri-icon-printer" aria-hidden="true"></span
+              ><span class="panel-label">Imprimir</span></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelPrint"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
           </div>
-          <div class="form-horizontal calcite-form-padding no-padding-top">
-            <div class="form-group">
-              <label for="tituloImpresion" class="col-xs-4 control-label">Titulo</label>
-              <div class="col-xs-8 no-padding-left">
-                <input type="text" id="tituloImpresion" placeholder="Nombre del mapa" />
-              </div>
+        </div>
+        <div
+          id="collapsePrint"
+          class="panel-collapse collapse"
+          role="tabpanel"
+          aria-labelledby="headingPrint"
+        >
+          <div class="panel-body">
+            <div id="printDiv"></div>
+            <div class="calcite-form-title" style="text-align: justify">
+              Permite generar un archivo de impresión de la vista actual.
+              <br />
+              <br />
+              Si requiere mayor detalle en su mapa o tiene problemas al generar
+              dicho mapa, por favor escribanos un correo electrónico a la
+              <a href="mailto:rni@unidadvictimas.gov.co" class="linkVGV"
+                >Red Nacional de Información</a
+              >.
+              <br />
             </div>
-            <div class="form-group">
-              <label for="plantillaImpresion" class="col-xs-4 control-label">Plantilla</label>
-              <div class="col-xs-8 no-padding-left">
-                <select id="plantillaImpresion" class="form-control">
-                </select>
+            <div class="form-horizontal calcite-form-padding no-padding-top">
+              <div class="form-group">
+                <label for="tituloImpresion" class="col-xs-4 control-label"
+                  >Titulo</label
+                >
+                <div class="col-xs-8 no-padding-left">
+                  <input
+                    type="text"
+                    id="tituloImpresion"
+                    placeholder="Nombre del mapa"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="formatoImpresion" class="col-xs-4 control-label">Formato</label>
-              <div class="col-xs-8 no-padding-left">
-                <select id="formatoImpresion" class="form-control">
-                  <option value="PDF" selected='selected'>PDF</option>
-                  <option value="JPG">JPEG</option>
-                  <option value="PNG32">PNG</option>
-                  <option value="GIF">GIF</option>
-                  <option value="SVG">SVG</option>
-                </select>
+              <div class="form-group">
+                <label for="plantillaImpresion" class="col-xs-4 control-label"
+                  >Plantilla</label
+                >
+                <div class="col-xs-8 no-padding-left">
+                  <select id="plantillaImpresion" class="form-control"></select>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="dpiImpresion" class="col-xs-4 control-label">Calidad (DPI)</label>
-              <div class="col-xs-8 no-padding-left">
-                <select id="dpiImpresion" class="form-control">
-                  <option value="75">75</option>
-                  <option value="96">96</option>
-                  <option value="150" selected='selected'>150</option>
-                  <option value="200">200</option>
-                  <option value="300">300</option>
-                </select>
+              <div class="form-group">
+                <label for="formatoImpresion" class="col-xs-4 control-label"
+                  >Formato</label
+                >
+                <div class="col-xs-8 no-padding-left">
+                  <select id="formatoImpresion" class="form-control">
+                    <option value="PDF" selected="selected">PDF</option>
+                    <option value="JPG">JPEG</option>
+                    <option value="PNG32">PNG</option>
+                    <option value="GIF">GIF</option>
+                    <option value="SVG">SVG</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="escalaImpresion" class="col-xs-4 control-label">Escala</label>
-              <label for="escalaImpresion" class="col-xs-2 control-label">1 : </label>
-              <div class="col-xs-6 no-padding-left">
-                <input type="text" id="escalaImpresion" placeholder="Escala del mapa" style="text-align: end;" />
+              <div class="form-group">
+                <label for="dpiImpresion" class="col-xs-4 control-label"
+                  >Calidad (DPI)</label
+                >
+                <div class="col-xs-8 no-padding-left">
+                  <select id="dpiImpresion" class="form-control">
+                    <option value="75">75</option>
+                    <option value="96">96</option>
+                    <option value="150" selected="selected">150</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                <button id="impimirImpresion" type="button" class="btn btn-primary btn-block"
-                  onclick="imprimirMapa();">Imprimir</button>
+              <div class="form-group">
+                <label for="escalaImpresion" class="col-xs-4 control-label"
+                  >Escala</label
+                >
+                <label for="escalaImpresion" class="col-xs-2 control-label"
+                  >1 :
+                </label>
+                <div class="col-xs-6 no-padding-left">
+                  <input
+                    type="text"
+                    id="escalaImpresion"
+                    placeholder="Escala del mapa"
+                    style="text-align: end"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-8 col-xs-offset-4 no-padding-left">
-                <div id="listImpresion" class="list-group no-padding-bottom">
+              <div class="form-group">
+                <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                  <button
+                    id="impimirImpresion"
+                    type="button"
+                    class="btn btn-primary btn-block"
+                    onclick="imprimirMapa();"
+                  >
+                    Imprimir
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-8 col-xs-offset-4 no-padding-left">
+                  <div
+                    id="listImpresion"
+                    class="list-group no-padding-bottom"
+                  ></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Panel - Medir -->
+      <!-- Panel - Medir -->
 
-    <div id="panelMeasure" class="panel collapse">
-      <div id="headingMeasure" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseMeasure" aria-expanded="false"
-            aria-controls="collapseMeasure"><span class="esri-icon-measure-line" aria-hidden="true"></span><span
-              class="panel-label">Medir</span></a>
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelMeasure"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
-        </div>
-      </div>
-      <div id="collapseMeasure" class="panel-collapse collapse in" style="background-color: #fff !important;"
-        role="tabpanel" aria-labelledby="headingMeasure">
-        <div class="panel-body panel-500w">
-          <div id="measurementDiv">
-            <div class="measureDiv" id="areaButton">
-              <button class="action-button esri-icon-measure-area" type="button" title="Medir un área"></button>
-            </div>
-            <div class="measureDiv" id="distanceButton">
-              <button class="action-button esri-icon-measure" type="button"
-                title="Medición entre dos o más puntos"></button>
-            </div>
-            <div class="measureDiv" id="pointButton">
-              <button class="action-button esri-icon-map-pin" type="button" title="Coordenadas de un punto"></button>
-            </div>
-            <br>
+      <div id="panelMeasure" class="panel collapse">
+        <div id="headingMeasure" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              class="panel-toggle"
+              role="button"
+              data-toggle="collapse"
+              href="#collapseMeasure"
+              aria-expanded="false"
+              aria-controls="collapseMeasure"
+              ><span class="esri-icon-measure-line" aria-hidden="true"></span
+              ><span class="panel-label">Medir</span></a
+            >
+            <a
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              href="#panelMeasure"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
           </div>
         </div>
-        <div id="measurementAreaDiv" style="display:none;"></div>
-        <div id="measurementDistanceDiv" style="display:none;"></div>
-        <div id="measurementPointDiv" style="display:none;">
-          <p style="padding-left: 20px;">Ubique el cursor en el lugar que desea conocer las Coordenadas</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Tabla de Atributos -->
-  <div id="panelTableP"
-    class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group collapse">
-    <div id="panelTable" class="panel" style="height: 100%;">
-      <div id="headingTable" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a style="color: white;" class="min-header" role="button" aria-expanded="false" onclick="closeTabla();"
-            title="Minimizar"><span class="esri-icon esri-icon-table"
-              style="font-size: x-large; padding-top: 5px; padding-left: 10px;" aria-hidden="true"></span></a>
-          <a style="color: white;" class="panel-toggle panel-toggle-title" role="button" aria-expanded="false"
-            onclick="zTabla();"><span class="panel-label" id="tituloTabla">Tabla de atributos</span></a>
-          <a style="color: white;" class="panel-close" role="button" data-toggle="collapse" tabindex="0"
-            onclick="maxTabla();"><span class="esri-icon esri-icon-maximize" aria-hidden="true"></span></a>
-          <a style="color: white;" class="panel-close" role="button" data-toggle="collapse" tabindex="0"
-            onclick="closeTabla();"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
-        </div>
-      </div>
-      <div class="panel-collapse" role="tabpanel" aria-labelledby="headingTable"
-        style="height: 100%;padding-bottom: 40px;">
-        <div class="panel-body" style="width: 100%;height: 100%; overflow: auto; max-height: unset;">
-          <div class="row" style="position: -webkit-sticky; position: sticky; top: 0;">
-            <div class="col-md-4">
-              <span class="esri-icon esri-icon-download" title="Descargar los datos"></span>&nbsp;&nbsp;
-              <a role="button" href="#" id="downloadTableExcel">Excel</a>&nbsp;&nbsp;
-              <a role="button" href="#" id="downloadTableCSV">CSV</a>&nbsp;&nbsp;
-              <a role="button" href="#" id="downloadTableJSON">JSON</a>&nbsp;&nbsp;
-              <a role="button" href="#" id="downloadTablePdf">PDF</a>&nbsp;&nbsp;
+        <div
+          id="collapseMeasure"
+          class="panel-collapse collapse in"
+          style="background-color: #fff !important"
+          role="tabpanel"
+          aria-labelledby="headingMeasure"
+        >
+          <div class="panel-body panel-500w">
+            <div id="measurementDiv">
+              <div class="measureDiv" id="areaButton">
+                <button
+                  class="action-button esri-icon-measure-area"
+                  type="button"
+                  title="Medir un área"
+                ></button>
+              </div>
+              <div class="measureDiv" id="distanceButton">
+                <button
+                  class="action-button esri-icon-measure"
+                  type="button"
+                  title="Medición entre dos o más puntos"
+                ></button>
+              </div>
+              <div class="measureDiv" id="pointButton">
+                <button
+                  class="action-button esri-icon-map-pin"
+                  type="button"
+                  title="Coordenadas de un punto"
+                ></button>
+              </div>
+              <br />
             </div>
           </div>
-          <br />
-          <div class="row" id="tableFilterData"></div>
+          <div id="measurementAreaDiv" style="display: none"></div>
+          <div id="measurementDistanceDiv" style="display: none"></div>
+          <div id="measurementPointDiv" style="display: none">
+            <p style="padding-left: 20px">
+              Ubique el cursor en el lugar que desea conocer las Coordenadas
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Graficos -->
-  <div id="panelChartP"
-    class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group collapse">
-    <div id="panelChart" class="panel" style="height: 100%;">
-      <div id="headingChart" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a style="color: white;" class="min-header" role="button" aria-expanded="false" onclick="closeTabla();"
-            title="Minimizar"><span class="esri-icon esri-icon-chart"
-              style="font-size: x-large; padding-top: 5px; padding-left: 10px;" aria-hidden="true"></span></a>
-          <a style="color: white;" class="panel-toggle panel-toggle-title" role="button" aria-expanded="false"
-            onclick="zChart();"><span class="panel-label" id="tituloChart">Gráficos</span></a>
-          <a style="color: white;" class="panel-close" role="button" data-toggle="collapse" tabindex="0"
-            onclick="maxChart();"><span class="esri-icon esri-icon-maximize" aria-hidden="true"></span></a>
-          <a style="color: white;" class="panel-close" role="button" data-toggle="collapse" tabindex="0"
-            onclick="closeChart();"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+    <!-- Tabla de Atributos -->
+    <div
+      id="panelTableP"
+      class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group collapse"
+    >
+      <div id="panelTable" class="panel" style="height: 100%">
+        <div id="headingTable" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              style="color: white"
+              class="min-header"
+              role="button"
+              aria-expanded="false"
+              onclick="closeTabla();"
+              title="Minimizar"
+              ><span
+                class="esri-icon esri-icon-table"
+                style="font-size: x-large; padding-top: 5px; padding-left: 10px"
+                aria-hidden="true"
+              ></span
+            ></a>
+            <a
+              style="color: white"
+              class="panel-toggle panel-toggle-title"
+              role="button"
+              aria-expanded="false"
+              onclick="zTabla();"
+              ><span class="panel-label" id="tituloTabla"
+                >Tabla de atributos</span
+              ></a
+            >
+            <a
+              style="color: white"
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              onclick="maxTabla();"
+              ><span
+                class="esri-icon esri-icon-maximize"
+                aria-hidden="true"
+              ></span
+            ></a>
+            <a
+              style="color: white"
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              onclick="closeTabla();"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
         </div>
-      </div>
-      <div class="panel-collapse" role="tabpanel" aria-labelledby="headingChart"
-        style="height: 100%;padding-bottom: 40px;">
-        <div class="panel-body" style="width: 100%;height: 100%; overflow: auto; max-height: unset;">
-          <div class="form-horizontal calcite-form-padding">
-            <div class="form-group">
-              <label for="settingsTipoChart" class="col-xs-3 col-md-1 control-label">Tipo</label>
-              <div class="col-xs-9 col-md-2">
-                <select id="settingsTipoChart" class="form-control">
-                  <option value="Pie" selected='selected'>Torta</option>
-                  <option value="Bar">Barra</option>
-                  <option value="Donut">Dona</option>
-                </select>
-              </div>
-              <label for="settingsVariableChart" class="col-xs-3 col-md-1 control-label">Variable</label>
-              <div class="col-xs-9 col-md-2">
-                <select id="settingsVariableChart" class="form-control">
-                  <option value="EVENTOS" selected='selected'>Eventos</option>
-                  <option value="PER_OCU">Personas Ocurrencia</option>
-                  <option value="PER_DECLA">Personas Declaración</option>
-                </select>
-              </div>
-              <label for="settingsParametro1Chart" class="col-xs-3 col-md-1 control-label">Parametro</label>
-              <div class="col-xs-9 col-md-2">
-                <select id="settingsParametro1Chart" class="form-control">
-                  <option value="HECHO" selected='selected'>Hechos Victimizantes</option>
-                  <option value="SEXO">Género</option>
-                  <option value="ETNIA">Etnia</option>
-                  <option value="DISCAPACIDAD">Discapacidad</option>
-                  <option value="CICLO_VITAL">Ciclo Vital</option>
-                </select>
-              </div>
-              <label id="labelParametro2Chart" style="display: none;" for="settingsParametro2Chart"
-                class="col-xs-3 col-md-1 control-label">Parametro</label>
-              <div class="col-xs-9 col-md-2">
-                <select id="settingsParametro2Chart" style="display: none;" class="form-control">
-                  <option value="HECHO">Hechos Victimizantes</option>
-                  <option value="SEXO" selected='selected'>Género</option>
-                  <option value="ETNIA">Etnia</option>
-                  <option value="DISCAPACIDAD">Discapacidad</option>
-                  <option value="CICLO_VITAL">Ciclo Vital</option>
-                </select>
+        <div
+          class="panel-collapse"
+          role="tabpanel"
+          aria-labelledby="headingTable"
+          style="height: 100%; padding-bottom: 40px"
+        >
+          <div
+            class="panel-body"
+            style="width: 100%; height: 100%; overflow: auto; max-height: unset"
+          >
+            <div
+              class="row"
+              style="position: -webkit-sticky; position: sticky; top: 0"
+            >
+              <div class="col-md-4">
+                <span
+                  class="esri-icon esri-icon-download"
+                  title="Descargar los datos"
+                ></span
+                >&nbsp;&nbsp;
+                <a role="button" href="#" id="downloadTableExcel">Excel</a
+                >&nbsp;&nbsp;
+                <a role="button" href="#" id="downloadTableCSV">CSV</a
+                >&nbsp;&nbsp;
+                <a role="button" href="#" id="downloadTableJSON">JSON</a
+                >&nbsp;&nbsp;
+                <a role="button" href="#" id="downloadTablePdf">PDF</a
+                >&nbsp;&nbsp;
               </div>
             </div>
+            <br />
+            <div class="row" id="tableFilterData"></div>
           </div>
-          <div class="col-xs-12 col-md-12" style="min-height: 600px;" id="chartFilterData"></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- /.calcite-panels -->
+    <!-- Graficos -->
+    <div
+      id="panelChartP"
+      class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group collapse"
+    >
+      <div id="panelChart" class="panel" style="height: 100%">
+        <div id="headingChart" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a
+              style="color: white"
+              class="min-header"
+              role="button"
+              aria-expanded="false"
+              onclick="closeTabla();"
+              title="Minimizar"
+              ><span
+                class="esri-icon esri-icon-chart"
+                style="font-size: x-large; padding-top: 5px; padding-left: 10px"
+                aria-hidden="true"
+              ></span
+            ></a>
+            <a
+              style="color: white"
+              class="panel-toggle panel-toggle-title"
+              role="button"
+              aria-expanded="false"
+              onclick="zChart();"
+              ><span class="panel-label" id="tituloChart">Gráficos</span></a
+            >
+            <a
+              style="color: white"
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              onclick="maxChart();"
+              ><span
+                class="esri-icon esri-icon-maximize"
+                aria-hidden="true"
+              ></span
+            ></a>
+            <a
+              style="color: white"
+              class="panel-close"
+              role="button"
+              data-toggle="collapse"
+              tabindex="0"
+              onclick="closeChart();"
+              ><span class="esri-icon esri-icon-close" aria-hidden="true"></span
+            ></a>
+          </div>
+        </div>
+        <div
+          class="panel-collapse"
+          role="tabpanel"
+          aria-labelledby="headingChart"
+          style="height: 100%; padding-bottom: 40px"
+        >
+          <div
+            class="panel-body"
+            style="width: 100%; height: 100%; overflow: auto; max-height: unset"
+          >
+            <div class="form-horizontal calcite-form-padding">
+              <div class="form-group">
+                <label
+                  for="settingsTipoChart"
+                  class="col-xs-3 col-md-1 control-label"
+                  >Tipo</label
+                >
+                <div class="col-xs-9 col-md-2">
+                  <select id="settingsTipoChart" class="form-control">
+                    <option value="Pie" selected="selected">Torta</option>
+                    <option value="Bar">Barra</option>
+                    <option value="Donut">Dona</option>
+                  </select>
+                </div>
+                <label
+                  for="settingsVariableChart"
+                  class="col-xs-3 col-md-1 control-label"
+                  >Variable</label
+                >
+                <div class="col-xs-9 col-md-2">
+                  <select id="settingsVariableChart" class="form-control">
+                    <option value="EVENTOS" selected="selected">Eventos</option>
+                    <option value="PER_OCU">Personas Ocurrencia</option>
+                    <option value="PER_DECLA">Personas Declaración</option>
+                  </select>
+                </div>
+                <label
+                  for="settingsParametro1Chart"
+                  class="col-xs-3 col-md-1 control-label"
+                  >Parametro</label
+                >
+                <div class="col-xs-9 col-md-2">
+                  <select id="settingsParametro1Chart" class="form-control">
+                    <option value="HECHO" selected="selected">
+                      Hechos Victimizantes
+                    </option>
+                    <option value="SEXO">Género</option>
+                    <option value="ETNIA">Etnia</option>
+                    <option value="DISCAPACIDAD">Discapacidad</option>
+                    <option value="CICLO_VITAL">Ciclo Vital</option>
+                  </select>
+                </div>
+                <label
+                  id="labelParametro2Chart"
+                  style="display: none"
+                  for="settingsParametro2Chart"
+                  class="col-xs-3 col-md-1 control-label"
+                  >Parametro</label
+                >
+                <div class="col-xs-9 col-md-2">
+                  <select
+                    id="settingsParametro2Chart"
+                    style="display: none"
+                    class="form-control"
+                  >
+                    <option value="HECHO">Hechos Victimizantes</option>
+                    <option value="SEXO" selected="selected">Género</option>
+                    <option value="ETNIA">Etnia</option>
+                    <option value="DISCAPACIDAD">Discapacidad</option>
+                    <option value="CICLO_VITAL">Ciclo Vital</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-xs-12 col-md-12"
+              style="min-height: 600px"
+              id="chartFilterData"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <script type="text/javascript">
-    var dojoConfig = {
-      packages: [{
-          name: "bootstrap",
-          location: 'https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap'
-          // location: "/dist/vendor/dojo-bootstrap"
-        },
-        {
-          name: "calcite-maps",
-          location: 'https://esri.github.io/calcite-maps/dist/js/dojo'
-          // location: "/dist/js/dojo"
-        }
-      ]
-    };
-  </script>
+    <!-- /.calcite-panels -->
 
-  <script type="text/javascript" src="dist/js/jquery.min.js"></script>
+    <script type="text/javascript">
+      var dojoConfig = {
+        packages: [
+          {
+            name: "bootstrap",
+            location:
+              "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap",
+            // location: "/dist/vendor/dojo-bootstrap"
+          },
+          {
+            name: "calcite-maps",
+            location: "https://esri.github.io/calcite-maps/dist/js/dojo",
+            // location: "/dist/js/dojo"
+          },
+        ],
+      };
+    </script>
 
-  <script type="text/javascript" src="dist/js/lazysizes.min.js" async></script>
+    <script type="text/javascript" src="dist/js/jquery.min.js"></script>
 
-  <script type="text/javascript" src="dist/js/rainbowvis.js"></script>
+    <script
+      type="text/javascript"
+      src="dist/js/lazysizes.min.js"
+      async
+    ></script>
 
-  <script type="text/javascript" src="dist/js/interact.min.js"></script>
-  <script type="text/javascript" src="dist/js/pako.min.js"></script>
-  <script type="text/javascript" src="dist/js/jquery-confirm.min.js"></script>
-  <script type="text/javascript" src="dist/js/bootstrap-multiselect.min.js"></script>
+    <script type="text/javascript" src="dist/js/rainbowvis.js"></script>
 
-  <script type="text/javascript" src="dist/js/papaparse.min.js"></script>
-  <script type="text/javascript" src="dist/js/tabulator.min.js"></script>
-  <script type="text/javascript" src="dist/js/xlsx.full.min.js"></script>
-  <script type="text/javascript" src="dist/js/jspdf.min.js"></script>
-  <script type="text/javascript" src="dist/js/jspdf.plugin.autotable.min.js"></script>
+    <script type="text/javascript" src="dist/js/interact.min.js"></script>
+    <script type="text/javascript" src="dist/js/pako.min.js"></script>
+    <script type="text/javascript" src="dist/js/jquery-confirm.min.js"></script>
+    <script
+      type="text/javascript"
+      src="dist/js/bootstrap-multiselect.min.js"
+    ></script>
 
-  <script type="text/javascript" src="dist/js/plotly-latest.min.js"></script>
-  <script type="text/javascript" src="dist/js/plotly-locale-es-latest.js"></script>
+    <script type="text/javascript" src="dist/js/papaparse.min.js"></script>
+    <script type="text/javascript" src="dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="dist/js/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="dist/js/jspdf.min.js"></script>
+    <script
+      type="text/javascript"
+      src="dist/js/jspdf.plugin.autotable.min.js"
+    ></script>
 
-  <!-- ArcGIS JS -->
-  <script src="https://js.arcgis.com/4.18/"></script>
+    <script type="text/javascript" src="dist/js/plotly-latest.min.js"></script>
+    <script
+      type="text/javascript"
+      src="dist/js/plotly-locale-es-latest.js"
+    ></script>
 
-  <!-- <script type="text/javascript" src="js/config.js"></script>
-  <script type="text/javascript" src="js/index.js"></script> -->
-  <script type="text/javascript" src="js/newindex.js"></script>
+    <!-- ArcGIS JS -->
+    <script src="https://js.arcgis.com/4.18/"></script>
 
-</body>
-
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <!-- <script type="text/javascript" src="js/newindex.js"></script> -->
+  </body>
 </html>
