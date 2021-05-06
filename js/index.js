@@ -6,10 +6,10 @@ $(document).ready(function () {
   }
   $("#textSliderTimeRange").text(
     "Rango de años a calcular (" +
-      vgv_lstAnios[0].toString() +
-      " - " +
-      vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
-      ")"
+    vgv_lstAnios[0].toString() +
+    " - " +
+    vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
+    ")"
   );
 
   init();
@@ -408,10 +408,8 @@ function InitMap2() {
 
       if (webMapJson.layoutOptions.legendOptions.operationalLayers.length > 0) {
         for (
-          let idxOperationalLayer = 0;
-          idxOperationalLayer <
-          webMapJson.layoutOptions.legendOptions.operationalLayers.length;
-          idxOperationalLayer++
+          let idxOperationalLayer = 0; idxOperationalLayer <
+          webMapJson.layoutOptions.legendOptions.operationalLayers.length; idxOperationalLayer++
         ) {
           if (
             webMapJson.layoutOptions.legendOptions.operationalLayers[
@@ -790,8 +788,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "Longitude",
         description: "Longitud",
         searchPattern: numberSearchPattern,
@@ -822,8 +819,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "Longitude",
         description: "Longitud",
         searchPattern: numberSearchPattern,
@@ -854,8 +850,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "East",
         searchPattern: numberSearchPattern,
@@ -886,8 +881,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -918,8 +912,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -950,8 +943,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -982,8 +974,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -1014,8 +1005,7 @@ function addWidgets() {
         });
       },
     },
-    coordinateSegments: [
-      {
+    coordinateSegments: [{
         alias: "East",
         description: "Este",
         searchPattern: numberSearchPattern,
@@ -1073,10 +1063,10 @@ function addWidgets() {
   sliderTimeRange.on(["thumb-change", "thumb-drag"], function () {
     $("#textSliderTimeRange").text(
       "Rango de años a calcular (" +
-        sliderTimeRange.values[0].toString() +
-        " - " +
-        sliderTimeRange.values[1].toString() +
-        ")"
+      sliderTimeRange.values[0].toString() +
+      " - " +
+      sliderTimeRange.values[1].toString() +
+      ")"
     );
   });
 
@@ -1087,8 +1077,7 @@ function addWidgets() {
     right: 10,
     bottom: 20,
   };
-  view.ui.add([
-    {
+  view.ui.add([{
       component: home,
       position: "bottom-right",
       index: 0,
@@ -1247,40 +1236,31 @@ function addWidgets() {
 function defineActions(event) {
   var item = event.item;
 
-  let actionFullExtent = [
-    {
-      title: "Mapa completo",
-      className: "esri-icon-globe",
-      id: "full-extent",
-    },
-  ];
+  let actionFullExtent = [{
+    title: "Mapa completo",
+    className: "esri-icon-globe",
+    id: "full-extent",
+  }, ];
 
-  let actionTable = [
-    {
-      title: "Ver tabla",
-      className: "esri-icon-table",
-      id: "tabla-layer",
-    },
-  ];
+  let actionTable = [{
+    title: "Ver tabla",
+    className: "esri-icon-table",
+    id: "tabla-layer",
+  }, ];
 
-  let actionTableDefault = [
-    {
-      title: "Ver tabla",
-      className: "esri-icon-table",
-      id: "tabla-layer-default",
-    },
-  ];
+  let actionTableDefault = [{
+    title: "Ver tabla",
+    className: "esri-icon-table",
+    id: "tabla-layer-default",
+  }, ];
 
-  let actionChart = [
-    {
-      title: "Ver gráficas",
-      className: "esri-icon-chart",
-      id: "chart-layer",
-    },
-  ];
+  let actionChart = [{
+    title: "Ver gráficas",
+    className: "esri-icon-chart",
+    id: "chart-layer",
+  }, ];
 
-  let actionTransparency = [
-    {
+  let actionTransparency = [{
       title: "Reducir transparencia",
       className: "esri-icon-up",
       id: "increase-opacity",
@@ -1292,13 +1272,11 @@ function defineActions(event) {
     },
   ];
 
-  let actionDelete = [
-    {
-      title: "Borrar capa",
-      className: "esri-icon-trash",
-      id: "delete-layer",
-    },
-  ];
+  let actionDelete = [{
+    title: "Borrar capa",
+    className: "esri-icon-trash",
+    id: "delete-layer",
+  }, ];
 
   let itemConfigLayers = config_layers.filter(function (element) {
     return element.ID_SERVICIO == item.layer.id.toString();
@@ -1892,13 +1870,13 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     "Results_" + tableRUV + "_" + $("#selectFiltro_Variable").val() + "_YYYY";
   let strSqlVGV = strFrom + strWhere;
 
-  return {
+  return [
     idLayerRUV,
     titleRUV,
     strSqlVGV,
     tableRUV,
     popupContent,
-  };
+  ];
 }
 
 function createRenderer(featureLayer, subLayer, layerRUV) {
@@ -1979,12 +1957,13 @@ function aplicarParametrosVGV() {
   let variableRUV = $("#selectFiltro_Variable option:selected").text();
   let Anio = $("#selectFiltro_Anio").val();
 
-  let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
-  ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
-    Anio,
-    filtroGeografico,
-    variableRUV
-  ));
+  let respSQLVGV = defineSqlVGV(Anio, filtroGeografico, variableRUV);
+
+  let idLayerRUV = respSQLVGV[0],
+    titleRUV = respSQLVGV[1],
+    strSqlVGV = respSQLVGV[2],
+    tableRUV = respSQLVGV[3],
+    popupContent = respSQLVGV[4];
 
   idLayerRUV = idLayerRUV.replace("YYYY", Anio);
   titleRUV = titleRUV.replace("YYYY", Anio);
@@ -1998,30 +1977,28 @@ function aplicarParametrosVGV() {
     id: idLayerRUV,
     anio: Anio,
     visible: true,
-    sublayers: [
-      {
-        title: titleRUV,
-        id: 0,
-        idRUV: idLayerRUV,
-        layerOrigen: tableRUV,
-        variableOrigen: variableRUV,
-        opacity: 0.8,
-        listMode: "hide",
-        source: {
-          type: "data-layer",
-          dataSource: {
-            type: "query-table",
-            workspaceId: "CONSULTA_RUV",
-            query: strSqlVGV,
-            geometryType: "polygon",
-            spatialReference: {
-              wkid: 4326,
-            },
-            oidFields: "objectid",
+    sublayers: [{
+      title: titleRUV,
+      id: 0,
+      idRUV: idLayerRUV,
+      layerOrigen: tableRUV,
+      variableOrigen: variableRUV,
+      opacity: 0.8,
+      listMode: "hide",
+      source: {
+        type: "data-layer",
+        dataSource: {
+          type: "query-table",
+          workspaceId: "CONSULTA_RUV",
+          query: strSqlVGV,
+          geometryType: "polygon",
+          spatialReference: {
+            wkid: 4326,
           },
+          oidFields: "objectid",
         },
       },
-    ],
+    }, ],
   });
 
   const subLayerRUV = layerRUV.sublayers.find(function (sublayer) {
@@ -2040,8 +2017,7 @@ function aplicarParametrosVGV() {
   subLayerRUV.popupTemplate = {
     title: "<b>" + titleRUV + "</b>",
     content: popupContent,
-    fieldInfos: [
-      {
+    fieldInfos: [{
         fieldName: "VGV_NVALOR",
         format: {
           digitSeparator: true,
@@ -2154,13 +2130,13 @@ function createTimeVGV() {
   );
 
   let variableRUV = $("#selectFiltro_Variable option:selected").text();
-  let idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent;
+  let respSQLVGV = defineSqlVGV(sliderTime.min, filtroGeografico, variableRUV);
 
-  ({ idLayerRUV, titleRUV, strSqlVGV, tableRUV, popupContent } = defineSqlVGV(
-    sliderTime.min,
-    filtroGeografico,
-    variableRUV
-  ));
+  let idLayerRUV = respSQLVGV[0],
+    titleRUV = respSQLVGV[1],
+    strSqlVGV = respSQLVGV[2],
+    tableRUV = respSQLVGV[3],
+    popupContent = respSQLVGV[4];
 
   idLayerRUV = idLayerRUV.replace("_YYYY", "");
   idLayerRUV = idLayerRUV.replace("Results_", "Time_");
@@ -2222,8 +2198,7 @@ function createTimeVGV() {
       subLayerTime.popupTemplate = {
         title: "<b>" + titleAnio + "</b>",
         content: popupContent,
-        fieldInfos: [
-          {
+        fieldInfos: [{
             fieldName: "VGV_NVALOR",
             format: {
               digitSeparator: true,
@@ -2342,10 +2317,10 @@ function deleteTimeVGV() {
   loopFull = false;
   $("#textSliderTimeRange").text(
     "Rango de años a calcular (" +
-      vgv_lstAnios[0].toString() +
-      " - " +
-      vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
-      ")"
+    vgv_lstAnios[0].toString() +
+    " - " +
+    vgv_lstAnios[vgv_lstAnios.length - 1].toString() +
+    ")"
   );
   $("#legendTimeVGV").hide();
   $("#sliderContainerTime").hide();
@@ -2592,8 +2567,7 @@ function groupDataVGV(strWhere, fieldGroup) {
   query.where = strWhere;
   query.returnGeometry = false;
   query.outFields = ["*"];
-  query.outStatistics = [
-    {
+  query.outStatistics = [{
       onStatisticField: "RUV_NDECLARACION",
       outStatisticFieldName: "PER_DECLA",
       statisticType: "sum",
@@ -2641,15 +2615,13 @@ function generateVisualChart() {
   let dataChart, layoutChart;
 
   if (tipoValueChart == "Pie" || tipoValueChart == "Donut") {
-    dataChart = [
-      {
-        labels: labelsGroupChart,
-        values: variableGroupChart,
-        textposition: "inside",
-        automargin: true,
-        type: "pie",
-      },
-    ];
+    dataChart = [{
+      labels: labelsGroupChart,
+      values: variableGroupChart,
+      textposition: "inside",
+      automargin: true,
+      type: "pie",
+    }, ];
 
     if (tipoValueChart == "Donut") {
       dataChart[0].hole = 0.4;
@@ -2686,16 +2658,14 @@ function generateVisualChart() {
       listColors.push(d3colors(idxLabels));
     }
 
-    dataChart = [
-      {
-        x: labelsGroupChart,
-        y: variableGroupChart,
-        marker: {
-          color: listColors,
-        },
-        type: "bar",
+    dataChart = [{
+      x: labelsGroupChart,
+      y: variableGroupChart,
+      marker: {
+        color: listColors,
       },
-    ];
+      type: "bar",
+    }, ];
 
     layoutChart = {
       title: {
@@ -3203,8 +3173,8 @@ function gotoAgregar() {
           if (currentSubCategoria != null) {
             $(
               "[data-subcategoria-group='" +
-                currentSubCategoria +
-                "'] > div > a > span"
+              currentSubCategoria +
+              "'] > div > a > span"
             ).html("&nbsp;(" + (currentSubCategoriaCount + 1) + ")");
           }
           currentSubCategoria = layer.ID_SUBCATEGORIA;
@@ -3251,8 +3221,8 @@ function gotoAgregar() {
         if (currentSubCategoria != null) {
           $(
             "[data-subcategoria-group='" +
-              currentSubCategoria +
-              "'] > div > a > span"
+            currentSubCategoria +
+            "'] > div > a > span"
           ).html("&nbsp;(" + (currentSubCategoriaCount + 1) + ")");
         }
       } else {
@@ -3261,9 +3231,9 @@ function gotoAgregar() {
       }
 
       let strHTMLSubCategoria =
-        currentSubCategoria == null
-          ? ""
-          : "' data-subcategoria='" + layer.ID_SUBCATEGORIA;
+        currentSubCategoria == null ?
+        "" :
+        "' data-subcategoria='" + layer.ID_SUBCATEGORIA;
       let strHTML =
         "<li data-layer='" +
         layer.ID_SERVICIO +
@@ -3410,15 +3380,15 @@ function showCategory(id) {
 function showSubCategory(idCategoria, idSubCategoria) {
   if (
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']:visible")
-      .length > 0
+    .length > 0
   ) {
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']").hide();
   } else {
     $("#servicesList > :not(.activec)").hide();
     $(
       "#servicesList > [data-categoria='" +
-        idCategoria +
-        "']:not([data-subcategoria])"
+      idCategoria +
+      "']:not([data-subcategoria])"
     ).show();
     $("#servicesList > [data-subcategoria='" + idSubCategoria + "']").show();
   }
@@ -3470,14 +3440,11 @@ function showLayerId(i) {
     let tLayer;
     if (config_layers[i].SUBLAYER) {
       tLayer = new _MapImageLayer({
-        url:
-          "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",
-        sublayers: [
-          {
-            id: config_layers[i].SUBLAYER,
-            visible: true,
-          },
-        ],
+        url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",
+        sublayers: [{
+          id: config_layers[i].SUBLAYER,
+          visible: true,
+        }, ],
         title: config_layers[i].NOMBRE,
         id: config_layers[i].ID_SERVICIO,
       });
@@ -3578,8 +3545,8 @@ function uploadCSV(evt) {
     ) {
       alerta(
         "El archivo  " +
-          file.fileName +
-          " no tiene los campos esperados según el modelo disponible"
+        file.fileName +
+        " no tiene los campos esperados según el modelo disponible"
       );
       dataLoadCSV = null;
       current_reportes = arrayRemove(current_reportes, "CSV");
@@ -3658,34 +3625,34 @@ function parametersFileCSV(filtroGeografico) {
     case "csvDepartamento":
       return {
         tLayerBase: nameLayerDepartamentos,
-        nivelGeografico: "Departamento",
-        campoGeografico: "DPTO_NCDGO",
-        nombreGeografico: "DPTO_CNMBR",
-        adjNombreGeografico: null,
+          nivelGeografico: "Departamento",
+          campoGeografico: "DPTO_NCDGO",
+          nombreGeografico: "DPTO_CNMBR",
+          adjNombreGeografico: null,
       };
     case "csvMunicipal":
       return {
         tLayerBase: nameLayerMunicipios,
-        nivelGeografico: "Municipio",
-        campoGeografico: "MPIO_NCDGO",
-        nombreGeografico: "MPIO_CNMBR",
-        adjNombreGeografico: "DPTO_CNMBR",
+          nivelGeografico: "Municipio",
+          campoGeografico: "MPIO_NCDGO",
+          nombreGeografico: "MPIO_CNMBR",
+          adjNombreGeografico: "DPTO_CNMBR",
       };
     case "csvDT":
       return {
         tLayerBase: nameLayerDT,
-        nivelGeografico: "Dirección Territorial",
-        campoGeografico: "DT_NCDGO",
-        nombreGeografico: "DT_CNMBR",
-        adjNombreGeografico: null,
+          nivelGeografico: "Dirección Territorial",
+          campoGeografico: "DT_NCDGO",
+          nombreGeografico: "DT_CNMBR",
+          adjNombreGeografico: null,
       };
     case "csvPDET":
       return {
         tLayerBase: nameLayerPDET,
-        nivelGeografico: "PDET",
-        campoGeografico: "PDET_NCDGO",
-        nombreGeografico: "PDET_CNMBR",
-        adjNombreGeografico: null,
+          nivelGeografico: "PDET",
+          campoGeografico: "PDET_NCDGO",
+          nombreGeografico: "PDET_CNMBR",
+          adjNombreGeografico: null,
       };
   }
 }
@@ -3718,9 +3685,7 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
     }
 
     for (
-      let indexGeo = results.features.length - 1;
-      indexGeo >= 0;
-      indexGeo--
+      let indexGeo = results.features.length - 1; indexGeo >= 0; indexGeo--
     ) {
       if (results.features[indexGeo].attributes.VGV_NVALOR == null) {
         results.features.splice(indexGeo, 1);
@@ -3744,15 +3709,13 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
       popupTemplate: {
         title: "<b>" + settingsVariableCSV + "</b>",
         content: varContent,
-        fieldInfos: [
-          {
-            fieldName: "VGV_NVALOR",
-            format: {
-              digitSeparator: true,
-              places: 0,
-            },
+        fieldInfos: [{
+          fieldName: "VGV_NVALOR",
+          format: {
+            digitSeparator: true,
+            places: 0,
           },
-        ],
+        }, ],
       },
       copyright: "Unidad para las Víctimas",
       visible: true,
@@ -3876,11 +3839,9 @@ function imprimirMapa() {
       titleText: tituloMapa,
       authorText: "UARIV",
       scalebarUnit: "Kilometers",
-      customTextElements: [
-        {
-          FechaCorte: fechaCorteString,
-        },
-      ],
+      customTextElements: [{
+        FechaCorte: fechaCorteString,
+      }, ],
     },
     outScale: scaleImpresion,
     scalePreserved: true,
@@ -3895,14 +3856,14 @@ function imprimirMapa() {
     function (printResult) {
       $("#listImpresion").append(
         '<a href="' +
-          printResult.url +
-          '" target="_blank" class="list-group-item linkVGV no-border" style="padding: 5px !important;"><span class="esri-icon-download" aria-hidden="true"></span><span class="panel-label" style="font-size: x-small;">' +
-          tituloMapa +
-          "_" +
-          $("#plantillaImpresion").val() +
-          "." +
-          $("#formatoImpresion").val() +
-          "</span></a>"
+        printResult.url +
+        '" target="_blank" class="list-group-item linkVGV no-border" style="padding: 5px !important;"><span class="esri-icon-download" aria-hidden="true"></span><span class="panel-label" style="font-size: x-small;">' +
+        tituloMapa +
+        "_" +
+        $("#plantillaImpresion").val() +
+        "." +
+        $("#formatoImpresion").val() +
+        "</span></a>"
       );
       console.log(printResult);
       reporteUso("print", "", "print-complete");
@@ -3933,15 +3894,15 @@ function reporteUso(caracteristica, labelEvento, accionEvento) {
   labelEvento =
     typeof labelEvento !== "undefined" &&
     labelEvento !== null &&
-    labelEvento !== ""
-      ? labelEvento
-      : "uso";
+    labelEvento !== "" ?
+    labelEvento :
+    "uso";
   accionEvento =
     typeof accionEvento !== "undefined" &&
     accionEvento !== null &&
-    accionEvento !== ""
-      ? accionEvento
-      : "uso";
+    accionEvento !== "" ?
+    accionEvento :
+    "uso";
   if (current_reportes.indexOf(caracteristica) == -1) {
     current_reportes.push(caracteristica);
     gtag("event", caracteristica, {
@@ -4305,12 +4266,12 @@ function ajustarRampVGV() {
   $("#styleColorRamp-VGV").css(
     "background",
     "linear-gradient(to right, " +
-      color_1 +
-      " 20%, " +
-      color_2 +
-      " 50%, " +
-      color_3 +
-      " 80%)"
+    color_1 +
+    " 20%, " +
+    color_2 +
+    " 50%, " +
+    color_3 +
+    " 80%)"
   );
 }
 
@@ -4322,12 +4283,12 @@ function ajustarRampCSV() {
   $("#styleColorRamp-CSV").css(
     "background",
     "linear-gradient(to right, " +
-      color_1 +
-      " 20%, " +
-      color_2 +
-      " 50%, " +
-      color_3 +
-      " 80%)"
+    color_1 +
+    " 20%, " +
+    color_2 +
+    " 50%, " +
+    color_3 +
+    " 80%)"
   );
 }
 
