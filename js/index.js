@@ -649,14 +649,14 @@ function addWidgets() {
       _Basemap.fromId("dark-gray-vector"),
       _Basemap.fromId("streets-night-vector"),
       //Nuevos
-      _Basemap.fromId("arcgis-navigation"),
-      _Basemap.fromId("arcgis-streets"),
-      _Basemap.fromId("arcgis-oceans"),
-      _Basemap.fromId("arcgis-light-gray"),
-      _Basemap.fromId("arcgis-topographic"),
-      _Basemap.fromId("arcgis-imagery"),
-      _Basemap.fromId("arcgis-dark-gray"),
-      _Basemap.fromId("arcgis-streets-night"),
+      // _Basemap.fromId("arcgis-navigation"),
+      // _Basemap.fromId("arcgis-streets"),
+      // _Basemap.fromId("arcgis-oceans"),
+      // _Basemap.fromId("arcgis-light-gray"),
+      // _Basemap.fromId("arcgis-topographic"),
+      // _Basemap.fromId("arcgis-imagery"),
+      // _Basemap.fromId("arcgis-dark-gray"),
+      // _Basemap.fromId("arcgis-streets-night"),
     ],
   });
 
@@ -1833,7 +1833,7 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     strWhere +=
       " (1 = 1) GROUP BY DPTO_NCDGO) AS D ON G.DPTO_NCDGO = D.DPTO_NCDGO";
     tableRUV = "Departamentos";
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{DPTO_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroMunicipal") {
     strFrom =
       strSQL_Mpios +
@@ -1843,7 +1843,7 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     strWhere +=
       " (1 = 1) GROUP BY MPIO_NCDGO) AS D ON G.MPIO_NCDGO = D.MPIO_NCDGO";
     tableRUV = "Municipios";
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{VGV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el ${tableRUV} de <b>{MPIO_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroDT") {
     strFrom =
       strSQL_DT +
@@ -1852,7 +1852,7 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     strWhere += getSqlParameter("selectFiltro_DT", "DT_NCDGO");
     strWhere += " (1 = 1) GROUP BY DT_NCDGO) AS D ON G.DT_NCDGO = D.DT_NCDGO";
     tableRUV = "DT";
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{DT_CNMBR}</b>.`;
   } else if (filtroGeografico == "filtroPDET") {
     strFrom =
       strSQL_PDET +
@@ -1862,7 +1862,7 @@ function defineSqlVGV(Anio, filtroGeografico, variableRUV) {
     strWhere +=
       " (1 = 1) GROUP BY PDET_NCDGO) AS D ON G.PDET_NCDGO = D.PDET_NCDGO";
     tableRUV = "PDET";
-    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{VGV_CNMBR}</b>.`;
+    popupContent = `Durante el año <b>${Anio}</b> se presentaron <b>{VGV_NVALOR} ${variableRUV}</b> en el <b>{PDET_CNMBR}</b>.`;
   }
 
   let titleRUV = variableRUV + " por " + tableRUV + " para el año YYYY";
@@ -2085,7 +2085,7 @@ function createTimeVGV() {
 
   if (
     filtroGeografico == "filtroMunicipal" &&
-    i$("#selectFiltro_Municipios option:selected").length == 0
+    $("#selectFiltro_Municipios option:selected").length == 0
   ) {
     alerta("Debe seleccionar al menos un municipio");
     return;
@@ -3086,26 +3086,30 @@ function addOptionSwipe(tLayer) {
 }
 
 function removeOptionSwipe(tLayer) {
-  $("#selectSwipe_Derecha option[value=" + tLayer.id + "]").remove();
-  $("#selectSwipe_Izquierda option[value=" + tLayer.id + "]").remove();
-
-  if (swipeMapa != undefined && !swipeMapa.destroyed) {
-    let izqLayers = swipeMapa.leadingLayers.items;
-    let derLayers = swipeMapa.trailingLayers.items;
-
-    for (let layer of izqLayers) {
-      if (layer.id == tLayer.id) {
-        removeSwipe();
-        return;
+  try {
+    $("#selectSwipe_Derecha option[value=" + tLayer.id + "]").remove();
+    $("#selectSwipe_Izquierda option[value=" + tLayer.id + "]").remove();
+  
+    if (swipeMapa != undefined && !swipeMapa.destroyed) {
+      let izqLayers = swipeMapa.leadingLayers.items;
+      let derLayers = swipeMapa.trailingLayers.items;
+  
+      for (let layer of izqLayers) {
+        if (layer.id == tLayer.id) {
+          removeSwipe();
+          return;
+        }
       }
-    }
-
-    for (let layer of derLayers) {
-      if (layer.id == tLayer.id) {
-        removeSwipe();
-        return;
+  
+      for (let layer of derLayers) {
+        if (layer.id == tLayer.id) {
+          removeSwipe();
+          return;
+        }
       }
-    }
+    }    
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -3658,20 +3662,21 @@ function parametersFileCSV(filtroGeografico) {
 }
 
 function asignarCSVGeografico(lstDatosCSV, lstParametros) {
+  let settingsVariableCSV = $("#settingsVariableCSV").val();
   let settingsTitleCSV =
     $("#settingsTitleCSV").val() + " - Datos cargados por el usuario";
-  let settingsVariableCSV = $("#settingsVariableCSV").val();
+  let settingsIdCSV = IdCSV;
+  IdCSV += 1;
 
   const tLayer = map.findLayerById(lstParametros.tLayerBase);
 
-  removeLayer(settingsTitleCSV);
+  removeLayer(settingsIdCSV);
 
   let query = tLayer.createQuery();
   query.where = "1=1";
 
   tLayer.queryFeatures(query).then(function (results) {
     for (const feature of results.features) {
-      feature.attributes.OBJECTID = indexGeo;
       feature.attributes.VGV_NVALOR = null;
       for (let datoCSV of lstDatosCSV) {
         if (
@@ -3705,7 +3710,7 @@ function asignarCSVGeografico(lstDatosCSV, lstParametros) {
       objectIdField: "OBJECTID",
       opacity: 0.8,
       title: settingsTitleCSV,
-      id: settingsTitleCSV,
+      id: settingsIdCSV,
       popupTemplate: {
         title: "<b>" + settingsVariableCSV + "</b>",
         content: varContent,
